@@ -7,15 +7,15 @@ interface Props {
 }
 
 const {
-  title = 'NeuroCare Santa Fe | Salud mental y cognitiva premium',
-  description = 'Grupo privado de especialistas en neuropsiquiatría, psiquiatría clínica y neuropsicología en Santa Fe, CDMX. Agenda concierge y solicitud administrativa de cita.',
+  title = 'NeuroCare | Salud mental y cognitiva premium',
+  description = 'Grupo privado de especialistas en neuropsiquiatría, psiquiatría clínica y neuropsicología en Santa Fe, CDMX. Chat médico demo y solicitud administrativa de cita.',
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://neurocare-santafe.mx');
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'MédicalClinic',
-  name: 'NeuroCare Santa Fe',
+  name: 'NeuroCare',
   description,
   médicalSpecialty: [
     'Psychiatry',
@@ -49,7 +49,7 @@ const schema = {
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:site_name" content="NeuroCare Santa Fe" />
+    <meta property="og:site_name" content="NeuroCare" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="theme-color" content="#071A2F" />
     <script type="application/ld+json" set:html={JSON.stringify(schema)} />

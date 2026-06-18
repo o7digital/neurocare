@@ -1,14 +1,15 @@
 ---
 import AppointmentForm from '../components/AppointmentForm.astro';
+import BlogSection from '../components/BlogSection.astro';
 import DoctorsSection from '../components/DoctorsSection.astro';
 import ExperienceSection from '../components/ExperienceSection.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
 import PatientJourney from '../components/PatientJourney.astro';
-import SeoBoard from '../components/SeoBoard.astro';
 import SpecialtiesTabs from '../components/SpecialtiesTabs.astro';
 import Layout from '../layouts/Layout.astro';
+import { specialties } from '../data/site';
 ---
 
 <Layout>
@@ -17,10 +18,10 @@ import Layout from '../layouts/Layout.astro';
     <Hero />
     <div class="overflow-hidden border-y border-line bg-white/42 backdrop-blur-xl">
       <div class="flex w-max animate-[marquee_32s_linear_infinite] gap-9 whitespace-nowrap py-4 text-xs font-black uppercase tracking-[0.12em] text-[#506278]">
-        {['Neuropsiquiatría', 'Psiquiatría clínica', 'Neuropsicología', 'Medicina del sueño', 'TDAH adultos', 'Ansiedad y depresión', 'Santa Fe CDMX', 'Agenda concierge'].map((item) => (
+        {['Neuropsiquiatría', 'Psiquiatría clínica', 'Neuropsicología', 'Medicina del sueño', 'TDAH adultos', 'Ansiedad y depresión', 'Santa Fe CDMX', 'Chat médico'].map((item) => (
           <span class="before:mr-9 before:text-gold before:content-['✦']">{item}</span>
         ))}
-        {['Neuropsiquiatría', 'Psiquiatría clínica', 'Neuropsicología', 'Medicina del sueño', 'TDAH adultos', 'Ansiedad y depresión', 'Santa Fe CDMX', 'Agenda concierge'].map((item) => (
+        {['Neuropsiquiatría', 'Psiquiatría clínica', 'Neuropsicología', 'Medicina del sueño', 'TDAH adultos', 'Ansiedad y depresión', 'Santa Fe CDMX', 'Chat médico'].map((item) => (
           <span class="before:mr-9 before:text-gold before:content-['✦']">{item}</span>
         ))}
       </div>
@@ -30,35 +31,40 @@ import Layout from '../layouts/Layout.astro';
     <PatientJourney />
     <DoctorsSection />
     <AppointmentForm />
-    <SeoBoard />
+    <BlogSection />
   </main>
   <Footer />
 
   <div class="fixed bottom-6 right-6 z-[60] flex items-center gap-2 rounded-full border border-line bg-white p-2 shadow-[0_20px_56px_rgb(7_26_47_/_0.18)] max-sm:left-3.5 max-sm:right-3.5 max-sm:justify-between">
     <span class="grid h-11 w-11 place-items-center rounded-full bg-[#effaf8] text-xl font-black text-teal">NC</span>
-    <button class="btn btn-primary js-open-modal" type="button">Agenda concierge</button>
+    <button class="btn btn-primary js-open-modal" type="button">Chat médico</button>
   </div>
 
-  <div class="fixed inset-0 z-[90] hidden items-center justify-center bg-[#061526]/65 p-6 backdrop-blur-xl" id="agenda-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-    <div class="relative w-full max-w-[720px] rounded-[44px] border border-white/80 bg-ivory p-8 shadow-[0_50px_130px_rgb(0_0_0_/_0.36)]">
-      <button class="js-close-modal absolute right-5 top-5 grid h-11 w-11 place-items-center rounded-full border border-line bg-white text-2xl" type="button" aria-label="Cerrar modal">×</button>
-      <h2 id="modal-title" class="mb-3 pr-12 text-[42px] font-black leading-none text-ink">Asi se veria la agenda premium.</h2>
-      <p class="mb-6 text-lg text-muted">
-        No es sólo un formulario: es un flujo de recepción médica que ayuda al paciente, ordena la demanda y evita mensajes desorganizados por WhatsApp.
-      </p>
-      <div class="grid gap-3 md:grid-cols-3">
-        {[
-          ['1. Especialidad', 'El paciente elige motivo y modalidad.'],
-          ['2. Preconsulta', 'Se recopila información administrativa básica.'],
-          ['3. Confirmación', 'Recepción valida horario y envia instrucciones.'],
-        ].map(([title, text]) => (
-          <div class="rounded-[26px] border border-line bg-white p-4">
-            <b class="mb-2 block text-ink">{title}</b>
-            <span class="text-sm text-muted">{text}</span>
-          </div>
-        ))}
+  <div class="fixed inset-0 z-[90] hidden items-end justify-end bg-[#061526]/35 p-6 backdrop-blur-md max-sm:p-3" id="agenda-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="relative w-full max-w-[440px] overflow-hidden rounded-[32px] border border-white/80 bg-white shadow-[0_34px_100px_rgb(0_0_0_/_0.28)]">
+      <div class="bg-gradient-to-br from-navy to-teal p-5 text-white">
+        <button class="js-close-modal absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full border border-white/20 bg-white/10 text-2xl" type="button" aria-label="Cerrar chat">×</button>
+        <span class="mb-4 inline-flex rounded-full bg-white/12 px-3 py-1 text-xs font-black uppercase tracking-[0.08em] text-white/78">Demo chat</span>
+        <h2 id="modal-title" class="pr-12 text-3xl font-black leading-none">Hola, soy NeuroCare.</h2>
+        <p class="mt-3 max-w-sm text-sm text-white/74">Puedo ayudarte a elegir un servicio y enviar una solicitud administrativa de cita. No hago diagnósticos ni atiendo urgencias.</p>
       </div>
-      <a class="btn btn-primary js-close-modal mt-5 w-full" href="#agenda">Ver formulario demo</a>
+      <div class="grid gap-4 bg-ivory p-5">
+        <div class="max-w-[86%] rounded-[22px] rounded-tl-md border border-line bg-white p-4 text-sm text-muted">
+          ¿Qué tipo de atención buscas?
+        </div>
+        <div class="grid gap-2">
+          {specialties.map((service) => (
+            <a class="rounded-2xl border border-line bg-white px-4 py-3 text-sm font-black text-navy transition hover:border-teal hover:text-teal" href="#agenda">
+              {service.title}
+            </a>
+          ))}
+        </div>
+        <div class="ml-auto max-w-[88%] rounded-[22px] rounded-tr-md bg-[#effaf8] p-4 text-sm font-bold text-teal">
+          Después de elegir un servicio, el equipo confirma disponibilidad por WhatsApp o email.
+        </div>
+        <a class="btn btn-primary js-close-modal w-full" href="#agenda">Continuar a solicitud de cita</a>
+        <p class="text-center text-xs text-muted">Demo visual. No usar para emergencias médicas.</p>
+      </div>
     </div>
   </div>
 
@@ -70,6 +76,10 @@ import Layout from '../layouts/Layout.astro';
     const panels = document.querySelectorAll('.specialty-panel');
     const form = document.getElementById('appointment-form');
     const successMessage = document.getElementById('success-message');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileMenuToggle = document.querySelector('.js-mobile-menu-toggle');
+    const mobileMenuLinks = document.querySelectorAll('.js-mobile-menu-link');
+    const mobileMenuLines = document.querySelectorAll('.mobile-menu-line');
 
     const openModal = () => {
       modal?.classList.remove('hidden');
@@ -81,13 +91,32 @@ import Layout from '../layouts/Layout.astro';
       modal?.classList.remove('flex');
     };
 
+    const setMobileMenu = (isOpen) => {
+      mobileMenu?.classList.toggle('hidden', !isOpen);
+      mobileMenuToggle?.setAttribute('aria-expanded', String(isOpen));
+      mobileMenuToggle?.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
+      mobileMenuLines[0]?.classList.toggle('translate-y-2', isOpen);
+      mobileMenuLines[0]?.classList.toggle('rotate-45', isOpen);
+      mobileMenuLines[1]?.classList.toggle('opacity-0', isOpen);
+      mobileMenuLines[2]?.classList.toggle('-translate-y-2', isOpen);
+      mobileMenuLines[2]?.classList.toggle('-rotate-45', isOpen);
+    };
+
     openButtons.forEach((button) => button.addEventListener('click', openModal));
     closeButtons.forEach((button) => button.addEventListener('click', closeModal));
+    mobileMenuToggle?.addEventListener('click', () => {
+      const isOpen = mobileMenuToggle.getAttribute('aria-expanded') === 'true';
+      setMobileMenu(!isOpen);
+    });
+    mobileMenuLinks.forEach((link) => link.addEventListener('click', () => setMobileMenu(false)));
     modal?.addEventListener('click', (event) => {
       if (event.target === modal) closeModal();
     });
     window.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') closeModal();
+      if (event.key === 'Escape') {
+        closeModal();
+        setMobileMenu(false);
+      }
     });
 
     tabs.forEach((tab) => {

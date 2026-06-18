@@ -5,16 +5,16 @@ import { navItems } from '../data/site';
 <div class="hidden border-b border-white/10 bg-navy text-[13px] text-white/70 md:block">
   <div class="container-premium flex items-center justify-between gap-5 py-2.5">
     <div class="flex items-center gap-3"><span class="signal-dot"></span><strong class="text-white">Instituto privado</strong> Santa Fe, CDMX</div>
-    <div>Neuropsiquiatría · Psiquiatría · Neuropsicología · Agenda concierge</div>
+    <div>Neuropsiquiatría · Psiquiatría · Neuropsicología · Chat médico</div>
   </div>
 </div>
 
 <header class="sticky top-0 z-50 border-b border-line/70 bg-ivory/80 backdrop-blur-2xl">
   <nav class="container-premium flex h-[84px] items-center justify-between gap-6">
-    <a href="#inicio" class="flex items-center gap-3.5" aria-label="NeuroCare Santa Fe inicio">
+    <a href="#inicio" class="flex items-center gap-3.5" aria-label="NeuroCare inicio">
       <span class="grid h-13 w-13 place-items-center rounded-[18px] bg-gradient-to-br from-navy to-teal font-black text-white shadow-[0_16px_38px_rgb(7_26_47_/_0.24)] ring-1 ring-champagne/35 ring-inset">NC</span>
       <span class="text-lg font-black tracking-[-0.04em] text-ink">
-        NeuroCare Santa Fe
+        NeuroCare
         <small class="mt-[-4px] block text-[11px] font-extrabold uppercase tracking-[0.12em] text-muted max-sm:hidden">Salud mental y cognitiva</small>
       </span>
     </a>
@@ -22,8 +22,28 @@ import { navItems } from '../data/site';
       {navItems.map((item) => <a class="transition hover:text-navy" href={item.href}>{item.label}</a>)}
     </div>
     <div class="flex items-center gap-3">
-      <a class="btn btn-secondary hidden lg:inline-flex" href="#seo">SEO médico</a>
-      <button class="btn btn-primary js-open-modal" type="button">Agendar cita</button>
+      <button class="btn btn-primary hidden sm:inline-flex js-open-modal" type="button">Agendar cita</button>
+      <button
+        class="js-mobile-menu-toggle grid h-12 w-12 place-items-center rounded-full border border-line bg-white/78 text-navy shadow-[0_12px_28px_rgb(7_26_47_/_0.08)] xl:hidden"
+        type="button"
+        aria-label="Abrir menú"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <span class="grid w-5 gap-1.5" aria-hidden="true">
+          <span class="mobile-menu-line h-0.5 rounded-full bg-navy transition"></span>
+          <span class="mobile-menu-line h-0.5 rounded-full bg-navy transition"></span>
+          <span class="mobile-menu-line h-0.5 rounded-full bg-navy transition"></span>
+        </span>
+      </button>
     </div>
   </nav>
+  <div id="mobile-menu" class="hidden border-t border-line/70 bg-ivory/95 xl:hidden">
+    <div class="container-premium grid gap-2 py-4">
+      {navItems.map((item) => (
+        <a class="js-mobile-menu-link rounded-2xl px-4 py-3 text-base font-extrabold text-[#43556c] transition hover:bg-white hover:text-navy" href={item.href}>{item.label}</a>
+      ))}
+      <button class="btn btn-primary js-open-modal js-mobile-menu-link mt-2 w-full" type="button">Agendar cita</button>
+    </div>
+  </div>
 </header>

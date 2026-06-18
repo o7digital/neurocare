@@ -4,7 +4,7 @@ export const navItems = [
   { label: 'Proceso', href: '#proceso' },
   { label: 'Equipo médico', href: '#equipo' },
   { label: 'Agenda', href: '#agenda' },
-  { label: 'SEO / Blog', href: '#seo' },
+  { label: 'Blog', href: '#blog' },
   { label: 'Contacto', href: '#contacto' },
 ];
 
@@ -28,10 +28,10 @@ export const experienceCards = [
       'Formación, cédula, enfoque clínico, idiomas, publicaciones y disponibilidad preparados para crecer con el equipo.',
   },
   {
-    title: 'SEO médico responsable',
-    icon: 'S',
+    title: 'Contenido médico claro',
+    icon: 'B',
     description:
-      'Páginas por especialidad y zona con lenguaje claro, validable y sin promesas clínicas excesivas.',
+      'Artículos educativos revisados por especialistas, con lenguaje humano y sin promesas clínicas.',
   },
 ];
 

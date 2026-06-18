@@ -1,0 +1,23 @@
+<section id="blog" class="section-premium">
+  <div class="container-premium">
+    <span class="eyebrow">Blog</span>
+    <h2 class="section-title">Contenido médico claro para pacientes y familias.</h2>
+    <p class="lead">
+      Un espacio editorial sobrio para explicar temas frecuentes de salud mental y cognitiva con lenguaje responsable, sin diagnóstico en línea.
+    </p>
+    <div class="mt-12 grid gap-5 lg:grid-cols-3">
+      {[
+        ['Salud cognitiva', 'Cuándo considerar una evaluación neuropsicológica', 'Señales administrativas para orientar una primera cita y preparar la información clínica relevante.'],
+        ['Psiquiatría clínica', 'Primera consulta: qué información llevar', 'Una guía sencilla para que pacientes y familias lleguen con dudas, antecedentes y expectativas claras.'],
+        ['Sueño y estrés', 'Cómo hablar de insomnio en consulta médica', 'Puntos útiles para describir hábitos, horarios, síntomas y contexto sin intentar autodiagnosticarse.'],
+      ].map(([category, title, text]) => (
+        <article class="reveal glass-card rounded-[32px] p-7">
+          <span class="mb-5 inline-flex rounded-full bg-[#effaf8] px-3 py-1.5 text-xs font-black uppercase tracking-[0.08em] text-teal">{category}</span>
+          <h3 class="mb-3 text-2xl font-black leading-tight text-ink">{title}</h3>
+          <p class="mb-6 text-muted">{text}</p>
+          <a class="font-black text-gold" href="#agenda">Solicitar orientación administrativa</a>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
