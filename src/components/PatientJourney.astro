@@ -1,0 +1,20 @@
+---
+import { journeySteps } from '../data/site';
+---
+
+<section id="proceso" class="section-premium bg-[radial-gradient(circle_at_20%_4%,rgb(88_209_201_/_0.16),transparent_320px),linear-gradient(180deg,#fff,#fbf8f1)]">
+  <div class="container-premium">
+    <span class="eyebrow">Proceso paciente</span>
+    <h2 class="section-title">Del primer clic a la cita confirmada, sin fricción.</h2>
+    <p class="lead">El paciente no se pierde. El sistema guia la solicitud y el equipo conserva el control médico y administrativo de la agenda.</p>
+    <div class="mt-12 grid gap-3 md:grid-cols-2 xl:grid-cols-5">
+      {journeySteps.map(([step, title, text]) => (
+        <article class="reveal glass-card min-h-60 rounded-[30px] p-5">
+          <div class="mb-7 grid h-11 w-11 place-items-center rounded-2xl bg-navy text-sm font-black text-champagne">{step}</div>
+          <h3 class="mb-2 text-xl font-black leading-tight text-ink">{title}</h3>
+          <p class="text-sm text-muted">{text}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

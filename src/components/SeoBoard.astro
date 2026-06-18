@@ -1,0 +1,25 @@
+---
+import { futureArchitecture, seoKeywords } from '../data/site';
+---
+
+<section id="seo" class="section-premium">
+  <div class="container-premium">
+    <span class="eyebrow">SEO y crecimiento</span>
+    <h2 class="section-title">Estructura pensada para atraer pacientes de alto valor.</h2>
+    <p class="lead">La estrategia debe posicionar con autoridad, educación y confianza médica, sin lenguaje agresivo ni promesas clínicas.</p>
+    <div class="mt-12 grid gap-5 lg:grid-cols-2">
+      <article class="reveal glass-card rounded-[36px] p-7">
+        <h3 class="mb-4 text-3xl font-black text-ink">Keywords iniciales</h3>
+        <div class="flex flex-wrap gap-2.5">
+          {seoKeywords.map((keyword) => <span class="rounded-full border border-line bg-white px-3.5 py-2.5 text-[13px] font-extrabold text-[#4a5f76]">{keyword}</span>)}
+        </div>
+      </article>
+      <article class="reveal glass-card rounded-[36px] p-7">
+        <h3 class="mb-4 text-3xl font-black text-ink">Arquitectura futura</h3>
+        <div class="grid gap-2.5">
+          {futureArchitecture.map((path) => <code class="rounded-2xl border border-line bg-cream px-4 py-3 text-sm font-bold text-navy">{path}</code>)}
+        </div>
+      </article>
+    </div>
+  </div>
+</section>

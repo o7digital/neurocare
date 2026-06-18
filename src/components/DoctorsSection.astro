@@ -1,0 +1,33 @@
+---
+import { doctors } from '../data/site';
+---
+
+<section id="equipo" class="section-premium">
+  <div class="container-premium">
+    <span class="eyebrow">Equipo médico</span>
+    <h2 class="section-title">Perfiles que transmiten autoridad sin parecer fríos.</h2>
+    <p class="lead">
+      Cada especialista tendría una página con formación, cédula profesional, hospitales, enfoque clínico, idiomas, publicaciones y horarios.
+    </p>
+    <div class="mt-12 grid gap-5 lg:grid-cols-3">
+      {doctors.map((doctor, index) => (
+        <article class="reveal glass-card rounded-[40px] p-4 transition hover:-translate-y-2 hover:shadow-premium">
+          <div class="relative h-[300px] overflow-hidden rounded-[30px] bg-gradient-to-br from-[#ede5d5] to-[#d9f3ef]">
+            <div class="absolute left-1/2 top-14 h-28 w-28 -translate-x-1/2 rounded-full bg-gradient-to-br from-[#ffebc4] to-white shadow-[0_18px_46px_rgb(7_26_47_/_0.10)]"></div>
+            <div class="absolute bottom-[-24px] left-1/2 h-[185px] w-[238px] -translate-x-1/2 rounded-t-[120px] bg-gradient-to-br from-navy-soft to-teal shadow-[0_-14px_40px_rgb(7_26_47_/_0.16)]"></div>
+            <div class="absolute right-5 top-5 rounded-full bg-white/80 px-3 py-1.5 text-xs font-black text-teal">Perfil {index + 1}</div>
+          </div>
+          <div class="p-5">
+            <h3 class="text-2xl font-black text-ink">{doctor.name}</h3>
+            <div class="my-2 font-black text-gold">{doctor.role}</div>
+            <p class="mb-5 text-muted">{doctor.focus}</p>
+            <div class="grid gap-2 text-sm font-bold text-[#42556c]">
+              {doctor.details.map((detail) => <span>{detail}</span>)}
+            </div>
+            <button class="btn btn-secondary js-open-modal mt-6 w-full" type="button">Agendar con este especialista</button>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

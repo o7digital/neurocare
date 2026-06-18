@@ -1,0 +1,60 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'NeuroCare Santa Fe | Salud mental y cognitiva premium',
+  description = 'Grupo privado de especialistas en neuropsiquiatría, psiquiatría clínica y neuropsicología en Santa Fe, CDMX. Agenda concierge y solicitud administrativa de cita.',
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://neurocare-santafe.mx');
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'MédicalClinic',
+  name: 'NeuroCare Santa Fe',
+  description,
+  médicalSpecialty: [
+    'Psychiatry',
+    'Neuropsychiatry',
+    'Neuropsychology',
+    'SleepMedicine',
+  ],
+  areaServed: 'Santa Fe, Ciudad de Mexico',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Santa Fe',
+    addressRegion: 'Ciudad de Mexico',
+    addressCountry: 'MX',
+  },
+  availableLanguage: ['es-MX', 'en'],
+  url: canonical.toString(),
+};
+---
+
+<!doctype html>
+<html lang="es-MX" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_MX" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="NeuroCare Santa Fe" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#071A2F" />
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </head>
+  <body class="min-h-screen overflow-x-hidden bg-ivory text-ink antialiased">
+    <slot />
+  </body>
+</html>

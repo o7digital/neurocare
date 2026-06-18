@@ -1,0 +1,46 @@
+<section id="agenda" class="relative overflow-hidden bg-navy py-28 text-white">
+  <div class="absolute inset-0 bg-[radial-gradient(circle_at_15%_25%,rgb(227_201_142_/_0.18),transparent_360px),radial-gradient(circle_at_90%_18%,rgb(88_209_201_/_0.18),transparent_360px)]"></div>
+  <div class="container-premium">
+    <div class="reveal grid gap-9 rounded-[52px] border border-white/14 bg-white/[0.08] p-8 shadow-[0_36px_100px_rgb(0_0_0_/_0.28)] backdrop-blur-xl lg:grid-cols-[0.9fr_1.1fr] max-sm:rounded-[34px] max-sm:p-5">
+      <div>
+        <span class="eyebrow">Agenda concierge</span>
+        <h2 class="my-4 text-[42px] font-black leading-[0.95] md:text-7xl">Solicitud de cita con experiencia premium.</h2>
+        <p class="text-lg text-white/72">
+          Se puede conectar con WhatsApp Business, Calendly, Google Calendar, CRM médico u Olivia AI como recepción automatizada.
+        </p>
+        <div class="mt-8 grid gap-3.5">
+          {[
+            ['Primera vez', 'Formulario de orientación y confirmación por recepción.'],
+            ['Seguimiento', 'Agenda por médico, modalidad y disponibilidad.'],
+            ['Evaluaciónes', 'Solicitud con requisitos previos y duración estimada.'],
+          ].map(([title, text]) => (
+            <div class="rounded-3xl border border-white/12 bg-white/[0.08] p-4">
+              <b class="block">{title}</b>
+              <span class="text-sm text-white/62">{text}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+      <form class="rounded-[40px] bg-white p-7 text-ink shadow-[0_30px_80px_rgb(0_0_0_/_0.28)] max-sm:rounded-[30px] max-sm:p-5" id="appointment-form">
+        <div class="mb-6 flex items-start justify-between gap-4">
+          <h3 class="text-3xl font-black leading-none">Preconsulta administrativa</h3>
+          <span class="rounded-full bg-[#effaf8] px-3 py-2 text-[11px] font-black uppercase tracking-[0.08em] text-teal">Privado</span>
+        </div>
+        <div class="grid gap-3.5 sm:grid-cols-2">
+          <label class="grid gap-2 text-[13px] font-extrabold text-[#445970]">Nombre completo<input required placeholder="Nombre del paciente" class="rounded-[18px] border border-[#e1d8c8] bg-[#fcfaf6] p-3.5 outline-none focus:border-teal focus:bg-white focus:ring-4 focus:ring-teal/10" /></label>
+          <label class="grid gap-2 text-[13px] font-extrabold text-[#445970]">WhatsApp<input required placeholder="+52..." class="rounded-[18px] border border-[#e1d8c8] bg-[#fcfaf6] p-3.5 outline-none focus:border-teal focus:bg-white focus:ring-4 focus:ring-teal/10" /></label>
+          <label class="grid gap-2 text-[13px] font-extrabold text-[#445970]">Email<input type="email" required placeholder="correo@dominio.com" class="rounded-[18px] border border-[#e1d8c8] bg-[#fcfaf6] p-3.5 outline-none focus:border-teal focus:bg-white focus:ring-4 focus:ring-teal/10" /></label>
+          <label class="grid gap-2 text-[13px] font-extrabold text-[#445970]">Especialidad<select required class="rounded-[18px] border border-[#e1d8c8] bg-[#fcfaf6] p-3.5 outline-none focus:border-teal focus:bg-white focus:ring-4 focus:ring-teal/10"><option value="">Seleccionar</option><option>Neuropsiquiatría</option><option>Psiquiatría clínica</option><option>Neuropsicología</option><option>Medicina del sueño</option><option>TDAH en adultos</option></select></label>
+          <label class="grid gap-2 text-[13px] font-extrabold text-[#445970]">Tipo de cita<select required class="rounded-[18px] border border-[#e1d8c8] bg-[#fcfaf6] p-3.5 outline-none focus:border-teal focus:bg-white focus:ring-4 focus:ring-teal/10"><option value="">Seleccionar</option><option>Primera vez presencial</option><option>Seguimiento presencial</option><option>Teleconsulta de seguimiento</option><option>Evaluación neuropsicológica</option></select></label>
+          <label class="grid gap-2 text-[13px] font-extrabold text-[#445970]">Paciente<select class="rounded-[18px] border border-[#e1d8c8] bg-[#fcfaf6] p-3.5 outline-none focus:border-teal focus:bg-white focus:ring-4 focus:ring-teal/10"><option>Adulto</option><option>Adolescente</option><option>Familiar / cuidador</option></select></label>
+          <label class="grid gap-2 text-[13px] font-extrabold text-[#445970] sm:col-span-2">Horario preferido<select class="rounded-[18px] border border-[#e1d8c8] bg-[#fcfaf6] p-3.5 outline-none focus:border-teal focus:bg-white focus:ring-4 focus:ring-teal/10"><option>Primer horario disponible</option><option>Mañana</option><option>Mediodia</option><option>Tarde</option></select></label>
+          <label class="grid gap-2 text-[13px] font-extrabold text-[#445970] sm:col-span-2">Motivo de consulta<textarea placeholder="Ej. memoria, ansiedad, depresión, sueño, TDAH, segunda opinión, seguimiento..." class="min-h-28 resize-y rounded-[18px] border border-[#e1d8c8] bg-[#fcfaf6] p-3.5 outline-none focus:border-teal focus:bg-white focus:ring-4 focus:ring-teal/10"></textarea></label>
+          <label class="flex items-start gap-3 text-xs font-bold text-muted sm:col-span-2"><input required type="checkbox" class="mt-1 h-4 w-4 accent-teal" /> Acepto el aviso de privacidad y entiendo que este formulario es únicamente para solicitar disponibilidad de cita.</label>
+        </div>
+        <button class="btn btn-primary mt-4 w-full" type="submit">Solicitar disponibilidad</button>
+        <p class="mt-3 text-xs text-muted">Este formulario es únicamente para solicitar disponibilidad de cita. No debe utilizarse para emergencias médicas.</p>
+        <div class="mt-4 hidden rounded-[18px] border border-teal/20 bg-[#effaf8] p-3.5 font-black text-teal" id="success-message">Solicitud demo registrada. En producción se enviaria al equipo administrativo.</div>
+      </form>
+    </div>
+  </div>
+</section>

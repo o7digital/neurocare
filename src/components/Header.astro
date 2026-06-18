@@ -1,0 +1,29 @@
+---
+import { navItems } from '../data/site';
+---
+
+<div class="hidden border-b border-white/10 bg-navy text-[13px] text-white/70 md:block">
+  <div class="container-premium flex items-center justify-between gap-5 py-2.5">
+    <div class="flex items-center gap-3"><span class="signal-dot"></span><strong class="text-white">Instituto privado</strong> Santa Fe, CDMX</div>
+    <div>Neuropsiquiatría · Psiquiatría · Neuropsicología · Agenda concierge</div>
+  </div>
+</div>
+
+<header class="sticky top-0 z-50 border-b border-line/70 bg-ivory/80 backdrop-blur-2xl">
+  <nav class="container-premium flex h-[84px] items-center justify-between gap-6">
+    <a href="#inicio" class="flex items-center gap-3.5" aria-label="NeuroCare Santa Fe inicio">
+      <span class="grid h-13 w-13 place-items-center rounded-[18px] bg-gradient-to-br from-navy to-teal font-black text-white shadow-[0_16px_38px_rgb(7_26_47_/_0.24)] ring-1 ring-champagne/35 ring-inset">NC</span>
+      <span class="text-lg font-black tracking-[-0.04em] text-ink">
+        NeuroCare Santa Fe
+        <small class="mt-[-4px] block text-[11px] font-extrabold uppercase tracking-[0.12em] text-muted max-sm:hidden">Salud mental y cognitiva</small>
+      </span>
+    </a>
+    <div class="hidden items-center gap-6 text-sm font-extrabold text-[#43556c] xl:flex">
+      {navItems.map((item) => <a class="transition hover:text-navy" href={item.href}>{item.label}</a>)}
+    </div>
+    <div class="flex items-center gap-3">
+      <a class="btn btn-secondary hidden lg:inline-flex" href="#seo">SEO médico</a>
+      <button class="btn btn-primary js-open-modal" type="button">Agendar cita</button>
+    </div>
+  </nav>
+</header>
