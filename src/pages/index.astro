@@ -18,10 +18,10 @@ import { specialties } from '../data/site';
     <Hero />
     <div class="overflow-hidden border-y border-line bg-white/42 backdrop-blur-xl">
       <div class="flex w-max animate-[marquee_32s_linear_infinite] gap-9 whitespace-nowrap py-4 text-xs font-black uppercase tracking-[0.12em] text-[#506278]">
-        {['Neuropsiquiatría', 'Psiquiatría clínica', 'Neuropsicología', 'Medicina del sueño', 'TDAH adultos', 'Ansiedad y depresión', 'Santa Fe CDMX', 'Chat médico'].map((item) => (
+        {['Neuromodulación', 'TMS', 'tDCS', 'Neuropsiquiatría', 'Psiquiatría clínica', 'Neuropsicología', 'Medicina del sueño', 'Santa Fe CDMX'].map((item) => (
           <span class="before:mr-9 before:text-gold before:content-['✦']">{item}</span>
         ))}
-        {['Neuropsiquiatría', 'Psiquiatría clínica', 'Neuropsicología', 'Medicina del sueño', 'TDAH adultos', 'Ansiedad y depresión', 'Santa Fe CDMX', 'Chat médico'].map((item) => (
+        {['Neuromodulación', 'TMS', 'tDCS', 'Neuropsiquiatría', 'Psiquiatría clínica', 'Neuropsicología', 'Medicina del sueño', 'Santa Fe CDMX'].map((item) => (
           <span class="before:mr-9 before:text-gold before:content-['✦']">{item}</span>
         ))}
       </div>
@@ -36,7 +36,7 @@ import { specialties } from '../data/site';
   <Footer />
 
   <div class="fixed bottom-6 right-6 z-[60] flex items-center gap-2 rounded-full border border-line bg-white p-2 shadow-[0_20px_56px_rgb(7_26_47_/_0.18)] max-sm:left-3.5 max-sm:right-3.5 max-sm:justify-between">
-    <span class="grid h-11 w-11 place-items-center rounded-full bg-[#effaf8] text-xl font-black text-teal">NC</span>
+    <span class="grid h-11 w-11 place-items-center rounded-full bg-[#effaf8] text-xl font-black text-teal">ND</span>
     <button class="btn btn-primary js-open-modal" type="button">Chat médico</button>
   </div>
 
@@ -45,7 +45,7 @@ import { specialties } from '../data/site';
       <div class="bg-gradient-to-br from-navy to-teal p-5 text-white">
         <button class="js-close-modal absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full border border-white/20 bg-white/10 text-2xl" type="button" aria-label="Cerrar chat">×</button>
         <span class="mb-4 inline-flex rounded-full bg-white/12 px-3 py-1 text-xs font-black uppercase tracking-[0.08em] text-white/78">Demo chat</span>
-        <h2 id="modal-title" class="pr-12 text-3xl font-black leading-none">Hola, soy NeuroCare.</h2>
+        <h2 id="modal-title" class="pr-12 text-3xl font-black leading-none">Hola, soy Neurodigital.</h2>
         <p class="mt-3 max-w-sm text-sm text-white/74">Puedo ayudarte a elegir un servicio y enviar una solicitud administrativa de cita. No hago diagnósticos ni atiendo urgencias.</p>
       </div>
       <div class="grid gap-4 bg-ivory p-5">

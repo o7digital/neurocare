@@ -37,6 +37,17 @@ export const experienceCards = [
 
 export const specialties = [
   {
+    title: 'Neuromodulación',
+    slug: '/especialidades/neuromodulacion',
+    summary:
+      'Evaluación médica y tratamientos de estimulación cerebral no invasiva, indicados de forma personalizada y con seguimiento clínico especializado.',
+    bullets: [
+      'Estimulación magnética transcraneal (EMT/TMS)',
+      'Estimulación transcraneal por corriente directa (tDCS)',
+      'Valoración de elegibilidad y seguimiento clínico',
+    ],
+  },
+  {
     title: 'Neuropsiquiatría',
     slug: '/especialidades/neuropsiquiatria',
     summary:
@@ -105,7 +116,7 @@ export const specialties = [
 ];
 
 export const journeySteps = [
-  ['01', 'Motivo de consulta', 'El paciente indica si busca neuropsiquiatría, psiquiatría, evaluación, sueño o segunda opinión.'],
+  ['01', 'Motivo de consulta', 'El paciente indica si busca neuromodulación, neuropsiquiatría, psiquiatría, evaluación, sueño o segunda opinión.'],
   ['02', 'Filtro administrativo', 'Se recopilan datos básicos, edad, modalidad, disponibilidad y preferencia de especialista.'],
   ['03', 'Orientación interna', 'El equipo puede asignar el médico más adecuado según especialidad, agenda y tipo de caso.'],
   ['04', 'Confirmación humana', 'Recepción confirma por WhatsApp o email con indicaciones y políticas de cancelación.'],
@@ -134,6 +145,10 @@ export const doctors = [
 ];
 
 export const seoKeywords = [
+  'neuromodulación CDMX',
+  'estimulación magnética transcraneal CDMX',
+  'TMS en Santa Fe',
+  'tDCS CDMX',
   'neuropsiquiatra en Santa Fe',
   'psiquiatra en Santa Fe CDMX',
   'evaluación neuropsicológica CDMX',
@@ -147,6 +162,7 @@ export const seoKeywords = [
 ];
 
 export const futureArchitecture = [
+  '/especialidades/neuromodulacion',
   '/especialidades/neuropsiquiatria',
   '/especialidades/psiquiatria-clinica',
   '/especialidades/neuropsicologia',
