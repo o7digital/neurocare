@@ -10,43 +10,32 @@ export const navItems = [
 
 export const experienceCards = [
   {
-    title: 'Agenda por especialidad',
+    title: 'Orientación por especialidad',
     icon: 'A',
     description:
-      'Flujos por servicio, modalidad, duración y requisitos administrativos para ordenar la demanda desde el primer contacto.',
+      'Identificamos el servicio y el especialista adecuados según el motivo de consulta y las necesidades del paciente.',
   },
   {
-    title: 'Preconsulta administrativa',
+    title: 'Valoración responsable',
     icon: 'P',
     description:
-      'Solicitud breve y privada para orientar al equipo antes de confirmar una cita, sin diagnóstico en línea.',
+      'La atención comienza con una evaluación clínica cuidadosa antes de indicar cualquier tratamiento o procedimiento.',
   },
   {
-    title: 'Perfiles médicos premium',
+    title: 'Equipo especializado',
     icon: 'M',
     description:
-      'Formación, cédula, enfoque clínico, idiomas, publicaciones y disponibilidad preparados para crecer con el equipo.',
+      'Profesionales de distintas áreas trabajan de forma coordinada para ofrecer una atención integral y personalizada.',
   },
   {
-    title: 'Contenido médico claro',
+    title: 'Seguimiento continuo',
     icon: 'B',
     description:
-      'Artículos educativos revisados por especialistas, con lenguaje humano y sin promesas clínicas.',
+      'Acompañamos la evolución del paciente y ajustamos el plan de atención según su respuesta clínica.',
   },
 ];
 
 export const specialties = [
-  {
-    title: 'Neuromodulación',
-    slug: '/especialidades/neuromodulacion',
-    summary:
-      'Evaluación médica y tratamientos de estimulación cerebral no invasiva, indicados de forma personalizada y con seguimiento clínico especializado.',
-    bullets: [
-      'Estimulación magnética transcraneal (EMT/TMS)',
-      'Estimulación transcraneal por corriente directa (tDCS)',
-      'Valoración de elegibilidad y seguimiento clínico',
-    ],
-  },
   {
     title: 'Neuropsiquiatría',
     slug: '/especialidades/neuropsiquiatria',
@@ -113,10 +102,21 @@ export const specialties = [
       'Coordinación con psicoterapia cuando aplica',
     ],
   },
+  {
+    title: 'Neuromodulación',
+    slug: '/especialidades/neuromodulacion',
+    summary:
+      'Tecnología de estimulación cerebral no invasiva que puede integrarse al plan de atención cuando la valoración médica especializada así lo indica.',
+    bullets: [
+      'Estimulación magnética transcraneal (EMT/TMS)',
+      'Estimulación transcraneal por corriente directa (tDCS)',
+      'Valoración de elegibilidad y seguimiento clínico',
+    ],
+  },
 ];
 
 export const journeySteps = [
-  ['01', 'Motivo de consulta', 'El paciente indica si busca neuromodulación, neuropsiquiatría, psiquiatría, evaluación, sueño o segunda opinión.'],
+  ['01', 'Motivo de consulta', 'El paciente comparte sus necesidades para orientarlo hacia la valoración médica o especialidad más adecuada.'],
   ['02', 'Filtro administrativo', 'Se recopilan datos básicos, edad, modalidad, disponibilidad y preferencia de especialista.'],
   ['03', 'Orientación interna', 'El equipo puede asignar el médico más adecuado según especialidad, agenda y tipo de caso.'],
   ['04', 'Confirmación humana', 'Recepción confirma por WhatsApp o email con indicaciones y políticas de cancelación.'],
