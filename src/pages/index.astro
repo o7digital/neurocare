@@ -1,169 +1,24 @@
 ---
-import AppointmentForm from '../components/AppointmentForm.astro';
-import BlogSection from '../components/BlogSection.astro';
-import DoctorsSection from '../components/DoctorsSection.astro';
-import ExperienceSection from '../components/ExperienceSection.astro';
-import Footer from '../components/Footer.astro';
-import Header from '../components/Header.astro';
-import Hero from '../components/Hero.astro';
-import PatientJourney from '../components/PatientJourney.astro';
-import SpecialtiesTabs from '../components/SpecialtiesTabs.astro';
 import Layout from '../layouts/Layout.astro';
-import { specialties } from '../data/site';
 ---
 
-<Layout>
-  <Header />
-  <main>
-    <Hero />
-    <div class="overflow-hidden border-y border-line bg-white/42 backdrop-blur-xl">
-      <div class="flex w-max animate-[marquee_32s_linear_infinite] gap-9 whitespace-nowrap py-4 text-xs font-black uppercase tracking-[0.12em] text-[#506278]">
-        {['Atención médica', 'Neuropsiquiatría', 'Psiquiatría clínica', 'Neuropsicología', 'Medicina del sueño', 'Neuromodulación', 'TMS · tDCS', 'Santa Fe CDMX'].map((item) => (
-          <span class="before:mr-9 before:text-gold before:content-['✦']">{item}</span>
-        ))}
-        {['Atención médica', 'Neuropsiquiatría', 'Psiquiatría clínica', 'Neuropsicología', 'Medicina del sueño', 'Neuromodulación', 'TMS · tDCS', 'Santa Fe CDMX'].map((item) => (
-          <span class="before:mr-9 before:text-gold before:content-['✦']">{item}</span>
-        ))}
+<Layout
+  title="Neurodigital | Sitio en construccion"
+  description="El sitio de Neurodigital se encuentra en construccion."
+>
+  <main class="grid min-h-screen place-items-center px-6 py-12">
+    <section class="mx-auto grid w-full max-w-3xl gap-8 text-center">
+      <div class="mx-auto grid h-20 w-20 place-items-center rounded-full border border-line bg-white text-2xl font-black text-teal shadow-soft">
+        ND
       </div>
-    </div>
-    <ExperienceSection />
-    <SpecialtiesTabs />
-    <PatientJourney />
-    <DoctorsSection />
-    <AppointmentForm />
-    <BlogSection />
+
+      <div class="grid gap-5">
+        <p class="text-sm font-black uppercase tracking-[0.18em] text-gold">Neurodigital</p>
+        <h1 class="text-5xl font-black leading-none text-navy sm:text-7xl">Sitio en construccion</h1>
+        <p class="mx-auto max-w-xl text-lg text-muted sm:text-xl">
+          Estamos actualizando nuestra presencia digital. Muy pronto volveremos con una nueva experiencia.
+        </p>
+      </div>
+    </section>
   </main>
-  <Footer />
-
-  <div class="fixed bottom-6 right-6 z-[60] flex items-center gap-2 rounded-full border border-line bg-white p-2 shadow-[0_20px_56px_rgb(7_26_47_/_0.18)] max-sm:left-3.5 max-sm:right-3.5 max-sm:justify-between">
-    <span class="grid h-11 w-11 place-items-center rounded-full bg-[#effaf8] text-xl font-black text-teal">ND</span>
-    <button class="btn btn-primary js-open-modal" type="button">Chat médico</button>
-  </div>
-
-  <div class="fixed inset-0 z-[90] hidden items-end justify-end bg-[#061526]/35 p-6 backdrop-blur-md max-sm:p-3" id="agenda-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-    <div class="relative w-full max-w-[440px] overflow-hidden rounded-[32px] border border-white/80 bg-white shadow-[0_34px_100px_rgb(0_0_0_/_0.28)]">
-      <div class="bg-gradient-to-br from-navy to-teal p-5 text-white">
-        <button class="js-close-modal absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full border border-white/20 bg-white/10 text-2xl" type="button" aria-label="Cerrar chat">×</button>
-        <span class="mb-4 inline-flex rounded-full bg-white/12 px-3 py-1 text-xs font-black uppercase tracking-[0.08em] text-white/78">Demo chat</span>
-        <h2 id="modal-title" class="pr-12 text-3xl font-black leading-none">Hola, soy Neurodigital.</h2>
-        <p class="mt-3 max-w-sm text-sm text-white/74">Puedo ayudarte a elegir un servicio y enviar una solicitud administrativa de cita. No hago diagnósticos ni atiendo urgencias.</p>
-      </div>
-      <div class="grid gap-4 bg-ivory p-5">
-        <div class="max-w-[86%] rounded-[22px] rounded-tl-md border border-line bg-white p-4 text-sm text-muted">
-          ¿Qué tipo de atención buscas?
-        </div>
-        <div class="grid gap-2">
-          {specialties.map((service) => (
-            <a class="rounded-2xl border border-line bg-white px-4 py-3 text-sm font-black text-navy transition hover:border-teal hover:text-teal" href="#agenda">
-              {service.title}
-            </a>
-          ))}
-        </div>
-        <div class="ml-auto max-w-[88%] rounded-[22px] rounded-tr-md bg-[#effaf8] p-4 text-sm font-bold text-teal">
-          Después de elegir un servicio, el equipo confirma disponibilidad por WhatsApp o email.
-        </div>
-        <a class="btn btn-primary js-close-modal w-full" href="#agenda">Continuar a solicitud de cita</a>
-        <p class="text-center text-xs text-muted">Demo visual. No usar para emergencias médicas.</p>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    const modal = document.getElementById('agenda-modal');
-    const openButtons = document.querySelectorAll('.js-open-modal');
-    const closeButtons = document.querySelectorAll('.js-close-modal');
-    const tabs = document.querySelectorAll('.specialty-tab');
-    const panels = document.querySelectorAll('.specialty-panel');
-    const form = document.getElementById('appointment-form');
-    const successMessage = document.getElementById('success-message');
-    const mobileMenu = document.getElementById('mobile-menu');
-    const mobileMenuToggle = document.querySelector('.js-mobile-menu-toggle');
-    const mobileMenuLinks = document.querySelectorAll('.js-mobile-menu-link');
-    const mobileMenuLines = document.querySelectorAll('.mobile-menu-line');
-
-    const openModal = () => {
-      modal?.classList.remove('hidden');
-      modal?.classList.add('flex');
-    };
-
-    const closeModal = () => {
-      modal?.classList.add('hidden');
-      modal?.classList.remove('flex');
-    };
-
-    const setMobileMenu = (isOpen) => {
-      mobileMenu?.classList.toggle('hidden', !isOpen);
-      mobileMenuToggle?.setAttribute('aria-expanded', String(isOpen));
-      mobileMenuToggle?.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
-      mobileMenuLines[0]?.classList.toggle('translate-y-2', isOpen);
-      mobileMenuLines[0]?.classList.toggle('rotate-45', isOpen);
-      mobileMenuLines[1]?.classList.toggle('opacity-0', isOpen);
-      mobileMenuLines[2]?.classList.toggle('-translate-y-2', isOpen);
-      mobileMenuLines[2]?.classList.toggle('-rotate-45', isOpen);
-    };
-
-    openButtons.forEach((button) => button.addEventListener('click', openModal));
-    closeButtons.forEach((button) => button.addEventListener('click', closeModal));
-    mobileMenuToggle?.addEventListener('click', () => {
-      const isOpen = mobileMenuToggle.getAttribute('aria-expanded') === 'true';
-      setMobileMenu(!isOpen);
-    });
-    mobileMenuLinks.forEach((link) => link.addEventListener('click', () => setMobileMenu(false)));
-    modal?.addEventListener('click', (event) => {
-      if (event.target === modal) closeModal();
-    });
-    window.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') {
-        closeModal();
-        setMobileMenu(false);
-      }
-    });
-
-    tabs.forEach((tab) => {
-      tab.addEventListener('click', () => {
-        const activeIndex = tab.getAttribute('data-tab');
-        tabs.forEach((item) => {
-          const isActive = item.getAttribute('data-tab') === activeIndex;
-          item.classList.toggle('active', isActive);
-          item.classList.toggle('border-champagne/35', isActive);
-          item.classList.toggle('bg-gradient-to-br', isActive);
-          item.classList.toggle('from-teal/45', isActive);
-          item.classList.toggle('to-gold/20', isActive);
-          item.setAttribute('aria-selected', String(isActive));
-        });
-        panels.forEach((panel) => {
-          const isActive = panel.getAttribute('data-panel') === activeIndex;
-          panel.classList.toggle('hidden', !isActive);
-          panel.classList.toggle('grid', isActive);
-        });
-      });
-    });
-
-    form?.addEventListener('submit', (event) => {
-      event.preventDefault();
-      successMessage?.classList.remove('hidden');
-      successMessage?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    });
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('show');
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.13 },
-    );
-    document.querySelectorAll('.reveal').forEach((element) => observer.observe(element));
-  </script>
-
-  <style>
-    @keyframes marquee {
-      to {
-        transform: translateX(-50%);
-      }
-    }
-  </style>
 </Layout>
