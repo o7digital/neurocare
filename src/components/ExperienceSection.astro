@@ -6,7 +6,13 @@ import { doctorProfile, profileFields } from '../data/site';
   <div class="container-premium grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr]">
     <div class="reveal relative min-h-[560px] overflow-hidden rounded-[44px] bg-gradient-to-br from-cream via-white to-[#e8f7f4] p-5 shadow-premium">
       <div class="absolute inset-8 rounded-[38px] border border-line/70"></div>
-      <div class="doctor-portrait doctor-portrait-light absolute bottom-0 left-1/2 h-[82%] w-[72%] -translate-x-1/2"></div>
+      <img
+        class="absolute inset-5 h-[calc(100%-40px)] w-[calc(100%-40px)] rounded-[38px] object-cover object-center"
+        src={doctorProfile.avatar}
+        alt={`Retrato de ${doctorProfile.fullName}`}
+        loading="lazy"
+      />
+      <div class="absolute inset-5 rounded-[38px] bg-gradient-to-t from-navy/45 via-transparent to-transparent"></div>
       <div class="absolute bottom-7 left-7 right-7 rounded-[28px] border border-line bg-white/82 p-5 shadow-soft backdrop-blur-xl">
         <b class="block text-xl text-ink">{doctorProfile.fullName}</b>
         <span class="text-sm font-bold text-muted">{doctorProfile.specialty} · {doctorProfile.location}</span>

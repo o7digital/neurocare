@@ -1,5 +1,5 @@
 ---
-import { doctorProfile } from '../data/site';
+import { doctorProfile, services } from '../data/site';
 ---
 
 <section id="agenda" class="relative overflow-hidden bg-navy py-24 text-white">
@@ -16,12 +16,17 @@ import { doctorProfile } from '../data/site';
       <h3 class="mb-5 text-3xl font-black leading-none">Consulta privada</h3>
       <div class="grid gap-3">
         <a class="btn btn-primary w-full" href={doctorProfile.doctoraliaUrl}>Agendar en Doctoralia</a>
-        <a class="btn btn-secondary w-full" href={doctorProfile.whatsappUrl}>WhatsApp</a>
         <a class="btn btn-secondary w-full" href={doctorProfile.phoneHref}>{doctorProfile.phoneLabel}</a>
+        <a class="btn btn-secondary w-full" href={doctorProfile.secondaryPhoneHref}>{doctorProfile.secondaryPhoneLabel}</a>
       </div>
       <div class="mt-6 rounded-[24px] border border-line bg-cream p-4">
         <b class="block">{doctorProfile.fullName}</b>
         <span class="text-sm font-bold text-muted">{doctorProfile.specialty} · {doctorProfile.shortLocation}</span>
+      </div>
+      <div class="mt-4 grid gap-2">
+        {services.map((service) => (
+          <span class="rounded-2xl border border-line bg-white px-3.5 py-2 text-sm font-bold text-muted">{service}</span>
+        ))}
       </div>
     </div>
   </div>

@@ -19,9 +19,12 @@ const schema = {
   name: doctorProfile.fullName,
   description,
   medicalSpecialty: 'Psychiatry',
+  image: new URL(doctorProfile.avatar, canonical).toString(),
+  telephone: doctorProfile.phoneLabel,
   areaServed: 'San Angel, Ciudad de Mexico',
   address: {
     '@type': 'PostalAddress',
+    streetAddress: doctorProfile.address,
     addressLocality: 'San Angel',
     addressRegion: 'Ciudad de Mexico',
     addressCountry: 'MX',

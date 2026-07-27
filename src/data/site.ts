@@ -1,16 +1,21 @@
 export const doctorProfile = {
-  fullName: 'Dra. Nombre y Apellidos',
-  firstName: 'Nombre',
-  monogram: 'Dra.',
-  specialty: 'Medica Psiquiatra',
+  fullName: 'Dra. Ariadna Montserrat Mondragon Medellin',
+  firstName: 'Ariadna',
+  monogram: 'AM',
+  specialty: 'Psiquiatra · Medica general',
   location: 'San Angel · Ciudad de Mexico',
   shortLocation: 'San Angel, CDMX',
-  license: 'Cedula profesional por confirmar',
-  doctoraliaUrl: '#agenda',
-  whatsappUrl: 'https://wa.me/525500000000',
-  phoneLabel: '+52 55 0000 0000',
-  phoneHref: 'tel:+525500000000',
-  onlineCareNote: 'Presencial y en linea, sujeto a confirmacion de la doctora',
+  address: 'Calle Cracovia 72, Edi Torre A, Oficina 216, San Angel, Alvaro Obregon, 01000',
+  license: 'Cedulas profesionales: 12575520 · 14609330',
+  doctoraliaUrl: 'https://www.doctoralia.com.mx/perfil/ariadna-montserrat-mondragon-medellin',
+  whatsappUrl: 'https://www.doctoralia.com.mx/perfil/ariadna-montserrat-mondragon-medellin',
+  phoneLabel: '55 7191 9515',
+  phoneHref: 'tel:+525571919515',
+  secondaryPhoneLabel: '55 5616 2095',
+  secondaryPhoneHref: 'tel:+525556162095',
+  portrait: '/dra-ariadna-mondragon.jpg',
+  avatar: '/dra-ariadna-mondragon-avatar.jpg',
+  onlineCareNote: 'Consulta presencial y videoconsulta disponibles en Doctoralia',
 };
 
 export const navItems = [
@@ -32,19 +37,20 @@ export const trustItems = [
 ];
 
 export const profileFields = [
-  ['Nombre completo', 'Por confirmar'],
+  ['Nombre completo', doctorProfile.fullName],
   ['Especialidad', doctorProfile.specialty],
-  ['Formacion academica', 'Por confirmar'],
-  ['Cedula profesional', 'Por confirmar'],
-  ['Certificaciones', 'Por confirmar'],
-  ['Experiencia', 'Por confirmar'],
-  ['Idiomas', 'Por confirmar'],
-  ['Asociaciones profesionales', 'Por confirmar'],
+  ['Alta especialidad', 'Neuropsiquiatria, INNN Manuel Velasco Suarez (2024-2025)'],
+  ['Especialidad', 'Psiquiatria, INNN Manuel Velasco Suarez (2020-2024)'],
+  ['Formacion medica', 'Medico Cirujano, Universidad Nacional Autonoma de Mexico (2019)'],
+  ['Cedulas profesionales', '12575520 · 14609330'],
+  ['Idiomas', 'Espanol · Ingles'],
+  ['Consulta', 'Presencial en San Angel y consulta en linea'],
+  ['Pacientes', 'Adultos y ninos, segun disponibilidad indicada en Doctoralia'],
 ];
 
 export const careAreas = [
   {
-    title: 'Ansiedad',
+    title: 'Trastorno de ansiedad generalizada',
     description:
       'Valoracion psiquiatrica para comprender sintomas de ansiedad, su contexto y las opciones de tratamiento adecuadas.',
     icon: 'wave',
@@ -56,21 +62,21 @@ export const careAreas = [
     icon: 'circle',
   },
   {
-    title: 'Estres y crisis emocionales',
+    title: 'TDAH',
     description:
-      'Atencion para momentos de sobrecarga, crisis vitales o sintomas emocionales que requieren claridad clinica.',
+      'Evaluacion cuidadosa de atencion, hiperactividad, impulsividad, historia clinica y funcionamiento cotidiano.',
     icon: 'spark',
   },
   {
-    title: 'Trastornos del sueno',
+    title: 'Trastorno del espectro autista',
     description:
-      'Revision responsable de habitos, sintomas, horarios y factores medicos o emocionales relacionados con el descanso.',
+      'Abordaje psiquiatrico integral cuando hay necesidades clinicas, emocionales o conductuales asociadas.',
     icon: 'moon',
   },
   {
-    title: 'TDAH en adultos',
+    title: 'Fibromialgia',
     description:
-      'Evaluacion cuidadosa de atencion, organizacion, impulsividad e historia clinica antes de definir recomendaciones.',
+      'Valoracion de sintomas, impacto funcional y relacion con salud mental para orientar un plan medico responsable.',
     icon: 'focus',
   },
   {
@@ -88,9 +94,9 @@ export const approachCards = [
       'La consulta inicia con una conversacion cuidadosa para entender sintomas, historia, contexto y prioridades.',
   },
   {
-    title: 'Ciencia y criterio medico',
+    title: 'Neuropsiquiatria basada en evidencia',
     description:
-      'Las decisiones se apoyan en evaluacion clinica, medicina basada en evidencia y explicaciones claras.',
+      'Su formacion integra psiquiatria y neuropsiquiatria para valorar salud mental, sintomas neurologicos y bienestar general.',
   },
   {
     title: 'Plan personalizado',
@@ -100,7 +106,7 @@ export const approachCards = [
 ];
 
 export const firstConsultationSteps = [
-  ['01', 'Agenda', 'Solicita disponibilidad en Doctoralia, WhatsApp o telefono.'],
+  ['01', 'Agenda', 'Solicita disponibilidad directamente en Doctoralia o por telefono.'],
   ['02', 'Primera valoracion', 'La doctora revisa el motivo de consulta, antecedentes y necesidades actuales.'],
   ['03', 'Plan de tratamiento', 'Recibiras una explicacion medica clara y los siguientes pasos propuestos.'],
   ['04', 'Seguimiento', 'Las consultas posteriores permiten ajustar el plan segun evolucion y respuesta.'],
@@ -120,9 +126,18 @@ export const articles = [
       'Una guia clara para llegar con dudas, antecedentes y expectativas sin sentir que debes tener todo resuelto.',
   },
   {
-    category: 'Sueno',
-    title: 'Insomnio, salud mental y tratamiento medico',
+    category: 'Neuropsiquiatria',
+    title: 'Que es la neuropsiquiatria y cuando puede ayudar',
     description:
-      'Como describir tus sintomas de sueno y por que una evaluacion integral puede orientar mejor el tratamiento.',
+      'Una mirada integral para entender sintomas emocionales, cognitivos y neurologicos dentro de una valoracion medica.',
   },
+];
+
+export const services = [
+  'Consulta en linea',
+  'Consulta Psiquiatrica',
+  'Primera visita Psiquiatria',
+  'Visita Psiquiatria',
+  'Evaluaciones clinicas',
+  'Terapia cognitivo-conductual (TCC)',
 ];
