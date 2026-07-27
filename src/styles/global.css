@@ -2,15 +2,15 @@
 
 @theme {
   --color-wine: #7a2633;
-  --color-burgundy: #5c1e28;
-  --color-red-clay: #a94a4f;
+  --color-burgundy: #6a2630;
+  --color-red-clay: #b76462;
   --color-espresso: #2b1d1a;
   --color-coffee: #5a3b32;
   --color-taupe: #8b7064;
   --color-camel: #b78962;
   --color-sand: #e7d5c4;
-  --color-beige: #f1e5d7;
-  --color-cream: #fbf6ef;
+  --color-beige: #f4eadf;
+  --color-cream: #fcf8f2;
   --color-paper: #fffdf9;
   --color-text: #281e1b;
   --color-muted: #74645d;
@@ -33,9 +33,9 @@
   body {
     color: var(--color-text);
     background:
-      radial-gradient(circle at 12% 8%, rgb(169 74 79 / 0.11), transparent 28rem),
-      radial-gradient(circle at 86% 14%, rgb(183 137 98 / 0.15), transparent 30rem),
-      linear-gradient(180deg, #fbf6ef 0%, #f1e5d7 48%, #fffdf9 100%);
+      radial-gradient(circle at 12% 8%, rgb(169 74 79 / 0.055), transparent 28rem),
+      radial-gradient(circle at 86% 14%, rgb(183 137 98 / 0.10), transparent 30rem),
+      linear-gradient(180deg, #fffdf9 0%, #fcf8f2 46%, #fffdf9 100%);
     line-height: 1.58;
   }
 
@@ -44,10 +44,10 @@
     inset: 0;
     pointer-events: none;
     content: "";
-    opacity: 0.34;
+    opacity: 0.22;
     background-image:
-      radial-gradient(rgb(43 29 26 / 0.10) 0.8px, transparent 0.8px),
-      linear-gradient(110deg, transparent 0 42%, rgb(122 38 51 / 0.035) 42.1% 42.3%, transparent 42.4%);
+      radial-gradient(rgb(43 29 26 / 0.075) 0.8px, transparent 0.8px),
+      linear-gradient(110deg, transparent 0 42%, rgb(122 38 51 / 0.022) 42.1% 42.3%, transparent 42.4%);
     background-size: 18px 18px, 720px 520px;
     mask-image: linear-gradient(180deg, rgb(0 0 0 / 0.8), transparent 78%);
   }
@@ -144,7 +144,7 @@
   .btn-primary {
     color: var(--color-cream);
     background: var(--color-wine);
-    box-shadow: 0 16px 34px rgb(122 38 51 / 0.22);
+    box-shadow: 0 14px 28px rgb(122 38 51 / 0.16);
   }
 
   .btn-primary:hover {
@@ -196,7 +196,7 @@
     inset: auto 6% 8% auto;
     width: 50%;
     height: 44%;
-    border: 1px solid rgb(122 38 51 / 0.16);
+    border: 1px solid rgb(122 38 51 / 0.09);
     border-left-color: transparent;
     border-radius: 48% 52% 38% 62%;
     content: "";
@@ -204,8 +204,8 @@
   }
 
   .warm-photo {
-    border: 1px solid rgb(122 38 51 / 0.26);
-    box-shadow: 0 30px 86px rgb(43 29 26 / 0.18);
+    border: 1px solid rgb(122 38 51 / 0.18);
+    box-shadow: 0 26px 72px rgb(43 29 26 / 0.13);
   }
 
   .number-bg {

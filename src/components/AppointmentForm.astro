@@ -2,7 +2,7 @@
 import { doctorProfile, serviceGroups } from '../data/site';
 ---
 
-<section id="agenda" class="section-premium bg-cream">
+<section id="agenda" class="section-premium bg-paper">
   <div class="container-premium">
     <div class="grid gap-12 lg:grid-cols-[0.95fr_1fr]">
       <div class="reveal">
@@ -35,12 +35,12 @@ import { doctorProfile, serviceGroups } from '../data/site';
   </div>
 </section>
 
-<section class="section-premium bg-paper">
+<section class="section-premium bg-cream/70">
   <div class="container-premium grid gap-8 lg:grid-cols-[0.8fr_1fr]">
-    <div class="reveal rounded-[32px] bg-burgundy p-8 text-cream">
-      <p class="editorial-serif text-5xl leading-none">{doctorProfile.reviewCount}</p>
+    <div class="reveal rounded-[32px] border border-sand bg-paper p-8 text-text shadow-soft">
+      <p class="editorial-serif text-5xl leading-none text-wine">{doctorProfile.reviewCount}</p>
       <h2 class="mt-4 text-3xl font-semibold leading-tight">opiniones verificadas en Doctoralia</h2>
-      <a class="btn mt-7 border border-cream/35 text-cream hover:bg-cream hover:text-burgundy" href={doctorProfile.doctoraliaUrl} target="_blank" rel="noreferrer">Consultar opiniones en Doctoralia</a>
+      <a class="btn btn-secondary mt-7" href={doctorProfile.doctoraliaUrl} target="_blank" rel="noreferrer">Consultar opiniones en Doctoralia</a>
     </div>
     <div class="reveal self-center">
       <span class="eyebrow">Confianza</span>
@@ -52,7 +52,7 @@ import { doctorProfile, serviceGroups } from '../data/site';
   </div>
 </section>
 
-<section id="contacto" class="section-premium bg-beige/60">
+<section id="contacto" class="section-premium bg-paper">
   <div class="container-premium grid gap-10 lg:grid-cols-[1fr_0.9fr]">
     <div class="reveal">
       <span class="eyebrow">Ubicacion</span>
