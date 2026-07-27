@@ -2,20 +2,19 @@
 import { articles } from '../data/site';
 ---
 
-<section id="articulos" class="section-premium">
+<section id="articulos" class="section-premium bg-paper">
   <div class="container-premium">
     <span class="eyebrow">Articulos</span>
-    <h2 class="section-title">Lecturas claras sobre salud mental.</h2>
+    <h2 class="section-title">Lecturas para comprender mejor antes de consultar.</h2>
     <p class="lead">
-      Un espacio editorial para orientar a pacientes con lenguaje responsable, sin diagnosticos en linea ni promesas de tratamiento.
+      Temas editoriales preparados para publicarse con revision medica, sin sustituir una valoracion individual.
     </p>
-    <div class="mt-12 grid gap-5 lg:grid-cols-3">
-      {articles.map((article) => (
-        <article class="reveal glass-card rounded-[32px] p-7">
-          <span class="mb-5 inline-flex rounded-full bg-[#effaf8] px-3 py-1.5 text-xs font-black uppercase tracking-[0.08em] text-teal">{article.category}</span>
-          <h3 class="mb-3 text-2xl font-black leading-tight text-ink">{article.title}</h3>
-          <p class="mb-6 text-muted">{article.description}</p>
-          <a class="font-black text-gold" href="#agenda">Agendar consulta</a>
+    <div class="mt-12 divide-y divide-sand border-y border-sand">
+      {articles.map(([category, title]) => (
+        <article class="reveal grid gap-3 py-6 md:grid-cols-[180px_1fr_auto] md:items-center">
+          <span class="text-sm font-bold text-camel">{category}</span>
+          <h3 class="text-2xl font-semibold text-text">{title}</h3>
+          <a class="font-black text-wine" href="#agenda">Agendar consulta</a>
         </article>
       ))}
     </div>

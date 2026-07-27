@@ -1,27 +1,38 @@
 ---
-import { careAreas, doctorProfile } from '../data/site';
+import { consultationReasons, doctorProfile } from '../data/site';
 ---
 
-<section id="areas" class="section-premium relative overflow-hidden bg-navy text-white">
-  <div class="absolute inset-0 bg-[radial-gradient(circle_at_16%_10%,rgb(227_201_142_/_0.16),transparent_340px),radial-gradient(circle_at_86%_50%,rgb(88_209_201_/_0.16),transparent_360px)]"></div>
+<section id="motivos" class="section-premium">
   <div class="container-premium">
-    <span class="eyebrow">Como puedo ayudarte</span>
-    <h2 class="section-title section-title-light">Areas de atencion psiquiatrica.</h2>
-    <p class="lead text-white/70">
-      Consulta privada para comprender lo que estas viviendo, valorar opciones medicas y definir un acompanamiento claro y responsable.
+    <span class="eyebrow">Motivos de consulta</span>
+    <h2 class="section-title">En que puedo ayudarte.</h2>
+    <p class="lead">
+      Cada situacion requiere una valoracion individual. Estos son algunos de los motivos de consulta que atiendo con mayor frecuencia.
     </p>
-    <div class="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-      {careAreas.map((area) => (
-        <article class="reveal rounded-[34px] border border-white/14 bg-white/[0.075] p-6 shadow-[0_28px_70px_rgb(0_0_0_/_0.22)] backdrop-blur-xl">
-          <div class={`area-icon area-icon-${area.icon} mb-7`}></div>
-          <h3 class="mb-3 text-2xl font-black leading-tight">{area.title}</h3>
-          <p class="mb-6 text-white/68">{area.description}</p>
-          <div class="flex flex-wrap gap-3">
-            <a class="font-black text-champagne" href="#articulos">Conocer mas</a>
-            <a class="font-black text-teal-soft" href={doctorProfile.doctoraliaUrl}>Agendar consulta</a>
+
+    <div class="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      {consultationReasons.map((reason, index) => (
+        <article class:list={[
+          'reveal relative overflow-hidden rounded-[28px] border p-6',
+          index === 0 ? 'border-burgundy bg-burgundy text-cream' : 'border-sand bg-paper text-text shadow-soft',
+        ]}>
+          <span class:list={['number-bg', index === 0 ? '!text-cream/10' : '']}>{String(index + 1).padStart(2, '0')}</span>
+          <div class:list={['mb-5 h-px w-16', index === 0 ? 'bg-cream/45' : 'bg-wine/45']}></div>
+          <h3 class="relative mb-3 text-2xl font-semibold leading-tight">{reason.title}</h3>
+          <p class:list={['relative mb-5 text-sm', index === 0 ? 'text-cream/78' : 'text-muted']}>{reason.description}</p>
+          <ul class="relative mb-6 grid gap-2 text-sm font-bold">
+            {reason.items.map((item) => <li class={index === 0 ? 'text-cream/88' : 'text-coffee'}>{item}</li>)}
+          </ul>
+          <div class="relative flex flex-wrap gap-3">
+            <a class={index === 0 ? 'font-black text-cream' : 'font-black text-wine'} href={reason.href}>Conocer mas</a>
+            <a class={index === 0 ? 'font-black text-sand' : 'font-black text-coffee'} href={doctorProfile.doctoraliaUrl} target="_blank" rel="noreferrer">Agendar consulta</a>
           </div>
         </article>
       ))}
     </div>
+
+    <p class="mt-8 max-w-3xl text-sm font-bold text-muted">
+      La informacion de esta pagina es orientativa. Cada diagnostico requiere una valoracion medica individual.
+    </p>
   </div>
 </section>

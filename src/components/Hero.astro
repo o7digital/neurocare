@@ -1,55 +1,40 @@
 ---
-import { doctorProfile, trustItems } from '../data/site';
+import { doctorProfile, heroFacts } from '../data/site';
 ---
 
 <section id="inicio" class="relative overflow-hidden py-16 md:py-24">
-  <div class="absolute left-[48%] top-20 hidden h-[620px] w-[620px] rounded-full border border-teal/10 lg:block"></div>
-  <div class="container-premium grid items-center gap-14 lg:grid-cols-[1fr_0.92fr]">
+  <div class="organic-line pointer-events-none absolute inset-0"></div>
+  <div class="container-premium grid items-center gap-14 lg:grid-cols-[0.94fr_0.86fr]">
     <div class="reveal show">
-      <div class="mb-6 inline-flex items-center gap-3 rounded-full border border-line bg-white/70 px-3.5 py-2 text-[13px] font-extrabold text-[#42556c] shadow-[0_12px_30px_rgb(7_26_47_/_0.06)]">
-        <span class="signal-dot"></span> Consulta privada de psiquiatria · <b class="text-teal">San Angel, CDMX</b>
-      </div>
-      <h1 class="mb-7 max-w-4xl text-[46px] font-black leading-[0.96] text-ink sm:text-[64px] lg:text-[82px]">
-        Psiquiatria con ciencia, escucha y claridad.
+      <div class="eyebrow mb-6">Psiquiatria y Neuropsiquiatria · San Angel, CDMX</div>
+      <h1 class="mb-7 max-w-3xl text-[42px] font-semibold leading-[1.02] text-text sm:text-[58px] lg:text-[70px]">
+        Comprender la mente, <span class="editorial-serif block text-wine">escuchar a la persona.</span>
       </h1>
       <p class="mb-9 max-w-2xl text-lg text-muted md:text-xl">
-        Atencion psiquiatrica personalizada en un espacio privado, respetuoso y sin juicios. Un acompanamiento medico pensado para comprender lo que estas viviendo y construir un tratamiento adecuado para ti.
+        Atencion especializada para trastornos psiquiatricos y neuropsiquiatricos, con una valoracion integral, tratamientos personalizados y un acompanamiento cercano basado en evidencia cientifica.
       </p>
-      <div class="mb-8 flex flex-wrap gap-3.5">
-        <a class="btn btn-primary" href={doctorProfile.doctoraliaUrl}>Agendar una consulta</a>
-        <a class="btn btn-secondary" href="#sobre-mi">Conocer a la doctora</a>
+      <div class="mb-7 flex flex-wrap gap-3.5">
+        <a class="btn btn-primary" href={doctorProfile.doctoraliaUrl} target="_blank" rel="noreferrer">Agendar consulta</a>
+        <a class="btn btn-secondary" href="#enfoque">Conocer mi enfoque</a>
       </div>
-      <div class="flex max-w-2xl flex-wrap gap-2.5">
-        {['Atencion personalizada', 'Consulta privada', 'San Angel, CDMX', doctorProfile.onlineCareNote].map((item) => (
-          <span class="rounded-full border border-line bg-white/68 px-3.5 py-2 text-xs font-black uppercase tracking-[0.08em] text-muted">{item}</span>
-        ))}
-      </div>
+      <p class="max-w-2xl text-sm font-bold text-coffee">{heroFacts.join(' · ')}</p>
     </div>
 
-    <div class="reveal show relative min-h-[620px] max-lg:min-h-[560px] max-sm:min-h-[520px]">
-      <div class="absolute inset-0 rounded-[48px] bg-[radial-gradient(circle_at_72%_22%,rgb(88_209_201_/_0.35),transparent_210px),linear-gradient(145deg,#071a2f,#0d2c4e_58%,#0b8b89)] shadow-premium"></div>
-      <div class="absolute inset-6 rounded-[42px] border border-white/18"></div>
-      <div class="orbital-lines absolute inset-8"></div>
-      <div class="absolute bottom-0 left-1/2 h-[78%] w-[72%] -translate-x-1/2 overflow-hidden rounded-[48%_52%_22%_24%/30%_34%_16%_18%] shadow-[0_30px_80px_rgb(0_0_0_/_0.22)]">
-        <img class="h-full w-full object-cover object-center" src={doctorProfile.portrait} alt={`Retrato de ${doctorProfile.fullName}`} />
-      </div>
-      <div class="absolute left-5 top-7 rounded-[26px] border border-white/16 bg-white/12 p-4 text-white shadow-[0_20px_60px_rgb(0_0_0_/_0.18)] backdrop-blur-xl sm:left-8 sm:p-5">
-        <b class="block text-lg">{doctorProfile.fullName}</b>
-        <span class="block text-sm text-white/72">{doctorProfile.specialty}</span>
-        <span class="mt-2 block text-xs font-bold text-champagne">{doctorProfile.license}</span>
-      </div>
-      <div class="absolute bottom-8 right-5 rounded-[24px] border border-white/18 bg-white/92 p-4 text-ink shadow-soft sm:right-8">
-        <b class="block">Consulta privada</b>
-        <span class="text-sm font-bold text-muted">{doctorProfile.location}</span>
-      </div>
+    <div class="reveal show relative mx-auto w-full max-w-[470px]">
+      <div class="absolute -left-8 top-10 h-[78%] w-[78%] rounded-[48%_52%_44%_56%] bg-red-clay/10"></div>
+      <figure class="relative rounded-[34px] bg-beige p-4">
+        <div class="warm-photo overflow-hidden rounded-[26px] bg-sand">
+          <img
+            class="aspect-[4/5] h-full w-full object-cover object-center"
+            src={doctorProfile.avatar}
+            alt={`Retrato profesional de ${doctorProfile.brandName}`}
+          />
+        </div>
+        <figcaption class="absolute bottom-7 left-7 right-7 rounded-[22px] border border-sand bg-paper/88 p-4 shadow-soft backdrop-blur-xl">
+          <b class="block text-lg text-text">{doctorProfile.brandName}</b>
+          <span class="text-sm font-bold text-muted">{doctorProfile.specialty}</span>
+        </figcaption>
+      </figure>
     </div>
-  </div>
-</section>
-
-<section aria-label="Confianza profesional" class="border-y border-line/70 bg-white/58 py-5">
-  <div class="container-premium flex flex-wrap justify-center gap-3">
-    {trustItems.map((item) => (
-      <span class="rounded-full bg-[#effaf8] px-4 py-2 text-xs font-black uppercase tracking-[0.1em] text-teal">{item}</span>
-    ))}
   </div>
 </section>

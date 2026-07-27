@@ -1,32 +1,79 @@
 ---
-import { doctorProfile, services } from '../data/site';
+import { doctorProfile, serviceGroups } from '../data/site';
 ---
 
-<section id="agenda" class="relative overflow-hidden bg-navy py-24 text-white">
-  <div class="absolute inset-0 bg-[radial-gradient(circle_at_15%_25%,rgb(227_201_142_/_0.16),transparent_360px),radial-gradient(circle_at_90%_18%,rgb(88_209_201_/_0.18),transparent_360px)]"></div>
-  <div class="container-premium grid items-center gap-8 lg:grid-cols-[1fr_0.9fr]">
-    <div class="reveal">
-      <span class="eyebrow">Agendar consulta</span>
-      <h2 class="my-4 text-[42px] font-black leading-[0.98] md:text-7xl">Elige el canal mas comodo para solicitar tu cita.</h2>
-      <p class="max-w-2xl text-lg text-white/72">
-        Para emergencias medicas o situaciones de riesgo, acude a urgencias o contacta a los servicios locales de emergencia. Este sitio no sustituye una valoracion inmediata.
+<section id="agenda" class="section-premium bg-cream">
+  <div class="container-premium">
+    <div class="grid gap-12 lg:grid-cols-[0.95fr_1fr]">
+      <div class="reveal">
+        <span class="eyebrow">Formas de atencion</span>
+        <h2 class="section-title">Consulta en San Angel y atencion en linea.</h2>
+        <p class="lead">
+          Consulta los horarios, modalidades y tarifas actualizadas en Doctoralia. La informacion del sitio es orientativa y no sustituye una valoracion medica.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a class="btn btn-primary" href={doctorProfile.doctoraliaUrl} target="_blank" rel="noreferrer">Ver disponibilidad y agendar</a>
+          <a class="btn btn-secondary" href="#contacto">Ver ubicacion</a>
+        </div>
+      </div>
+
+      <div class="grid gap-4">
+        {serviceGroups.map((group) => (
+          <article class="reveal rounded-[28px] border border-sand bg-paper p-6 shadow-soft">
+            <h3 class="mb-2 text-2xl font-semibold text-text">{group.title}</h3>
+            <p class="mb-4 text-muted">{group.description}</p>
+            <div class="flex flex-wrap gap-2">
+              {group.services.map((service) => (
+                <span class="rounded-full border border-sand bg-cream px-3 py-1.5 text-sm font-bold text-coffee">{service}</span>
+              ))}
+            </div>
+            {group.note && <p class="mt-4 text-xs font-bold text-muted">{group.note}</p>}
+          </article>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-premium bg-paper">
+  <div class="container-premium grid gap-8 lg:grid-cols-[0.8fr_1fr]">
+    <div class="reveal rounded-[32px] bg-burgundy p-8 text-cream">
+      <p class="editorial-serif text-5xl leading-none">{doctorProfile.reviewCount}</p>
+      <h2 class="mt-4 text-3xl font-semibold leading-tight">opiniones verificadas en Doctoralia</h2>
+      <a class="btn mt-7 border border-cream/35 text-cream hover:bg-cream hover:text-burgundy" href={doctorProfile.doctoraliaUrl} target="_blank" rel="noreferrer">Consultar opiniones en Doctoralia</a>
+    </div>
+    <div class="reveal self-center">
+      <span class="eyebrow">Confianza</span>
+      <h2 class="section-title">Una atencion que se construye con confianza.</h2>
+      <p class="lead">
+        Las opiniones verificadas de sus pacientes destacan especialmente la escucha, las explicaciones detalladas, la empatia, la dedicacion durante la consulta y una vision integral de cada caso.
       </p>
     </div>
-    <div class="reveal rounded-[38px] bg-white p-6 text-ink shadow-[0_30px_80px_rgb(0_0_0_/_0.28)]">
-      <h3 class="mb-5 text-3xl font-black leading-none">Consulta privada</h3>
+  </div>
+</section>
+
+<section id="contacto" class="section-premium bg-beige/60">
+  <div class="container-premium grid gap-10 lg:grid-cols-[1fr_0.9fr]">
+    <div class="reveal">
+      <span class="eyebrow">Ubicacion</span>
+      <h2 class="section-title">Consulta privada en San Angel.</h2>
+      <div class="mt-6 space-y-1 text-lg font-semibold text-coffee">
+        {doctorProfile.addressLines.map((line) => <p>{line}</p>)}
+      </div>
+      <p class="mt-6 text-muted">
+        Modalidades: consulta presencial, videoconsulta, atencion en espanol e ingles, adultos y ninos sujeto a disponibilidad indicada por la doctora.
+      </p>
+      <p class="mt-4 text-muted">
+        Formas de pago confirmadas: tarjeta de credito, tarjeta de debito, efectivo y transferencia.
+      </p>
+    </div>
+    <div class="reveal rounded-[32px] border border-sand bg-paper p-7 shadow-soft">
+      <h3 class="mb-4 text-2xl font-semibold text-text">Agendar consulta</h3>
+      <p class="mb-6 text-muted">Para reservar, revisar disponibilidad y confirmar tarifas actualizadas, utiliza el perfil de Doctoralia.</p>
       <div class="grid gap-3">
-        <a class="btn btn-primary w-full" href={doctorProfile.doctoraliaUrl}>Agendar en Doctoralia</a>
+        <a class="btn btn-primary w-full" href={doctorProfile.doctoraliaUrl} target="_blank" rel="noreferrer">Agendar en Doctoralia</a>
         <a class="btn btn-secondary w-full" href={doctorProfile.phoneHref}>{doctorProfile.phoneLabel}</a>
         <a class="btn btn-secondary w-full" href={doctorProfile.secondaryPhoneHref}>{doctorProfile.secondaryPhoneLabel}</a>
-      </div>
-      <div class="mt-6 rounded-[24px] border border-line bg-cream p-4">
-        <b class="block">{doctorProfile.fullName}</b>
-        <span class="text-sm font-bold text-muted">{doctorProfile.specialty} · {doctorProfile.shortLocation}</span>
-      </div>
-      <div class="mt-4 grid gap-2">
-        {services.map((service) => (
-          <span class="rounded-2xl border border-line bg-white px-3.5 py-2 text-sm font-bold text-muted">{service}</span>
-        ))}
       </div>
     </div>
   </div>

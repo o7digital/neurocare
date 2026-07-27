@@ -1,38 +1,36 @@
 ---
-import { approachCards, firstConsultationSteps } from '../data/site';
+import { authorityPoints, firstConsultationSteps } from '../data/site';
 ---
 
-<section id="enfoque" class="section-premium bg-[linear-gradient(180deg,#fff,#fbf8f1)]">
+<section class="section-premium bg-beige/55">
   <div class="container-premium">
-    <span class="eyebrow">Mi enfoque</span>
-    <h2 class="section-title">Autoridad serena: ciencia, escucha y claridad.</h2>
-    <p class="lead">
-      La atencion psiquiatrica requiere tiempo, criterio medico y una conversacion que permita ordenar lo complejo sin perder de vista a la persona.
-    </p>
+    <span class="eyebrow">Enfoque medico</span>
+    <h2 class="section-title">Formacion especializada al servicio de una atencion mas clara.</h2>
     <div class="mt-12 grid gap-5 lg:grid-cols-3">
-      {approachCards.map((card) => (
-        <article class="reveal glass-card rounded-[32px] p-7">
-          <div class="mb-6 h-1.5 w-16 rounded-full bg-gradient-to-r from-teal to-gold"></div>
-          <h3 class="mb-3 text-2xl font-black text-ink">{card.title}</h3>
-          <p class="text-muted">{card.description}</p>
+      {authorityPoints.map((point, index) => (
+        <article class="reveal relative min-h-64 overflow-hidden rounded-[28px] border border-sand bg-paper p-7">
+          <span class="number-bg">{String(index + 1).padStart(2, '0')}</span>
+          <h3 class="relative mb-4 max-w-[220px] text-2xl font-semibold text-text">{point.title}</h3>
+          <p class="relative text-muted">{point.description}</p>
         </article>
       ))}
     </div>
   </div>
 </section>
 
-<section id="primera-consulta" class="section-premium">
+<section id="primera-consulta" class="section-premium bg-paper">
   <div class="container-premium">
     <span class="eyebrow">Primera consulta</span>
-    <h2 class="section-title">Un primer encuentro privado, claro y sin juicios.</h2>
+    <h2 class="section-title">Un primer encuentro para ordenar lo que estas viviendo.</h2>
     <p class="lead">
-      La primera consulta permite entender el motivo de atencion, revisar antecedentes relevantes y construir una orientacion medica inicial.
+      La consulta permite comprender el motivo de atencion, revisar antecedentes relevantes y definir los siguientes pasos con claridad.
     </p>
-    <div class="mt-12 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+    <div class="mt-12 grid gap-8 border-l border-wine/30 pl-6 md:grid-cols-2 md:border-l-0 md:pl-0 lg:grid-cols-4">
       {firstConsultationSteps.map(([step, title, text]) => (
-        <article class="reveal glass-card min-h-56 rounded-[30px] p-5">
-          <div class="mb-7 grid h-11 w-11 place-items-center rounded-2xl bg-navy text-sm font-black text-champagne">{step}</div>
-          <h3 class="mb-2 text-xl font-black leading-tight text-ink">{title}</h3>
+        <article class="reveal relative md:border-t md:border-wine/30 md:pt-7">
+          <span class="absolute -left-[31px] top-2 grid h-3 w-3 rounded-full bg-red-clay md:-top-[7px] md:left-0"></span>
+          <div class="editorial-serif mb-4 text-4xl text-wine">{step}</div>
+          <h3 class="mb-2 text-xl font-semibold text-text">{title}</h3>
           <p class="text-sm text-muted">{text}</p>
         </article>
       ))}

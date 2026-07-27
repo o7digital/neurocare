@@ -12,8 +12,8 @@ import { doctorProfile } from '../data/site';
 ---
 
 <Layout
-  title={`${doctorProfile.fullName} | Psiquiatra en San Angel, CDMX`}
-  description="Consulta privada de psiquiatria en San Angel, Ciudad de Mexico. Atencion personalizada, confidencial y basada en evidencia."
+  title={`${doctorProfile.brandName} | Psiquiatria y Neuropsiquiatria en San Angel`}
+  description="Atencion especializada para trastornos psiquiatricos y neuropsiquiatricos en San Angel, CDMX. Consulta presencial y en linea."
 >
   <Header />
   <main>
@@ -25,5 +25,5 @@ import { doctorProfile } from '../data/site';
     <BlogSection />
   </main>
   <Footer />
-  <a class="mobile-bottom-cta btn btn-primary md:hidden" href={doctorProfile.doctoraliaUrl}>Agendar consulta</a>
+  <a class="mobile-bottom-cta btn btn-primary md:hidden" href={doctorProfile.doctoraliaUrl} target="_blank" rel="noreferrer">Agendar consulta</a>
 </Layout>

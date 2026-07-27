@@ -8,8 +8,8 @@ interface Props {
 }
 
 const {
-  title = `${doctorProfile.fullName} | Psiquiatra en San Angel, CDMX`,
-  description = 'Consulta privada de psiquiatria en San Angel, Ciudad de Mexico. Atencion personalizada, confidencial y basada en evidencia.',
+  title = `${doctorProfile.brandName} | Psiquiatria y Neuropsiquiatria en San Angel`,
+  description = 'Psiquiatria y neuropsiquiatria en San Angel, CDMX. Valoracion integral, atencion humana y tratamientos personalizados basados en evidencia cientifica.',
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://neurocare-one.vercel.app');
@@ -18,13 +18,13 @@ const schema = {
   '@type': 'Physician',
   name: doctorProfile.fullName,
   description,
-  medicalSpecialty: 'Psychiatry',
+  medicalSpecialty: ['Psychiatry', 'Neuropsychiatry'],
   image: new URL(doctorProfile.avatar, canonical).toString(),
   telephone: doctorProfile.phoneLabel,
   areaServed: 'San Angel, Ciudad de Mexico',
   address: {
     '@type': 'PostalAddress',
-    streetAddress: doctorProfile.address,
+    streetAddress: doctorProfile.addressLines.join(', '),
     addressLocality: 'San Angel',
     addressRegion: 'Ciudad de Mexico',
     addressCountry: 'MX',
@@ -49,10 +49,10 @@ const schema = {
     <meta property="og:url" content={canonical} />
     <meta property="og:site_name" content={doctorProfile.fullName} />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="theme-color" content="#071A2F" />
+    <meta name="theme-color" content="#5C1E28" />
     <script type="application/ld+json" set:html={JSON.stringify(schema)} />
   </head>
-  <body class="min-h-screen overflow-x-hidden bg-ivory text-ink antialiased">
+  <body class="min-h-screen overflow-x-hidden bg-cream text-text antialiased">
     <slot />
     <script>
       const toggle = document.querySelector('.js-mobile-menu-toggle');

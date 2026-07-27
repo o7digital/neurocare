@@ -2,41 +2,43 @@
 import { doctorProfile, navItems } from '../data/site';
 ---
 
-<header class="sticky top-0 z-50 border-b border-line/70 bg-ivory/86 backdrop-blur-2xl">
-  <nav class="container-premium flex h-[82px] items-center justify-between gap-6">
-    <a href="#inicio" class="flex items-center gap-3.5" aria-label={`${doctorProfile.fullName} inicio`}>
-      <span class="grid h-12 w-12 place-items-center rounded-[18px] bg-gradient-to-br from-navy to-teal font-black text-white shadow-[0_16px_38px_rgb(7_26_47_/_0.22)] ring-1 ring-champagne/35 ring-inset">{doctorProfile.monogram}</span>
-      <span class="text-base font-black tracking-[-0.02em] text-ink">
-        {doctorProfile.fullName}
-        <small class="mt-[-2px] block text-[11px] font-extrabold uppercase tracking-[0.12em] text-muted max-sm:hidden">{doctorProfile.specialty}</small>
+<header class="sticky top-0 z-50 border-b border-sand/80 bg-cream/88 backdrop-blur-2xl">
+  <nav class="container-premium flex h-[78px] items-center justify-between gap-5">
+    <a href="#inicio" class="flex min-w-0 items-center gap-3.5" aria-label={`${doctorProfile.brandName} inicio`}>
+      <span class="grid h-11 w-11 shrink-0 place-items-center rounded-[16px] bg-burgundy font-black text-cream shadow-[0_14px_32px_rgb(92_30_40_/_0.20)]">{doctorProfile.monogram}</span>
+      <span class="min-w-0">
+        <span class="block truncate text-[17px] font-black text-text">{doctorProfile.brandName}</span>
+        <small class="mt-[-1px] block text-[11px] font-bold tracking-[0.08em] text-muted max-sm:hidden">{doctorProfile.specialty}</small>
       </span>
     </a>
-    <div class="hidden items-center gap-5 text-sm font-extrabold text-[#43556c] xl:flex">
-      {navItems.map((item) => <a class="transition hover:text-navy" href={item.href}>{item.label}</a>)}
+
+    <div class="hidden items-center gap-5 text-sm font-bold text-coffee xl:flex">
+      {navItems.map((item) => <a class="transition hover:text-wine" href={item.href}>{item.label}</a>)}
     </div>
+
     <div class="flex items-center gap-3">
-      <a class="btn btn-primary hidden sm:inline-flex" href={doctorProfile.doctoraliaUrl}>Agendar consulta</a>
+      <a class="btn btn-primary hidden sm:inline-flex" href={doctorProfile.doctoraliaUrl} target="_blank" rel="noreferrer">Agendar consulta</a>
       <button
-        class="js-mobile-menu-toggle grid h-12 w-12 place-items-center rounded-full border border-line bg-white/78 text-navy shadow-[0_12px_28px_rgb(7_26_47_/_0.08)] xl:hidden"
+        class="js-mobile-menu-toggle grid h-11 w-11 place-items-center rounded-full border border-sand bg-paper text-espresso shadow-[0_10px_24px_rgb(43_29_26_/_0.08)] xl:hidden"
         type="button"
         aria-label="Abrir menu"
         aria-expanded="false"
         aria-controls="mobile-menu"
       >
         <span class="grid w-5 gap-1.5" aria-hidden="true">
-          <span class="mobile-menu-line h-0.5 rounded-full bg-navy transition"></span>
-          <span class="mobile-menu-line h-0.5 rounded-full bg-navy transition"></span>
-          <span class="mobile-menu-line h-0.5 rounded-full bg-navy transition"></span>
+          <span class="mobile-menu-line h-0.5 rounded-full bg-espresso transition"></span>
+          <span class="mobile-menu-line h-0.5 rounded-full bg-espresso transition"></span>
+          <span class="mobile-menu-line h-0.5 rounded-full bg-espresso transition"></span>
         </span>
       </button>
     </div>
   </nav>
-  <div id="mobile-menu" class="hidden border-t border-line/70 bg-ivory/96 xl:hidden">
+  <div id="mobile-menu" class="hidden border-t border-sand/80 bg-cream/98 xl:hidden">
     <div class="container-premium grid gap-2 py-4">
       {navItems.map((item) => (
-        <a class="js-mobile-menu-link rounded-2xl px-4 py-3 text-base font-extrabold text-[#43556c] transition hover:bg-white hover:text-navy" href={item.href}>{item.label}</a>
+        <a class="js-mobile-menu-link rounded-2xl px-4 py-3 text-base font-bold text-coffee transition hover:bg-beige hover:text-wine" href={item.href}>{item.label}</a>
       ))}
-      <a class="btn btn-primary js-mobile-menu-link mt-2 w-full" href={doctorProfile.doctoraliaUrl}>Agendar consulta</a>
+      <a class="btn btn-primary js-mobile-menu-link mt-2 w-full" href={doctorProfile.doctoraliaUrl} target="_blank" rel="noreferrer">Agendar consulta</a>
     </div>
   </div>
 </header>

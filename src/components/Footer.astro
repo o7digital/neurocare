@@ -2,30 +2,32 @@
 import { doctorProfile, navItems } from '../data/site';
 ---
 
-<footer id="contacto" class="bg-[#061526] py-16 pb-7 text-white">
+<footer class="bg-espresso py-16 pb-7 text-cream">
   <div class="container-premium">
-    <div class="grid gap-8 border-b border-white/12 pb-9 md:grid-cols-2 lg:grid-cols-[1.25fr_0.75fr_0.75fr]">
+    <div class="grid gap-8 border-b border-cream/12 pb-9 md:grid-cols-[1.1fr_0.8fr_0.8fr]">
       <div>
-        <a href="#inicio" class="mb-4 flex items-center gap-3.5">
-          <span class="grid h-12 w-12 place-items-center rounded-[18px] bg-gradient-to-br from-navy to-teal font-black text-white ring-1 ring-champagne/35 ring-inset">{doctorProfile.monogram}</span>
-          <span class="text-lg font-black tracking-[-0.02em]">{doctorProfile.fullName}<small class="block text-[11px] uppercase tracking-[0.12em] text-white/48">{doctorProfile.specialty}</small></span>
+        <a href="#inicio" class="mb-5 flex items-center gap-3.5">
+          <span class="grid h-12 w-12 place-items-center rounded-[16px] bg-wine font-black text-cream">{doctorProfile.monogram}</span>
+          <span>
+            <span class="block text-xl font-semibold">{doctorProfile.brandName}</span>
+            <small class="block text-sm text-cream/62">{doctorProfile.specialty}</small>
+            <small class="block text-sm text-cream/62">{doctorProfile.location}</small>
+          </span>
         </a>
-        <p class="max-w-md text-white/62">
-          Consulta privada de psiquiatria en San Angel, Ciudad de Mexico. Atencion personalizada, confidencial y basada en evidencia.
-        </p>
+        <a class="btn btn-primary" href={doctorProfile.doctoraliaUrl} target="_blank" rel="noreferrer">Agendar consulta</a>
       </div>
       <div>
-        <h4 class="mb-3 font-black">Navegacion</h4>
-        {navItems.slice(1, 5).map((item) => <a class="my-2 block text-white/62 hover:text-white" href={item.href}>{item.label}</a>)}
+        <h4 class="mb-3 font-semibold">Navegacion</h4>
+        {navItems.slice(1, 5).map((item) => <a class="my-2 block text-cream/62 hover:text-cream" href={item.href}>{item.label}</a>)}
       </div>
       <div>
-        <h4 class="mb-3 font-black">Contacto</h4>
-        <a class="my-2 block text-white/62 hover:text-white" href={doctorProfile.doctoraliaUrl}>Doctoralia</a>
-        <a class="my-2 block text-white/62 hover:text-white" href={doctorProfile.phoneHref}>{doctorProfile.phoneLabel}</a>
-        <a class="my-2 block text-white/62 hover:text-white" href={doctorProfile.secondaryPhoneHref}>{doctorProfile.secondaryPhoneLabel}</a>
+        <h4 class="mb-3 font-semibold">Contacto</h4>
+        <a class="my-2 block text-cream/62 hover:text-cream" href={doctorProfile.doctoraliaUrl} target="_blank" rel="noreferrer">Doctoralia</a>
+        <a class="my-2 block text-cream/62 hover:text-cream" href={doctorProfile.phoneHref}>{doctorProfile.phoneLabel}</a>
+        <a class="my-2 block text-cream/62 hover:text-cream" href={doctorProfile.secondaryPhoneHref}>{doctorProfile.secondaryPhoneLabel}</a>
       </div>
     </div>
-    <div class="pt-5 text-xs text-white/42">
+    <div class="pt-5 text-xs text-cream/42">
       Informacion general. No sustituye una valoracion medica. En caso de emergencia, acude a servicios de urgencias.
     </div>
   </div>
