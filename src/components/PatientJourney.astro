@@ -1,15 +1,36 @@
 ---
-import { journeySteps } from '../data/site';
+import { approachCards, firstConsultationSteps } from '../data/site';
 ---
 
-<section id="proceso" class="section-premium bg-[radial-gradient(circle_at_20%_4%,rgb(88_209_201_/_0.16),transparent_320px),linear-gradient(180deg,#fff,#fbf8f1)]">
+<section id="enfoque" class="section-premium bg-[linear-gradient(180deg,#fff,#fbf8f1)]">
   <div class="container-premium">
-    <span class="eyebrow">Proceso paciente</span>
-    <h2 class="section-title">Del primer clic a la cita confirmada, sin fricción.</h2>
-    <p class="lead">El paciente no se pierde. El sistema guia la solicitud y el equipo conserva el control médico y administrativo de la agenda.</p>
-    <div class="mt-12 grid gap-3 md:grid-cols-2 xl:grid-cols-5">
-      {journeySteps.map(([step, title, text]) => (
-        <article class="reveal glass-card min-h-60 rounded-[30px] p-5">
+    <span class="eyebrow">Mi enfoque</span>
+    <h2 class="section-title">Autoridad serena: ciencia, escucha y claridad.</h2>
+    <p class="lead">
+      La atencion psiquiatrica requiere tiempo, criterio medico y una conversacion que permita ordenar lo complejo sin perder de vista a la persona.
+    </p>
+    <div class="mt-12 grid gap-5 lg:grid-cols-3">
+      {approachCards.map((card) => (
+        <article class="reveal glass-card rounded-[32px] p-7">
+          <div class="mb-6 h-1.5 w-16 rounded-full bg-gradient-to-r from-teal to-gold"></div>
+          <h3 class="mb-3 text-2xl font-black text-ink">{card.title}</h3>
+          <p class="text-muted">{card.description}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section id="primera-consulta" class="section-premium">
+  <div class="container-premium">
+    <span class="eyebrow">Primera consulta</span>
+    <h2 class="section-title">Un primer encuentro privado, claro y sin juicios.</h2>
+    <p class="lead">
+      La primera consulta permite entender el motivo de atencion, revisar antecedentes relevantes y construir una orientacion medica inicial.
+    </p>
+    <div class="mt-12 grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+      {firstConsultationSteps.map(([step, title, text]) => (
+        <article class="reveal glass-card min-h-56 rounded-[30px] p-5">
           <div class="mb-7 grid h-11 w-11 place-items-center rounded-2xl bg-navy text-sm font-black text-champagne">{step}</div>
           <h3 class="mb-2 text-xl font-black leading-tight text-ink">{title}</h3>
           <p class="text-sm text-muted">{text}</p>

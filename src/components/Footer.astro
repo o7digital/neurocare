@@ -1,36 +1,32 @@
 ---
-import { navItems, specialties } from '../data/site';
+import { doctorProfile, navItems } from '../data/site';
 ---
 
 <footer id="contacto" class="bg-[#061526] py-16 pb-7 text-white">
   <div class="container-premium">
-    <div class="grid gap-8 border-b border-white/12 pb-9 md:grid-cols-2 lg:grid-cols-[1.25fr_0.75fr_0.75fr_0.75fr]">
+    <div class="grid gap-8 border-b border-white/12 pb-9 md:grid-cols-2 lg:grid-cols-[1.25fr_0.75fr_0.75fr]">
       <div>
         <a href="#inicio" class="mb-4 flex items-center gap-3.5">
-          <span class="grid h-13 w-13 place-items-center rounded-[18px] bg-gradient-to-br from-navy to-teal font-black text-white ring-1 ring-champagne/35 ring-inset">ND</span>
-          <span class="text-lg font-black tracking-[-0.04em]">Neurodigital <small class="block text-[11px] uppercase tracking-[0.12em] text-white/48">Atención especializada en salud mental</small></span>
+          <span class="grid h-12 w-12 place-items-center rounded-[18px] bg-gradient-to-br from-navy to-teal font-black text-white ring-1 ring-champagne/35 ring-inset">{doctorProfile.monogram}</span>
+          <span class="text-lg font-black tracking-[-0.02em]">{doctorProfile.fullName}<small class="block text-[11px] uppercase tracking-[0.12em] text-white/48">{doctorProfile.specialty}</small></span>
         </a>
         <p class="max-w-md text-white/62">
-          Demo conceptual para grupo médico privado. El contenido final debe ser validado por los especialistas, con cédulas profesionales, aviso de privacidad y políticas clínicas correspondientes.
+          Consulta privada de psiquiatria en San Angel, Ciudad de Mexico. Atencion personalizada, confidencial y basada en evidencia.
         </p>
       </div>
       <div>
-        <h4 class="mb-3 font-black">Especialidades</h4>
-        {specialties.slice(0, 4).map((item) => <a class="my-2 block text-white/62 hover:text-white" href="#especialidades">{item.title}</a>)}
+        <h4 class="mb-3 font-black">Navegacion</h4>
+        {navItems.slice(1, 5).map((item) => <a class="my-2 block text-white/62 hover:text-white" href={item.href}>{item.label}</a>)}
       </div>
       <div>
-        <h4 class="mb-3 font-black">Pacientes</h4>
-        {navItems.slice(2, 5).map((item) => <a class="my-2 block text-white/62 hover:text-white" href={item.href}>{item.label}</a>)}
-      </div>
-      <div>
-        <h4 class="mb-3 font-black">Legal</h4>
-        <a class="my-2 block text-white/62 hover:text-white" href="/aviso-de-privacidad">Aviso de privacidad</a>
-        <a class="my-2 block text-white/62 hover:text-white" href="#agenda">Solicitud administrativa</a>
-        <a class="my-2 block text-white/62 hover:text-white" href="#contacto">No emergencias</a>
+        <h4 class="mb-3 font-black">Contacto</h4>
+        <a class="my-2 block text-white/62 hover:text-white" href={doctorProfile.doctoraliaUrl}>Doctoralia</a>
+        <a class="my-2 block text-white/62 hover:text-white" href={doctorProfile.whatsappUrl}>WhatsApp</a>
+        <a class="my-2 block text-white/62 hover:text-white" href={doctorProfile.phoneHref}>{doctorProfile.phoneLabel}</a>
       </div>
     </div>
     <div class="pt-5 text-xs text-white/42">
-      Demo conceptual. No constituye asesoría médica. En caso de emergencia, acudir a servicios de urgencias.
+      Informacion general. No sustituye una valoracion medica. En caso de emergencia, acude a servicios de urgencias.
     </div>
   </div>
 </footer>

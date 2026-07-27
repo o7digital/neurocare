@@ -1,175 +1,128 @@
+export const doctorProfile = {
+  fullName: 'Dra. Nombre y Apellidos',
+  firstName: 'Nombre',
+  monogram: 'Dra.',
+  specialty: 'Medica Psiquiatra',
+  location: 'San Angel · Ciudad de Mexico',
+  shortLocation: 'San Angel, CDMX',
+  license: 'Cedula profesional por confirmar',
+  doctoraliaUrl: '#agenda',
+  whatsappUrl: 'https://wa.me/525500000000',
+  phoneLabel: '+52 55 0000 0000',
+  phoneHref: 'tel:+525500000000',
+  onlineCareNote: 'Presencial y en linea, sujeto a confirmacion de la doctora',
+};
+
 export const navItems = [
   { label: 'Inicio', href: '#inicio' },
-  { label: 'Especialidades', href: '#especialidades' },
-  { label: 'Proceso', href: '#proceso' },
-  { label: 'Equipo médico', href: '#equipo' },
-  { label: 'Agenda', href: '#agenda' },
-  { label: 'Blog', href: '#blog' },
+  { label: 'Sobre mi', href: '#sobre-mi' },
+  { label: 'Areas de atencion', href: '#areas' },
+  { label: 'Mi enfoque', href: '#enfoque' },
+  { label: 'Primera consulta', href: '#primera-consulta' },
+  { label: 'Articulos', href: '#articulos' },
   { label: 'Contacto', href: '#contacto' },
 ];
 
-export const experienceCards = [
-  {
-    title: 'Orientación por especialidad',
-    icon: 'A',
-    description:
-      'Identificamos el servicio y el especialista adecuados según el motivo de consulta y las necesidades del paciente.',
-  },
-  {
-    title: 'Valoración responsable',
-    icon: 'P',
-    description:
-      'La atención comienza con una evaluación clínica cuidadosa antes de indicar cualquier tratamiento o procedimiento.',
-  },
-  {
-    title: 'Equipo especializado',
-    icon: 'M',
-    description:
-      'Profesionales de distintas áreas trabajan de forma coordinada para ofrecer una atención integral y personalizada.',
-  },
-  {
-    title: 'Seguimiento continuo',
-    icon: 'B',
-    description:
-      'Acompañamos la evolución del paciente y ajustamos el plan de atención según su respuesta clínica.',
-  },
+export const trustItems = [
+  'Medicina basada en evidencia',
+  'Atencion confidencial',
+  'Tratamiento personalizado',
+  'Seguimiento medico',
+  'Consulta en San Angel',
 ];
 
-export const specialties = [
+export const profileFields = [
+  ['Nombre completo', 'Por confirmar'],
+  ['Especialidad', doctorProfile.specialty],
+  ['Formacion academica', 'Por confirmar'],
+  ['Cedula profesional', 'Por confirmar'],
+  ['Certificaciones', 'Por confirmar'],
+  ['Experiencia', 'Por confirmar'],
+  ['Idiomas', 'Por confirmar'],
+  ['Asociaciones profesionales', 'Por confirmar'],
+];
+
+export const careAreas = [
   {
-    title: 'Neuropsiquiatría',
-    slug: '/especialidades/neuropsiquiatria',
-    summary:
-      'Evaluación integral de síntomas cognitivos, emocionales y conductuales, con enfoque médico especializado y coordinación interdisciplinaria.',
-    bullets: [
-      'Primera valoración médica especializada',
-      'Segunda opinión clínica',
-      'Plan de seguimiento y coordinación terapéutica',
-    ],
+    title: 'Ansiedad',
+    description:
+      'Valoracion psiquiatrica para comprender sintomas de ansiedad, su contexto y las opciones de tratamiento adecuadas.',
+    icon: 'wave',
   },
   {
-    title: 'Psiquiatría clínica',
-    slug: '/especialidades/psiquiatria-clinica',
-    summary:
-      'Atención privada para ansiedad, depresión, sueño, estrés, adaptación y continuidad farmacológica responsable.',
-    bullets: [
-      'Primera vez y seguimiento',
-      'Enfoque humano, claro y estructurado',
-      'Modalidad presencial u online para pacientes activos',
-    ],
+    title: 'Depresion',
+    description:
+      'Acompanamiento medico para cambios persistentes del animo, energia, interes y funcionamiento cotidiano.',
+    icon: 'circle',
   },
   {
-    title: 'Neuropsicología',
-    slug: '/especialidades/neuropsicologia',
-    summary:
-      'Evaluaciones clínicas para memoria, atención, aprendizaje, TDAH, funciones ejecutivas y rendimiento cognitivo.',
-    bullets: [
-      'Baterías para adultos y adolescentes',
-      'Reporte clínico estructurado',
-      'Recomendaciones para seguimiento',
-    ],
+    title: 'Estres y crisis emocionales',
+    description:
+      'Atencion para momentos de sobrecarga, crisis vitales o sintomas emocionales que requieren claridad clinica.',
+    icon: 'spark',
   },
   {
-    title: 'Medicina del sueño',
-    slug: '/especialidades/medicina-del-sueno',
-    summary:
-      'Orientación clínica para pacientes con insomnio, fatiga, estrés prolongado y síntomas asociados al descanso.',
-    bullets: [
-      'Evaluación inicial del sueño',
-      'Hábitos, salud mental y contexto laboral',
-      'Seguimiento personalizado',
-    ],
+    title: 'Trastornos del sueno',
+    description:
+      'Revision responsable de habitos, sintomas, horarios y factores medicos o emocionales relacionados con el descanso.',
+    icon: 'moon',
   },
   {
     title: 'TDAH en adultos',
-    slug: '/especialidades/tdah-adultos',
-    summary:
-      'Evaluación cuidadosa de atención, impulsividad, organización, historia clínica y funcionamiento cotidiano.',
-    bullets: [
-      'Tamizaje clínico responsable',
-      'Diferenciación con ansiedad, sueño y estrés',
-      'Plan de orientación y seguimiento',
-    ],
+    description:
+      'Evaluacion cuidadosa de atencion, organizacion, impulsividad e historia clinica antes de definir recomendaciones.',
+    icon: 'focus',
   },
   {
-    title: 'Ansiedad, depresión y estrés',
-    slug: '/especialidades/ansiedad-depresion-estres',
-    summary:
-      'Atención médica y humana para síntomas emocionales, cambios de ánimo, estrés crónico y procesos de adaptación.',
-    bullets: [
-      'Valoración inicial estructurada',
-      'Seguimiento clínico progresivo',
-      'Coordinación con psicoterapia cuando aplica',
-    ],
-  },
-  {
-    title: 'Neuromodulación',
-    slug: '/especialidades/neuromodulacion',
-    summary:
-      'Tecnología de estimulación cerebral no invasiva que puede integrarse al plan de atención cuando la valoración médica especializada así lo indica.',
-    bullets: [
-      'Estimulación magnética transcraneal (EMT/TMS)',
-      'Estimulación transcraneal por corriente directa (tDCS)',
-      'Valoración de elegibilidad y seguimiento clínico',
-    ],
+    title: 'Seguimiento psiquiatrico',
+    description:
+      'Continuidad medica para revisar evolucion, respuesta al tratamiento, dudas y ajustes cuando sean necesarios.',
+    icon: 'path',
   },
 ];
 
-export const journeySteps = [
-  ['01', 'Motivo de consulta', 'El paciente comparte sus necesidades para orientarlo hacia la valoración médica o especialidad más adecuada.'],
-  ['02', 'Filtro administrativo', 'Se recopilan datos básicos, edad, modalidad, disponibilidad y preferencia de especialista.'],
-  ['03', 'Orientación interna', 'El equipo puede asignar el médico más adecuado según especialidad, agenda y tipo de caso.'],
-  ['04', 'Confirmación humana', 'Recepción confirma por WhatsApp o email con indicaciones y políticas de cancelación.'],
-  ['05', 'Seguimiento', 'Estructura preparada para recordatorios, próximas citas e indicaciones administrativas.'],
-];
-
-export const doctors = [
+export const approachCards = [
   {
-    name: 'Dra. Nombre Apellido',
-    role: 'Neuropsiquiatra',
-    focus: 'Valoración integral de salud mental, síntomas cognitivos y trastornos del ánimo.',
-    details: ['Santa Fe, CDMX', 'Español / Inglés', 'Presencial / Online'],
+    title: 'Escucha clinica',
+    description:
+      'La consulta inicia con una conversacion cuidadosa para entender sintomas, historia, contexto y prioridades.',
   },
   {
-    name: 'Dr. Nombre Apellido',
-    role: 'Psiquiatra clínico',
-    focus: 'Atención de ansiedad, depresión, sueño, estrés y seguimiento farmacológico.',
-    details: ['Consulta privada', 'Cédula profesional visible', 'Primera vez / seguimiento'],
+    title: 'Ciencia y criterio medico',
+    description:
+      'Las decisiones se apoyan en evaluacion clinica, medicina basada en evidencia y explicaciones claras.',
   },
   {
-    name: 'Psic. Nombre Apellido',
-    role: 'Neuropsicología clínica',
-    focus: 'Evaluaciones cognitivas, TDAH, memoria, atención y funciones ejecutivas.',
-    details: ['Santa Fe, CDMX', 'Evaluación por batería', 'Reporte clínico estructurado'],
+    title: 'Plan personalizado',
+    description:
+      'El tratamiento se construye segun necesidades individuales, seguimiento y objetivos realistas.',
   },
 ];
 
-export const seoKeywords = [
-  'neuromodulación CDMX',
-  'estimulación magnética transcraneal CDMX',
-  'TMS en Santa Fe',
-  'tDCS CDMX',
-  'neuropsiquiatra en Santa Fe',
-  'psiquiatra en Santa Fe CDMX',
-  'evaluación neuropsicológica CDMX',
-  'TDAH en adultos CDMX',
-  'trastornos de memoria',
-  'ansiedad y depresión Santa Fe',
-  'medicina del sueño CDMX',
-  'segunda opinión psiquiátrica',
-  'neuropsicología clínica CDMX',
-  'salud mental en Santa Fe',
+export const firstConsultationSteps = [
+  ['01', 'Agenda', 'Solicita disponibilidad en Doctoralia, WhatsApp o telefono.'],
+  ['02', 'Primera valoracion', 'La doctora revisa el motivo de consulta, antecedentes y necesidades actuales.'],
+  ['03', 'Plan de tratamiento', 'Recibiras una explicacion medica clara y los siguientes pasos propuestos.'],
+  ['04', 'Seguimiento', 'Las consultas posteriores permiten ajustar el plan segun evolucion y respuesta.'],
 ];
 
-export const futureArchitecture = [
-  '/especialidades/neuromodulacion',
-  '/especialidades/neuropsiquiatria',
-  '/especialidades/psiquiatria-clinica',
-  '/especialidades/neuropsicologia',
-  '/especialidades/medicina-del-sueno',
-  '/medicos/[slug]',
-  '/agenda',
-  '/blog',
-  '/contacto',
-  '/aviso-de-privacidad',
+export const articles = [
+  {
+    category: 'Ansiedad',
+    title: 'Cuando buscar ayuda psiquiatrica por ansiedad',
+    description:
+      'Senales frecuentes, diferencias con el estres cotidiano y que informacion conviene llevar a consulta.',
+  },
+  {
+    category: 'Primera consulta',
+    title: 'Que esperar de una primera valoracion psiquiatrica',
+    description:
+      'Una guia clara para llegar con dudas, antecedentes y expectativas sin sentir que debes tener todo resuelto.',
+  },
+  {
+    category: 'Sueno',
+    title: 'Insomnio, salud mental y tratamiento medico',
+    description:
+      'Como describir tus sintomas de sueno y por que una evaluacion integral puede orientar mejor el tratamiento.',
+  },
 ];

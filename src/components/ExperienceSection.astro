@@ -1,35 +1,33 @@
 ---
-import { experienceCards } from '../data/site';
+import { doctorProfile, profileFields } from '../data/site';
 ---
 
-<section id="experiencia" class="section-premium">
-  <div class="container-premium">
-    <span class="eyebrow">Atención integral</span>
-    <h2 class="section-title">Un acompañamiento médico cercano en cada etapa.</h2>
-    <p class="lead">
-      Desde la primera valoración hasta el seguimiento, nuestro equipo orienta a cada paciente con claridad, privacidad y un enfoque clínico personalizado.
-    </p>
-    <div class="mt-12 grid gap-5 lg:grid-cols-[1.05fr_0.95fr]">
-      <div class="reveal relative flex min-h-[520px] flex-col justify-end overflow-hidden rounded-[42px] p-8 text-white shadow-premium">
-        <img
-          class="absolute inset-0 h-full w-full object-cover object-center"
-          src="/priscilla-du-preez-aPa843frIzI-unsplash.jpg"
-          alt="Personas entrelazando sus manos en un gesto de apoyo"
-          loading="lazy"
-        />
-        <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/35 to-transparent"></div>
-        <h3 class="relative mb-4 max-w-2xl text-4xl font-black leading-none md:text-[42px]">Escuchar, evaluar y acompañar con atención humana.</h3>
-        <p class="relative max-w-2xl text-lg text-white/80">
-          Cada plan de atención parte de una valoración médica responsable y se adapta a las necesidades de la persona y su entorno.
-        </p>
+<section id="sobre-mi" class="section-premium">
+  <div class="container-premium grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr]">
+    <div class="reveal relative min-h-[560px] overflow-hidden rounded-[44px] bg-gradient-to-br from-cream via-white to-[#e8f7f4] p-5 shadow-premium">
+      <div class="absolute inset-8 rounded-[38px] border border-line/70"></div>
+      <div class="doctor-portrait doctor-portrait-light absolute bottom-0 left-1/2 h-[82%] w-[72%] -translate-x-1/2"></div>
+      <div class="absolute bottom-7 left-7 right-7 rounded-[28px] border border-line bg-white/82 p-5 shadow-soft backdrop-blur-xl">
+        <b class="block text-xl text-ink">{doctorProfile.fullName}</b>
+        <span class="text-sm font-bold text-muted">{doctorProfile.specialty} · {doctorProfile.location}</span>
       </div>
-      <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-1">
-        {experienceCards.map((card) => (
-          <article class="reveal glass-card relative overflow-hidden rounded-[32px] p-7">
-            <div class="mb-5 grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-[#fff6e7] to-[#eafbfb] text-xl font-black text-teal">{card.icon}</div>
-            <h3 class="mb-2 text-2xl font-black text-ink">{card.title}</h3>
-            <p class="text-muted">{card.description}</p>
-          </article>
+    </div>
+
+    <div class="reveal">
+      <span class="eyebrow">Sobre la doctora</span>
+      <h2 class="section-title">Una atencion medica que comienza por escuchar.</h2>
+      <p class="lead">
+        Cada persona llega a consulta con una historia diferente. Mi enfoque busca comprender de manera integral los sintomas, el contexto y las necesidades de cada paciente antes de definir un plan de tratamiento.
+      </p>
+      <blockquote class="my-8 border-l-2 border-gold pl-6 text-2xl font-black leading-tight text-navy">
+        "No se trata unicamente de reducir sintomas, sino de comprender a la persona que los esta viviendo."
+      </blockquote>
+      <div class="grid gap-3 sm:grid-cols-2">
+        {profileFields.map(([label, value]) => (
+          <div class="rounded-[22px] border border-line bg-white/72 p-4">
+            <span class="block text-xs font-black uppercase tracking-[0.1em] text-gold">{label}</span>
+            <b class="mt-1 block text-sm text-ink">{value}</b>
+          </div>
         ))}
       </div>
     </div>

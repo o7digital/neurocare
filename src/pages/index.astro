@@ -1,24 +1,29 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import ExperienceSection from '../components/ExperienceSection.astro';
+import SpecialtiesTabs from '../components/SpecialtiesTabs.astro';
+import PatientJourney from '../components/PatientJourney.astro';
+import AppointmentForm from '../components/AppointmentForm.astro';
+import BlogSection from '../components/BlogSection.astro';
+import Footer from '../components/Footer.astro';
+import { doctorProfile } from '../data/site';
 ---
 
 <Layout
-  title="Neurodigital | Sitio en construccion"
-  description="El sitio de Neurodigital se encuentra en construccion."
+  title={`${doctorProfile.fullName} | Psiquiatra en San Angel, CDMX`}
+  description="Consulta privada de psiquiatria en San Angel, Ciudad de Mexico. Atencion personalizada, confidencial y basada en evidencia."
 >
-  <main class="grid min-h-screen place-items-center px-6 py-12">
-    <section class="mx-auto grid w-full max-w-3xl gap-8 text-center">
-      <div class="mx-auto grid h-20 w-20 place-items-center rounded-full border border-line bg-white text-2xl font-black text-teal shadow-soft">
-        ND
-      </div>
-
-      <div class="grid gap-5">
-        <p class="text-sm font-black uppercase tracking-[0.18em] text-gold">Neurodigital</p>
-        <h1 class="text-5xl font-black leading-none text-navy sm:text-7xl">Sitio en construccion</h1>
-        <p class="mx-auto max-w-xl text-lg text-muted sm:text-xl">
-          Estamos actualizando nuestra presencia digital. Muy pronto volveremos con una nueva experiencia.
-        </p>
-      </div>
-    </section>
+  <Header />
+  <main>
+    <Hero />
+    <ExperienceSection />
+    <SpecialtiesTabs />
+    <PatientJourney />
+    <AppointmentForm />
+    <BlogSection />
   </main>
+  <Footer />
+  <a class="mobile-bottom-cta btn btn-primary md:hidden" href={doctorProfile.doctoraliaUrl}>Agendar consulta</a>
 </Layout>

@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { doctorProfile } from '../data/site';
 
 interface Props {
   title?: string;
@@ -7,31 +8,24 @@ interface Props {
 }
 
 const {
-  title = 'Neurodigital | Atención especializada en salud mental',
-  description = 'Atención médica especializada en salud mental en Santa Fe, CDMX, con evaluación personalizada, seguimiento clínico y tecnología de vanguardia en neuromodulación.',
+  title = `${doctorProfile.fullName} | Psiquiatra en San Angel, CDMX`,
+  description = 'Consulta privada de psiquiatria en San Angel, Ciudad de Mexico. Atencion personalizada, confidencial y basada en evidencia.',
 } = Astro.props;
 
-const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://neurocare-santafe.mx');
+const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://neurocare-one.vercel.app');
 const schema = {
   '@context': 'https://schema.org',
-  '@type': 'MédicalClinic',
-  name: 'Neurodigital',
+  '@type': 'Physician',
+  name: doctorProfile.fullName,
   description,
-  médicalSpecialty: [
-    'Psychiatry',
-    'Neuropsychiatry',
-    'Neuropsychology',
-    'SleepMedicine',
-    'Neurology',
-  ],
-  areaServed: 'Santa Fe, Ciudad de Mexico',
+  medicalSpecialty: 'Psychiatry',
+  areaServed: 'San Angel, Ciudad de Mexico',
   address: {
     '@type': 'PostalAddress',
-    addressLocality: 'Santa Fe',
+    addressLocality: 'San Angel',
     addressRegion: 'Ciudad de Mexico',
     addressCountry: 'MX',
   },
-  availableLanguage: ['es-MX', 'en'],
   url: canonical.toString(),
 };
 ---
@@ -50,12 +44,41 @@ const schema = {
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:site_name" content="Neurodigital" />
+    <meta property="og:site_name" content={doctorProfile.fullName} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="theme-color" content="#071A2F" />
     <script type="application/ld+json" set:html={JSON.stringify(schema)} />
   </head>
   <body class="min-h-screen overflow-x-hidden bg-ivory text-ink antialiased">
     <slot />
+    <script>
+      const toggle = document.querySelector('.js-mobile-menu-toggle');
+      const menu = document.querySelector('#mobile-menu');
+      const links = document.querySelectorAll('.js-mobile-menu-link');
+
+      toggle?.addEventListener('click', () => {
+        const isOpen = !menu?.classList.contains('hidden');
+        menu?.classList.toggle('hidden', isOpen);
+        toggle.setAttribute('aria-expanded', String(!isOpen));
+      });
+
+      links.forEach((link) => {
+        link.addEventListener('click', () => {
+          menu?.classList.add('hidden');
+          toggle?.setAttribute('aria-expanded', 'false');
+        });
+      });
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) entry.target.classList.add('show');
+          });
+        },
+        { threshold: 0.12 }
+      );
+
+      document.querySelectorAll('.reveal').forEach((item) => observer.observe(item));
+    </script>
   </body>
 </html>
