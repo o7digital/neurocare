@@ -1,7 +1,8 @@
 ---
-import { getSiteContent } from '../data/site';
+import { articlePages, englishArticlePages, getSiteContent } from '../data/site';
 
-const { articles, ui } = getSiteContent(Astro.url.pathname);
+const { ui } = getSiteContent(Astro.url.pathname);
+const articles = Astro.url.pathname.startsWith('/en') ? englishArticlePages : articlePages;
 ---
 
 <section id="articulos" class="section-premium bg-paper">
@@ -12,12 +13,28 @@ const { articles, ui } = getSiteContent(Astro.url.pathname);
       {ui.articlesLead}
     </p>
     <div class="mt-12 divide-y divide-sand border-y border-sand">
-      {articles.map(([category, title, href]) => (
-        <a class="reveal group grid gap-3 py-6 transition hover:bg-beige/45 md:grid-cols-[180px_1fr_44px] md:items-center" href={href} aria-label={`${ui.knowMore}: ${title}`}>
-          <span class="text-sm font-bold text-camel">{category}</span>
-          <h3 class="text-2xl font-semibold text-text transition group-hover:text-wine">{title}</h3>
-          <span class="grid h-10 w-10 place-items-center rounded-[8px] border border-sand text-2xl font-semibold leading-none text-wine transition group-hover:border-wine group-hover:bg-wine group-hover:text-white" aria-hidden="true">+</span>
-        </a>
+      {articles.map(({ category, title, description, sections }) => (
+        <details class="reveal group">
+          <summary class="grid cursor-pointer list-none gap-3 py-6 transition hover:bg-beige/45 md:grid-cols-[44px_180px_1fr] md:items-center">
+            <span class="grid h-10 w-10 place-items-center rounded-[8px] border border-sand text-2xl font-semibold leading-none text-wine transition group-open:border-wine group-open:bg-wine group-open:text-white" aria-hidden="true">
+              <span class="group-open:hidden">+</span>
+              <span class="hidden group-open:block">-</span>
+            </span>
+            <span class="text-sm font-bold text-camel">{category}</span>
+            <h3 class="text-2xl font-semibold text-text transition group-open:text-wine">{title}</h3>
+          </summary>
+          <div class="pb-8 pl-0 text-muted md:pl-[224px]">
+            <p class="max-w-3xl text-lg leading-8">{description}</p>
+            <div class="mt-6 grid gap-5">
+              {sections.map(([heading, body]) => (
+                <section class="max-w-3xl">
+                  <h4 class="mb-2 text-lg font-semibold text-text">{heading}</h4>
+                  <p class="leading-7">{body}</p>
+                </section>
+              ))}
+            </div>
+          </div>
+        </details>
       ))}
     </div>
   </div>
