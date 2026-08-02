@@ -1,34 +1,41 @@
 ---
-import { doctorProfile, navItems } from '../data/site';
+import { getSiteContent } from '../data/site';
+
+const { doctorProfile, navItems, ui } = getSiteContent(Astro.url.pathname);
+const isEnglish = Astro.url.pathname.startsWith('/en');
+const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '/en/';
+const homeHref = isEnglish ? '/en/' : '/';
+const sectionHref = (href: string) => isHome ? href : `${homeHref}${href}`;
 ---
 
-<footer class="bg-[#4a2f2b] py-16 pb-7 text-cream">
+<footer class="bg-burgundy py-16 pb-7 text-cream">
   <div class="container-premium">
     <div class="grid gap-8 border-b border-cream/12 pb-9 md:grid-cols-[1.1fr_0.8fr_0.8fr]">
       <div>
-        <a href="#inicio" class="mb-5 flex items-center gap-3.5">
-          <span class="grid h-12 w-12 place-items-center rounded-[16px] bg-wine font-black text-cream">{doctorProfile.monogram}</span>
+        <a href={isHome ? '#inicio' : homeHref} class="mb-5 flex items-center gap-3.5">
+          <span class="grid h-12 w-12 place-items-center rounded-[8px] bg-red-clay font-semibold text-white">{doctorProfile.monogram}</span>
           <span>
             <span class="block text-xl font-semibold">{doctorProfile.brandName}</span>
             <small class="block text-sm text-cream/62">{doctorProfile.specialty}</small>
             <small class="block text-sm text-cream/62">{doctorProfile.location}</small>
           </span>
         </a>
-        <a class="btn btn-primary" href={doctorProfile.doctoraliaUrl} target="_blank" rel="noreferrer">Agendar consulta</a>
+        <a class="btn btn-primary" href={doctorProfile.doctoraliaUrl} target="_blank" rel="noreferrer">{ui.book}</a>
       </div>
       <div>
-        <h4 class="mb-3 font-semibold">Navegacion</h4>
-        {navItems.slice(1, 5).map((item) => <a class="my-2 block text-cream/62 hover:text-cream" href={item.href}>{item.label}</a>)}
+        <h4 class="mb-3 font-semibold">{ui.footerNav}</h4>
+        {navItems.slice(1, 5).map((item) => <a class="my-2 block text-cream/62 hover:text-cream" href={sectionHref(item.href)}>{item.label}</a>)}
+        <a class="my-2 block text-cream/62 hover:text-cream" href={ui.privacyHref}>{ui.footerPrivacy}</a>
       </div>
       <div>
-        <h4 class="mb-3 font-semibold">Contacto</h4>
+        <h4 class="mb-3 font-semibold">{ui.footerContact}</h4>
         <a class="my-2 block text-cream/62 hover:text-cream" href={doctorProfile.doctoraliaUrl} target="_blank" rel="noreferrer">Doctoralia</a>
         <a class="my-2 block text-cream/62 hover:text-cream" href={doctorProfile.phoneHref}>{doctorProfile.phoneLabel}</a>
         <a class="my-2 block text-cream/62 hover:text-cream" href={doctorProfile.secondaryPhoneHref}>{doctorProfile.secondaryPhoneLabel}</a>
       </div>
     </div>
     <div class="pt-5 text-xs text-cream/42">
-      Informacion general. No sustituye una valoracion medica. En caso de emergencia, acude a servicios de urgencias.
+      {ui.footerDisclaimer}
     </div>
   </div>
 </footer>

@@ -1,14 +1,16 @@
 ---
-import { authorityPoints, firstConsultationSteps } from '../data/site';
+import { getSiteContent } from '../data/site';
+
+const { authorityPoints, firstConsultationSteps, ui } = getSiteContent(Astro.url.pathname);
 ---
 
 <section class="section-premium bg-cream/65">
   <div class="container-premium">
-    <span class="eyebrow">Enfoque medico</span>
-    <h2 class="section-title">Formacion especializada al servicio de una atencion mas clara.</h2>
+    <span class="eyebrow">{ui.medicalApproachEyebrow}</span>
+    <h2 class="section-title">{ui.medicalApproachTitle}</h2>
     <div class="mt-12 grid gap-5 lg:grid-cols-3">
       {authorityPoints.map((point, index) => (
-        <article class="reveal relative min-h-64 overflow-hidden rounded-[28px] border border-sand bg-paper p-7">
+        <article class="reveal relative min-h-64 overflow-hidden rounded-[8px] border border-sand bg-paper p-7">
           <span class="number-bg">{String(index + 1).padStart(2, '0')}</span>
           <h3 class="relative mb-4 max-w-[220px] text-2xl font-semibold text-text">{point.title}</h3>
           <p class="relative text-muted">{point.description}</p>
@@ -20,10 +22,10 @@ import { authorityPoints, firstConsultationSteps } from '../data/site';
 
 <section id="primera-consulta" class="section-premium bg-paper">
   <div class="container-premium">
-    <span class="eyebrow">Primera consulta</span>
-    <h2 class="section-title">Un primer encuentro para ordenar lo que estas viviendo.</h2>
+    <span class="eyebrow">{ui.firstVisitEyebrow}</span>
+    <h2 class="section-title">{ui.firstVisitTitle}</h2>
     <p class="lead">
-      La consulta permite comprender el motivo de atencion, revisar antecedentes relevantes y definir los siguientes pasos con claridad.
+      {ui.firstVisitLead}
     </p>
     <div class="mt-12 grid gap-8 border-l border-wine/30 pl-6 md:grid-cols-2 md:border-l-0 md:pl-0 lg:grid-cols-4">
       {firstConsultationSteps.map(([step, title, text]) => (

@@ -1,5 +1,7 @@
 ---
-import { academicItems, approachPoints, doctorProfile, timeline } from '../data/site';
+import { getSiteContent } from '../data/site';
+
+const { academicItems, approachPoints, doctorProfile, timeline, ui } = getSiteContent(Astro.url.pathname);
 ---
 
 <section id="la-doctora" class="section-premium bg-paper">
@@ -7,32 +9,37 @@ import { academicItems, approachPoints, doctorProfile, timeline } from '../data/
     <div class="grid items-center gap-12 lg:grid-cols-[0.86fr_1fr]">
       <figure class="reveal relative mx-auto w-full max-w-[430px]">
         <div class="absolute -right-8 -top-8 h-40 w-40 rounded-full bg-wine/8"></div>
-        <img
-          class="warm-photo relative aspect-[4/5] w-full rounded-[28px] object-cover object-center"
-          src={doctorProfile.portrait}
-          alt={`Retrato editorial de ${doctorProfile.brandName}`}
-          loading="lazy"
-        />
+        <picture>
+          <source srcset={doctorProfile.portraitWebp} type="image/webp" />
+          <img
+            class="warm-photo relative aspect-[4/5] w-full rounded-[8px] object-cover object-center"
+            src={doctorProfile.portrait}
+            alt={`Retrato editorial de ${doctorProfile.brandName}`}
+            width="640"
+            height="640"
+            loading="lazy"
+          />
+        </picture>
       </figure>
 
       <div class="reveal">
-        <span class="eyebrow">La doctora</span>
-        <h2 class="section-title">Una mirada integral a la salud mental y neurologica.</h2>
+        <span class="eyebrow">{ui.doctorEyebrow}</span>
+        <h2 class="section-title">{ui.doctorTitle}</h2>
         <p class="lead">
-          Soy especialista en Psiquiatria con formacion en Neuropsiquiatria por el Instituto Nacional de Neurologia y Neurocirugia Manuel Velasco Suarez. Mi practica se enfoca en comprender de manera integral los sintomas emocionales, cognitivos, conductuales y neurologicos de cada paciente.
+          {ui.doctorLeadA}
         </p>
         <p class="lead mt-5">
-          Busco ofrecer una atencion humana, cercana y basada en evidencia cientifica. Cada tratamiento se construye de forma personalizada, considerando no solamente el diagnostico, sino tambien la historia, el contexto y las necesidades particulares de la persona.
+          {ui.doctorLeadB}
         </p>
         <blockquote class="mt-8 border-l border-wine pl-6">
-          <p class="editorial-serif text-3xl leading-tight text-wine">Cada paciente necesita ser escuchado, comprendido y acompanado de manera individual.</p>
-          <span class="mt-3 block text-xs font-bold text-muted">Texto provisional pendiente de aprobacion de la doctora.</span>
+          <p class="editorial-serif text-3xl leading-tight text-wine">{ui.quote}</p>
+          <span class="mt-3 block text-xs font-bold text-muted">{ui.quoteNote}</span>
         </blockquote>
       </div>
     </div>
 
     <div class="mt-20">
-      <span class="eyebrow">Trayectoria medica</span>
+      <span class="eyebrow">{ui.timelineEyebrow}</span>
       <div class="mt-8 grid gap-10 border-l border-wine/35 pl-6 lg:grid-cols-3 lg:border-l-0 lg:border-t lg:pl-0 lg:pt-8">
         {timeline.map((item) => (
           <article class="reveal relative lg:pr-8">
@@ -46,7 +53,7 @@ import { academicItems, approachPoints, doctorProfile, timeline } from '../data/
       </div>
       <div class="mt-9 space-y-1 text-sm font-bold text-muted">
         <p>{doctorProfile.license}</p>
-        <p>Atencion en espanol e ingles · Consulta en San Angel y en linea</p>
+        <p>{ui.licenseNote}</p>
       </div>
     </div>
 
@@ -59,10 +66,10 @@ import { academicItems, approachPoints, doctorProfile, timeline } from '../data/
       ))}
     </div>
 
-    <div class="mt-20 rounded-[32px] border border-sand bg-cream p-7 md:p-9">
-      <span class="eyebrow">Ciencia y practica clinica</span>
+    <div class="mt-20 rounded-[8px] border border-sand bg-cream p-7 md:p-9">
+      <span class="eyebrow">{ui.scienceEyebrow}</span>
       <p class="lead mt-5">
-        Su formacion clinica se complementa con participacion en investigacion y publicaciones relacionadas con neurologia y neuropsiquiatria.
+        {ui.scienceLead}
       </p>
       <div class="mt-7 grid gap-4 lg:grid-cols-3">
         {academicItems.map((item) => (

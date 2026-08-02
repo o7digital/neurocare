@@ -1,21 +1,23 @@
 ---
-import { articles } from '../data/site';
+import { getSiteContent } from '../data/site';
+
+const { articles, ui } = getSiteContent(Astro.url.pathname);
 ---
 
 <section id="articulos" class="section-premium bg-paper">
   <div class="container-premium">
-    <span class="eyebrow">Articulos</span>
-    <h2 class="section-title">Lecturas para comprender mejor antes de consultar.</h2>
+    <span class="eyebrow">{ui.articlesEyebrow}</span>
+    <h2 class="section-title">{ui.articlesTitle}</h2>
     <p class="lead">
-      Temas editoriales preparados para publicarse con revision medica, sin sustituir una valoracion individual.
+      {ui.articlesLead}
     </p>
     <div class="mt-12 divide-y divide-sand border-y border-sand">
-      {articles.map(([category, title]) => (
-        <article class="reveal grid gap-3 py-6 md:grid-cols-[180px_1fr_auto] md:items-center">
+      {articles.map(([category, title, href]) => (
+        <a class="reveal group grid gap-3 py-6 transition hover:bg-beige/45 md:grid-cols-[180px_1fr_90px] md:items-center" href={href}>
           <span class="text-sm font-bold text-camel">{category}</span>
-          <h3 class="text-2xl font-semibold text-text">{title}</h3>
-          <a class="font-black text-wine" href="#agenda">Agendar consulta</a>
-        </article>
+          <h3 class="text-2xl font-semibold text-text transition group-hover:text-wine">{title}</h3>
+          <span class="text-sm font-black text-wine opacity-70 transition group-hover:translate-x-1 group-hover:opacity-100">{ui.knowMore}</span>
+        </a>
       ))}
     </div>
   </div>

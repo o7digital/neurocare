@@ -1,0 +1,101 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { getSiteContent } from '../../data/site';
+
+const { doctorProfile } = getSiteContent(Astro.url.pathname);
+---
+
+<Layout
+  title={`Privacy notice | ${doctorProfile.brandName}`}
+  description="Comprehensive privacy notice for patients, website users and people who request information or schedule an appointment with Dra. Ariadna Mondragon."
+  lang="en"
+  ogLocale="en_US"
+>
+  <Header />
+  <main class="section-premium bg-paper">
+    <article class="container-premium max-w-4xl">
+      <p class="eyebrow">Comprehensive privacy notice</p>
+      <h1 class="section-title">Privacy notice</h1>
+      <p class="lead">Last updated: August 1, 2026.</p>
+
+      <div class="mt-10 space-y-8 text-muted">
+        <section>
+          <h2 class="mb-3 text-2xl font-semibold text-text">1. Data controller</h2>
+          <p>
+            Dra. Ariadna Montserrat Mondragon Medellin, with consultation address at Calle Cracovia 72, Torre A, Oficina 216, San Angel, Alvaro Obregon, Mexico City, C.P. 01000, is responsible for the processing of personal data provided when requesting information, booking an appointment, receiving medical care or using this website.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="mb-3 text-2xl font-semibold text-text">2. Personal data we may collect</h2>
+          <p>We may collect identification and contact data, including name, telephone number, email address, age, date of birth, address, billing data and emergency contact information.</p>
+          <p class="mt-3">For medical services, we may also process sensitive personal data related to physical and mental health, medical history, symptoms, diagnoses, treatments, medication, test results, clinical notes, medical progress and any information necessary to maintain the clinical record.</p>
+        </section>
+
+        <section>
+          <h2 class="mb-3 text-2xl font-semibold text-text">3. Primary purposes</h2>
+          <p>Your personal data will be used to:</p>
+          <ul class="mt-3 list-disc space-y-2 pl-6">
+            <li>Identify and contact you.</li>
+            <li>Schedule, confirm, modify or cancel appointments.</li>
+            <li>Provide psychiatry, neuropsychiatry, psychotherapy, medical follow-up and clinical guidance services.</li>
+            <li>Create, maintain and update your clinical record according to applicable regulations.</li>
+            <li>Issue prescriptions, indications, certificates, referrals or medical documents when appropriate.</li>
+            <li>Follow up on treatment, medical progress and continuity of care.</li>
+            <li>Comply with legal, health, tax, administrative and document retention obligations.</li>
+            <li>Manage payments, receipts, billing and service-related clarifications.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="mb-3 text-2xl font-semibold text-text">4. Secondary purposes</h2>
+          <p>Secondarily, your data may be used to send reminders, administrative service information, schedule change notices, satisfaction surveys or informational communications related to mental health. You may object to these purposes by submitting a request through the contact channels stated in this notice.</p>
+        </section>
+
+        <section>
+          <h2 class="mb-3 text-2xl font-semibold text-text">5. Sensitive data and consent</h2>
+          <p>Health-related data is sensitive personal data. By providing this information and receiving medical care, you consent to its processing for necessary care, diagnosis, treatment, follow-up, clinical record and compliance with applicable legal obligations.</p>
+        </section>
+
+        <section>
+          <h2 class="mb-3 text-2xl font-semibold text-text">6. Transfers</h2>
+          <p>Your personal data will not be sold, rented or assigned for commercial purposes. It may be transferred or communicated, when necessary, to laboratories, hospitals, other health professionals, insurance providers, competent authorities, appointment or payment platforms, technology providers and professional advisers, provided this is necessary for service delivery, legal compliance or at the express request of the data subject.</p>
+        </section>
+
+        <section>
+          <h2 class="mb-3 text-2xl font-semibold text-text">7. ARCO rights and withdrawal</h2>
+          <p>You may exercise your rights of access, rectification, cancellation and objection, as well as withdraw consent or limit the use of your personal data, by submitting a request to the controller. The request must include full name, response channel, official identification, a clear description of the right you wish to exercise and, where applicable, documents supporting the request.</p>
+          <p class="mt-3">You may submit the request through the telephone numbers published on this website or through the Doctoralia profile used for contact and appointment booking. Requests will be handled according to the timeframes and requirements under applicable law.</p>
+        </section>
+
+        <section>
+          <h2 class="mb-3 text-2xl font-semibold text-text">8. Retention and security</h2>
+          <p>Personal data will be retained for the time necessary to fulfill the purposes described, the professional relationship, clinical follow-up and legal obligations applicable to clinical records and administrative documentation. Reasonable administrative, technical and physical safeguards are applied to protect information against loss, misuse, unauthorized access, alteration or improper disclosure.</p>
+        </section>
+
+        <section>
+          <h2 class="mb-3 text-2xl font-semibold text-text">9. Minors</h2>
+          <p>When minors receive care, personal data must be provided by a mother, father, guardian or legal representative, except where applicable law allows otherwise. Information will be treated with special care and only for medical care, follow-up and legal compliance purposes.</p>
+        </section>
+
+        <section>
+          <h2 class="mb-3 text-2xl font-semibold text-text">10. Website use and cookies</h2>
+          <p>This website is informational. It may generate basic technical data from browsing, such as IP address, browser type, device, visited pages and access date, for security, functionality, technical analysis and site improvement purposes. If third-party tools are integrated, they may operate under their own privacy policies.</p>
+        </section>
+
+        <section>
+          <h2 class="mb-3 text-2xl font-semibold text-text">11. Changes to this notice</h2>
+          <p>This privacy notice may be modified to address legal, operational, technical or service changes. Updated versions will be published on this website.</p>
+        </section>
+
+        <section>
+          <h2 class="mb-3 text-2xl font-semibold text-text">12. Contact</h2>
+          <p>For questions about this notice or the processing of your personal data, you may contact the controller through the telephone numbers published on this website or through the Doctoralia profile.</p>
+        </section>
+      </div>
+    </article>
+  </main>
+  <Footer />
+</Layout>

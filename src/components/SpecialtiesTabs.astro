@@ -1,19 +1,21 @@
 ---
-import { consultationReasons, doctorProfile } from '../data/site';
+import { getSiteContent } from '../data/site';
+
+const { consultationReasons, doctorProfile, ui } = getSiteContent(Astro.url.pathname);
 ---
 
 <section id="motivos" class="section-premium">
   <div class="container-premium">
-    <span class="eyebrow">Motivos de consulta</span>
-    <h2 class="section-title">En que puedo ayudarte.</h2>
+    <span class="eyebrow">{ui.reasonsEyebrow}</span>
+    <h2 class="section-title">{ui.reasonsTitle}</h2>
     <p class="lead">
-      Cada situacion requiere una valoracion individual. Estos son algunos de los motivos de consulta que atiendo con mayor frecuencia.
+      {ui.reasonsLead}
     </p>
 
     <div class="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
       {consultationReasons.map((reason, index) => (
         <article class:list={[
-          'reveal relative overflow-hidden rounded-[28px] border p-6',
+          'reveal relative overflow-hidden rounded-[8px] border p-6',
           index === 0 ? 'border-wine/25 bg-[linear-gradient(135deg,#fffdf9,#f4eadf)] text-text shadow-soft' : 'border-sand bg-paper text-text shadow-soft',
         ]}>
           <span class="number-bg">{String(index + 1).padStart(2, '0')}</span>
@@ -24,15 +26,15 @@ import { consultationReasons, doctorProfile } from '../data/site';
             {reason.items.map((item) => <li class="text-coffee">{item}</li>)}
           </ul>
           <div class="relative flex flex-wrap gap-3">
-            <a class="font-black text-wine" href={reason.href}>Conocer mas</a>
-            <a class="font-black text-coffee" href={doctorProfile.doctoraliaUrl} target="_blank" rel="noreferrer">Agendar consulta</a>
+            <a class="font-black text-wine" href={reason.href}>{ui.knowMore}</a>
+            <a class="font-black text-coffee" href={doctorProfile.doctoraliaUrl} target="_blank" rel="noreferrer">{ui.book}</a>
           </div>
         </article>
       ))}
     </div>
 
     <p class="mt-8 max-w-3xl text-sm font-bold text-muted">
-      La informacion de esta pagina es orientativa. Cada diagnostico requiere una valoracion medica individual.
+      {ui.reasonsDisclaimer}
     </p>
   </div>
 </section>

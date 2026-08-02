@@ -1,25 +1,36 @@
 ---
 import '../styles/global.css';
-import { doctorProfile } from '../data/site';
+import { getSiteContent } from '../data/site';
 
 interface Props {
   title?: string;
   description?: string;
+  lang?: string;
+  ogLocale?: string;
 }
+
+const { doctorProfile } = getSiteContent(Astro.url.pathname);
 
 const {
   title = `${doctorProfile.brandName} | Psiquiatria y Neuropsiquiatria en San Angel`,
   description = 'Psiquiatria y neuropsiquiatria en San Angel, CDMX. Valoracion integral, atencion humana y tratamientos personalizados basados en evidencia cientifica.',
+  lang = Astro.url.pathname.startsWith('/en') ? 'en' : 'es-MX',
+  ogLocale = Astro.url.pathname.startsWith('/en') ? 'en_US' : 'es_MX',
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://neurocare-one.vercel.app');
+const siteOrigin = canonical.origin;
+const isPrivacyPage = Astro.url.pathname.startsWith('/aviso-de-privacidad') || Astro.url.pathname.startsWith('/en/privacy-notice');
+const spanishUrl = new URL(isPrivacyPage ? '/aviso-de-privacidad/' : '/', siteOrigin).toString();
+const englishUrl = new URL(isPrivacyPage ? '/en/privacy-notice/' : '/en/', siteOrigin).toString();
+const ogImage = new URL(doctorProfile.avatar, siteOrigin).toString();
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'Physician',
   name: doctorProfile.fullName,
   description,
   medicalSpecialty: ['Psychiatry', 'Neuropsychiatry'],
-  image: new URL(doctorProfile.avatar, canonical).toString(),
+  image: ogImage,
   telephone: doctorProfile.phoneLabel,
   areaServed: 'San Angel, Ciudad de Mexico',
   address: {
@@ -34,7 +45,7 @@ const schema = {
 ---
 
 <!doctype html>
-<html lang="es-MX" class="scroll-smooth">
+<html lang={lang} class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -42,14 +53,20 @@ const schema = {
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="es-MX" href={spanishUrl} />
+    <link rel="alternate" hreflang="en" href={englishUrl} />
+    <link rel="alternate" hreflang="x-default" href={spanishUrl} />
     <meta property="og:type" content="website" />
-    <meta property="og:locale" content="es_MX" />
+    <meta property="og:locale" content={ogLocale} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:alt" content={`${doctorProfile.brandName} professional portrait`} />
     <meta property="og:url" content={canonical} />
     <meta property="og:site_name" content={doctorProfile.fullName} />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="theme-color" content="#5C1E28" />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="theme-color" content="#C98F91" />
     <script type="application/ld+json" set:html={JSON.stringify(schema)} />
   </head>
   <body class="min-h-screen overflow-x-hidden bg-cream text-text antialiased">

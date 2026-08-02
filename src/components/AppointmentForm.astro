@@ -1,30 +1,32 @@
 ---
-import { doctorProfile, serviceGroups } from '../data/site';
+import { getSiteContent } from '../data/site';
+
+const { doctorProfile, serviceGroups, ui } = getSiteContent(Astro.url.pathname);
 ---
 
 <section id="agenda" class="section-premium bg-paper">
   <div class="container-premium">
     <div class="grid gap-12 lg:grid-cols-[0.95fr_1fr]">
       <div class="reveal">
-        <span class="eyebrow">Formas de atencion</span>
-        <h2 class="section-title">Consulta en San Angel y atencion en linea.</h2>
+        <span class="eyebrow">{ui.careModesEyebrow}</span>
+        <h2 class="section-title">{ui.careModesTitle}</h2>
         <p class="lead">
-          Consulta los horarios, modalidades y tarifas actualizadas en Doctoralia. La informacion del sitio es orientativa y no sustituye una valoracion medica.
+          {ui.careModesLead}
         </p>
         <div class="mt-8 flex flex-wrap gap-3">
-          <a class="btn btn-primary" href={doctorProfile.doctoraliaUrl} target="_blank" rel="noreferrer">Ver disponibilidad y agendar</a>
-          <a class="btn btn-secondary" href="#contacto">Ver ubicacion</a>
+          <a class="btn btn-primary" href={doctorProfile.doctoraliaUrl} target="_blank" rel="noreferrer">{ui.seeAvailability}</a>
+          <a class="btn btn-secondary" href="#contacto">{ui.seeLocation}</a>
         </div>
       </div>
 
       <div class="grid gap-4">
         {serviceGroups.map((group) => (
-          <article class="reveal rounded-[28px] border border-sand bg-paper p-6 shadow-soft">
+          <article class="reveal rounded-[8px] border border-sand bg-paper p-6 shadow-soft">
             <h3 class="mb-2 text-2xl font-semibold text-text">{group.title}</h3>
             <p class="mb-4 text-muted">{group.description}</p>
             <div class="flex flex-wrap gap-2">
               {group.services.map((service) => (
-                <span class="rounded-full border border-sand bg-cream px-3 py-1.5 text-sm font-bold text-coffee">{service}</span>
+                <span class="rounded-[8px] border border-sand bg-cream px-3 py-1.5 text-sm font-bold text-coffee">{service}</span>
               ))}
             </div>
             {group.note && <p class="mt-4 text-xs font-bold text-muted">{group.note}</p>}
@@ -37,16 +39,16 @@ import { doctorProfile, serviceGroups } from '../data/site';
 
 <section class="section-premium bg-cream/70">
   <div class="container-premium grid gap-8 lg:grid-cols-[0.8fr_1fr]">
-    <div class="reveal rounded-[32px] border border-sand bg-paper p-8 text-text shadow-soft">
+    <div class="reveal rounded-[8px] border border-sand bg-paper p-8 text-text shadow-soft">
       <p class="editorial-serif text-5xl leading-none text-wine">{doctorProfile.reviewCount}</p>
-      <h2 class="mt-4 text-3xl font-semibold leading-tight">opiniones verificadas en Doctoralia</h2>
-      <a class="btn btn-secondary mt-7" href={doctorProfile.doctoraliaUrl} target="_blank" rel="noreferrer">Consultar opiniones en Doctoralia</a>
+      <h2 class="mt-4 text-3xl font-semibold leading-tight">{ui.reviewsTitle}</h2>
+      <a class="btn btn-secondary mt-7" href={doctorProfile.doctoraliaUrl} target="_blank" rel="noreferrer">{ui.reviewsButton}</a>
     </div>
     <div class="reveal self-center">
-      <span class="eyebrow">Confianza</span>
-      <h2 class="section-title">Una atencion que se construye con confianza.</h2>
+      <span class="eyebrow">{ui.trustEyebrow}</span>
+      <h2 class="section-title">{ui.trustTitle}</h2>
       <p class="lead">
-        Las opiniones verificadas de sus pacientes destacan especialmente la escucha, las explicaciones detalladas, la empatia, la dedicacion durante la consulta y una vision integral de cada caso.
+        {ui.trustLead}
       </p>
     </div>
   </div>
@@ -55,23 +57,23 @@ import { doctorProfile, serviceGroups } from '../data/site';
 <section id="contacto" class="section-premium bg-paper">
   <div class="container-premium grid gap-10 lg:grid-cols-[1fr_0.9fr]">
     <div class="reveal">
-      <span class="eyebrow">Ubicacion</span>
-      <h2 class="section-title">Consulta privada en San Angel.</h2>
+      <span class="eyebrow">{ui.locationEyebrow}</span>
+      <h2 class="section-title">{ui.locationTitle}</h2>
       <div class="mt-6 space-y-1 text-lg font-semibold text-coffee">
         {doctorProfile.addressLines.map((line) => <p>{line}</p>)}
       </div>
       <p class="mt-6 text-muted">
-        Modalidades: consulta presencial, videoconsulta, atencion en espanol e ingles, adultos y ninos sujeto a disponibilidad indicada por la doctora.
+        {ui.locationLeadA}
       </p>
       <p class="mt-4 text-muted">
-        Formas de pago confirmadas: tarjeta de credito, tarjeta de debito, efectivo y transferencia.
+        {ui.locationLeadB}
       </p>
     </div>
-    <div class="reveal rounded-[32px] border border-sand bg-paper p-7 shadow-soft">
-      <h3 class="mb-4 text-2xl font-semibold text-text">Agendar consulta</h3>
-      <p class="mb-6 text-muted">Para reservar, revisar disponibilidad y confirmar tarifas actualizadas, utiliza el perfil de Doctoralia.</p>
+    <div class="reveal rounded-[8px] border border-sand bg-paper p-7 shadow-soft">
+      <h3 class="mb-4 text-2xl font-semibold text-text">{ui.contactCardTitle}</h3>
+      <p class="mb-6 text-muted">{ui.contactCardLead}</p>
       <div class="grid gap-3">
-        <a class="btn btn-primary w-full" href={doctorProfile.doctoraliaUrl} target="_blank" rel="noreferrer">Agendar en Doctoralia</a>
+        <a class="btn btn-primary w-full" href={doctorProfile.doctoraliaUrl} target="_blank" rel="noreferrer">{ui.bookDoctoralia}</a>
         <a class="btn btn-secondary w-full" href={doctorProfile.phoneHref}>{doctorProfile.phoneLabel}</a>
         <a class="btn btn-secondary w-full" href={doctorProfile.secondaryPhoneHref}>{doctorProfile.secondaryPhoneLabel}</a>
       </div>

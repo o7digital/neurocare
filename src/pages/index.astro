@@ -8,7 +8,9 @@ import PatientJourney from '../components/PatientJourney.astro';
 import AppointmentForm from '../components/AppointmentForm.astro';
 import BlogSection from '../components/BlogSection.astro';
 import Footer from '../components/Footer.astro';
-import { doctorProfile } from '../data/site';
+import { getSiteContent } from '../data/site';
+
+const { doctorProfile, ui } = getSiteContent(Astro.url.pathname);
 ---
 
 <Layout
@@ -25,5 +27,5 @@ import { doctorProfile } from '../data/site';
     <BlogSection />
   </main>
   <Footer />
-  <a class="mobile-bottom-cta btn btn-primary md:hidden" href={doctorProfile.doctoraliaUrl} target="_blank" rel="noreferrer">Agendar consulta</a>
+  <a class="mobile-bottom-cta btn btn-primary md:hidden" href={doctorProfile.doctoraliaUrl} target="_blank" rel="noreferrer">{ui.book}</a>
 </Layout>

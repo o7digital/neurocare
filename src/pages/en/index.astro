@@ -1,0 +1,33 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Hero from '../../components/Hero.astro';
+import ExperienceSection from '../../components/ExperienceSection.astro';
+import SpecialtiesTabs from '../../components/SpecialtiesTabs.astro';
+import PatientJourney from '../../components/PatientJourney.astro';
+import AppointmentForm from '../../components/AppointmentForm.astro';
+import BlogSection from '../../components/BlogSection.astro';
+import Footer from '../../components/Footer.astro';
+import { getSiteContent } from '../../data/site';
+
+const { doctorProfile, ui } = getSiteContent(Astro.url.pathname);
+---
+
+<Layout
+  title={`${doctorProfile.brandName} | Psychiatry and Neuropsychiatry in San Angel`}
+  description="Specialized care for psychiatric and neuropsychiatric conditions in San Angel, Mexico City. In-person and online consultations."
+  lang="en"
+  ogLocale="en_US"
+>
+  <Header />
+  <main>
+    <Hero />
+    <ExperienceSection />
+    <SpecialtiesTabs />
+    <PatientJourney />
+    <AppointmentForm />
+    <BlogSection />
+  </main>
+  <Footer />
+  <a class="mobile-bottom-cta btn btn-primary md:hidden" href={doctorProfile.doctoraliaUrl} target="_blank" rel="noreferrer">{ui.book}</a>
+</Layout>

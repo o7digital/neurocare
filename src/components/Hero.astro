@@ -1,36 +1,41 @@
 ---
-import { doctorProfile, heroFacts } from '../data/site';
+import { getSiteContent } from '../data/site';
+
+const { doctorProfile, heroFacts, ui } = getSiteContent(Astro.url.pathname);
 ---
 
-<section id="inicio" class="relative overflow-hidden py-16 md:py-24">
+<section id="inicio" class="relative overflow-hidden py-14 md:py-22">
   <div class="organic-line pointer-events-none absolute inset-0"></div>
   <div class="container-premium grid items-center gap-14 lg:grid-cols-[0.94fr_0.86fr]">
     <div class="reveal show">
-      <div class="eyebrow mb-6">Psiquiatria y Neuropsiquiatria · San Angel, CDMX</div>
+      <div class="eyebrow mb-6">{ui.sectionHeroEyebrow}</div>
       <h1 class="mb-7 max-w-3xl text-[42px] font-semibold leading-[1.02] text-text sm:text-[58px] lg:text-[70px]">
-        Comprender la mente, <span class="editorial-serif block text-wine">escuchar a la persona.</span>
+        {ui.heroTitleA} <span class="editorial-serif block text-wine">{ui.heroTitleB}</span>
       </h1>
       <p class="mb-9 max-w-2xl text-lg text-muted md:text-xl">
-        Atencion especializada para trastornos psiquiatricos y neuropsiquiatricos, con una valoracion integral, tratamientos personalizados y un acompanamiento cercano basado en evidencia cientifica.
+        {ui.heroLead}
       </p>
       <div class="mb-7 flex flex-wrap gap-3.5">
-        <a class="btn btn-primary" href={doctorProfile.doctoraliaUrl} target="_blank" rel="noreferrer">Agendar consulta</a>
-        <a class="btn btn-secondary" href="#enfoque">Conocer mi enfoque</a>
+        <a class="btn btn-primary" href={doctorProfile.doctoraliaUrl} target="_blank" rel="noreferrer">{ui.book}</a>
+        <a class="btn btn-secondary" href="#enfoque">{ui.learnApproach}</a>
       </div>
       <p class="max-w-2xl text-sm font-bold text-coffee">{heroFacts.join(' · ')}</p>
     </div>
 
     <div class="reveal show relative mx-auto w-full max-w-[470px]">
-      <div class="absolute -left-8 top-10 h-[78%] w-[78%] rounded-[48%_52%_44%_56%] bg-red-clay/10"></div>
-      <figure class="relative rounded-[34px] bg-beige p-4">
-        <div class="warm-photo overflow-hidden rounded-[26px] bg-sand">
+      <figure class="relative rounded-[8px] bg-red-clay p-4 shadow-premium">
+        <picture class="warm-photo block overflow-hidden rounded-[8px] bg-sand">
+          <source srcset={doctorProfile.avatarWebp} type="image/webp" />
           <img
             class="aspect-[4/5] h-full w-full object-cover object-center"
             src={doctorProfile.avatar}
             alt={`Retrato profesional de ${doctorProfile.brandName}`}
+            width="900"
+            height="900"
+            fetchpriority="high"
           />
-        </div>
-        <figcaption class="absolute bottom-7 left-7 right-7 rounded-[22px] border border-sand bg-paper/88 p-4 shadow-soft backdrop-blur-xl">
+        </picture>
+        <figcaption class="absolute bottom-7 left-7 right-7 rounded-[8px] border border-white/70 bg-paper/90 p-4 shadow-soft backdrop-blur-xl">
           <b class="block text-lg text-text">{doctorProfile.brandName}</b>
           <span class="text-sm font-bold text-muted">{doctorProfile.specialty}</span>
         </figcaption>

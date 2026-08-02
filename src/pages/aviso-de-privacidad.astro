@@ -1,0 +1,97 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { doctorProfile } from '../data/site';
+---
+
+<Layout
+  title={`Aviso de privacidad | ${doctorProfile.brandName}`}
+  description="Aviso de privacidad integral para pacientes, usuarios del sitio web y personas que solicitan informacion o agendan consulta con la Dra. Ariadna Mondragon."
+>
+  <Header />
+  <main class="section-premium bg-paper">
+    <article class="container-premium max-w-4xl">
+      <p class="eyebrow">Aviso de privacidad integral</p>
+      <h1 class="section-title">Aviso de privacidad</h1>
+      <p class="lead">Ultima actualizacion: 1 de agosto de 2026.</p>
+
+      <div class="mt-10 space-y-8 text-muted">
+        <section>
+          <h2 class="mb-3 text-2xl font-semibold text-text">1. Responsable del tratamiento</h2>
+          <p>
+            La Dra. Ariadna Montserrat Mondragon Medellin, con domicilio de atencion en Calle Cracovia 72, Torre A, Oficina 216, San Angel, Alvaro Obregon, Ciudad de Mexico, C.P. 01000, es responsable del tratamiento de los datos personales que usted proporcione al solicitar informacion, agendar una consulta, recibir atencion medica o utilizar este sitio web.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="mb-3 text-2xl font-semibold text-text">2. Datos personales que podemos recabar</h2>
+          <p>Podemos recabar datos de identificacion y contacto, tales como nombre, telefono, correo electronico, edad, fecha de nacimiento, domicilio, datos de facturacion y datos de contacto de emergencia.</p>
+          <p class="mt-3">Para la prestacion de servicios medicos, tambien podemos tratar datos personales sensibles relacionados con salud fisica y mental, antecedentes medicos, sintomas, diagnosticos, tratamientos, medicamentos, resultados de estudios, notas clinicas, evolucion medica y demas informacion necesaria para integrar el expediente clinico.</p>
+        </section>
+
+        <section>
+          <h2 class="mb-3 text-2xl font-semibold text-text">3. Finalidades primarias</h2>
+          <p>Sus datos personales seran utilizados para:</p>
+          <ul class="mt-3 list-disc space-y-2 pl-6">
+            <li>Identificarle y contactarle.</li>
+            <li>Agendar, confirmar, modificar o cancelar consultas.</li>
+            <li>Prestar servicios de psiquiatria, neuropsiquiatria, psicoterapia, seguimiento medico y orientacion clinica.</li>
+            <li>Integrar, conservar y actualizar su expediente clinico conforme a la normativa aplicable.</li>
+            <li>Emitir recetas, indicaciones, constancias, referencias o documentos medicos cuando correspondan.</li>
+            <li>Dar seguimiento a su tratamiento, evolucion y continuidad de la atencion.</li>
+            <li>Cumplir obligaciones legales, sanitarias, fiscales, administrativas y de conservacion documental.</li>
+            <li>Gestionar pagos, comprobantes, facturacion y aclaraciones relacionadas con el servicio.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="mb-3 text-2xl font-semibold text-text">4. Finalidades secundarias</h2>
+          <p>De manera secundaria, sus datos podran utilizarse para enviar recordatorios, informacion administrativa sobre servicios, avisos de cambios de horario, encuestas de satisfaccion o comunicaciones informativas relacionadas con salud mental. Usted puede oponerse a estas finalidades enviando una solicitud a traves de los medios de contacto indicados en este aviso.</p>
+        </section>
+
+        <section>
+          <h2 class="mb-3 text-2xl font-semibold text-text">5. Datos sensibles y consentimiento</h2>
+          <p>Los datos relativos a su salud son datos personales sensibles. Al proporcionar dicha informacion y recibir atencion medica, usted consiente su tratamiento para las finalidades necesarias de atencion, diagnostico, tratamiento, seguimiento, expediente clinico y cumplimiento de obligaciones legales aplicables.</p>
+        </section>
+
+        <section>
+          <h2 class="mb-3 text-2xl font-semibold text-text">6. Transferencias</h2>
+          <p>Sus datos personales no seran vendidos, rentados ni cedidos para fines comerciales. Podran transferirse o comunicarse, cuando sea necesario, a laboratorios, hospitales, otros profesionales de la salud, aseguradoras, autoridades competentes, plataformas de agenda o pago, proveedores tecnologicos y asesores profesionales, siempre que sea necesario para la prestacion del servicio, por obligacion legal o por solicitud expresa del titular.</p>
+        </section>
+
+        <section>
+          <h2 class="mb-3 text-2xl font-semibold text-text">7. Derechos ARCO y revocacion</h2>
+          <p>Usted puede ejercer sus derechos de acceso, rectificacion, cancelacion u oposicion, asi como revocar su consentimiento o limitar el uso de sus datos personales, mediante solicitud dirigida a la responsable. La solicitud debera incluir nombre completo, medio para responder, identificacion oficial, descripcion clara del derecho que desea ejercer y, en su caso, documentos que sustenten la peticion.</p>
+          <p class="mt-3">Puede presentar su solicitud a traves de los telefonos publicados en este sitio o mediante el perfil de Doctoralia indicado para contacto y agenda. La solicitud sera atendida conforme a los plazos y requisitos previstos por la legislacion aplicable.</p>
+        </section>
+
+        <section>
+          <h2 class="mb-3 text-2xl font-semibold text-text">8. Conservacion y seguridad</h2>
+          <p>Los datos personales se conservaran durante el tiempo necesario para cumplir las finalidades descritas, la relacion profesional, el seguimiento clinico y las obligaciones legales aplicables al expediente clinico y documentacion administrativa. Se aplican medidas administrativas, tecnicas y fisicas razonables para proteger la informacion contra perdida, uso indebido, acceso no autorizado, alteracion o divulgacion indebida.</p>
+        </section>
+
+        <section>
+          <h2 class="mb-3 text-2xl font-semibold text-text">9. Menores de edad</h2>
+          <p>Cuando se atienda a menores de edad, los datos personales deberan ser proporcionados por madre, padre, tutor o representante legal, salvo los supuestos permitidos por la normativa aplicable. La informacion se tratara con especial cuidado y solo para fines de atencion medica, seguimiento y cumplimiento legal.</p>
+        </section>
+
+        <section>
+          <h2 class="mb-3 text-2xl font-semibold text-text">10. Uso del sitio web y cookies</h2>
+          <p>Este sitio web es informativo. Puede generar datos tecnicos basicos derivados de la navegacion, como direccion IP, tipo de navegador, dispositivo, paginas visitadas y fecha de acceso, con fines de seguridad, funcionamiento, analisis tecnico y mejora del sitio. Si se integran herramientas de terceros, estas podran operar conforme a sus propias politicas de privacidad.</p>
+        </section>
+
+        <section>
+          <h2 class="mb-3 text-2xl font-semibold text-text">11. Cambios al aviso</h2>
+          <p>Este aviso de privacidad puede modificarse para atender cambios legales, operativos, tecnicos o de servicios. Las versiones actualizadas se publicaran en este sitio web.</p>
+        </section>
+
+        <section>
+          <h2 class="mb-3 text-2xl font-semibold text-text">12. Contacto</h2>
+          <p>Para dudas sobre este aviso o sobre el tratamiento de sus datos personales, puede contactar a la responsable mediante los telefonos publicados en este sitio o a traves del perfil de Doctoralia.</p>
+        </section>
+      </div>
+    </article>
+  </main>
+  <Footer />
+</Layout>
