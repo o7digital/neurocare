@@ -13,10 +13,10 @@ const { articles, ui } = getSiteContent(Astro.url.pathname);
     </p>
     <div class="mt-12 divide-y divide-sand border-y border-sand">
       {articles.map(([category, title, href]) => (
-        <a class="reveal group grid gap-3 py-6 transition hover:bg-beige/45 md:grid-cols-[180px_1fr_90px] md:items-center" href={href}>
+        <a class="reveal group grid gap-3 py-6 transition hover:bg-beige/45 md:grid-cols-[180px_1fr_44px] md:items-center" href={href} aria-label={`${ui.knowMore}: ${title}`}>
           <span class="text-sm font-bold text-camel">{category}</span>
           <h3 class="text-2xl font-semibold text-text transition group-hover:text-wine">{title}</h3>
-          <span class="text-sm font-black text-wine opacity-70 transition group-hover:translate-x-1 group-hover:opacity-100">{ui.knowMore}</span>
+          <span class="grid h-10 w-10 place-items-center rounded-[8px] border border-sand text-2xl font-semibold leading-none text-wine transition group-hover:border-wine group-hover:bg-wine group-hover:text-white" aria-hidden="true">+</span>
         </a>
       ))}
     </div>
