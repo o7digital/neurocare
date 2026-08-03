@@ -16,10 +16,10 @@ const { consultationReasons, doctorProfile, ui } = getSiteContent(Astro.url.path
       {consultationReasons.map((reason, index) => (
         <article class:list={[
           'reveal relative overflow-hidden rounded-[8px] border p-6',
-          index === 0 ? 'border-wine/25 bg-[linear-gradient(135deg,#fffdf9,#f4eadf)] text-text shadow-soft' : 'border-sand bg-paper text-text shadow-soft',
+          index === 0 ? 'border-water/30 bg-[linear-gradient(135deg,#fffdf9,#f4ebe6_48%,#eef6f4)] text-text shadow-soft' : 'border-sand bg-paper text-text shadow-soft',
         ]}>
           <span class="number-bg">{String(index + 1).padStart(2, '0')}</span>
-          <div class:list={['mb-5 h-px w-16', index === 0 ? 'bg-wine/55' : 'bg-wine/35']}></div>
+          <div class:list={['mb-5 h-px w-16', index === 0 ? 'bg-water/65' : 'bg-wine/35']}></div>
           <h3 class="relative mb-3 text-2xl font-semibold leading-tight">{reason.title}</h3>
           <p class="relative mb-5 text-sm text-muted">{reason.description}</p>
           <ul class="relative mb-6 grid gap-2 text-sm font-bold">

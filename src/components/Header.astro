@@ -14,21 +14,25 @@ const sectionHref = (href: string) => isHome ? href : `${homeHref}${href}`;
 ---
 
 <header class="sticky top-0 z-50 border-b border-sand/80 bg-paper/88 backdrop-blur-2xl">
-  <nav class="container-premium flex h-[78px] items-center justify-between gap-5">
-    <a href={isHome ? '#inicio' : homeHref} class="flex min-w-0 items-center gap-3.5" aria-label={`${doctorProfile.brandName} inicio`}>
-      <span class="grid h-12 w-12 shrink-0 place-items-center rounded-[8px] bg-red-clay font-semibold text-white shadow-[0_14px_32px_rgb(74_48_50_/_0.16)]">{doctorProfile.monogram}</span>
-      <span class="min-w-0">
-        <span class="block truncate text-[17px] font-semibold text-text">{doctorProfile.brandName}</span>
-        <small class="mt-[-1px] block text-[11px] font-bold uppercase tracking-[0.08em] text-muted max-sm:hidden">{doctorProfile.specialty}</small>
-      </span>
+  <nav class="container-premium flex h-[88px] items-center justify-between gap-5">
+    <a href={isHome ? '#inicio' : homeHref} class="flex min-w-0 items-center" aria-label={`${doctorProfile.brandName} inicio`}>
+      <img
+        class="h-[60px] w-auto max-w-[200px] object-contain sm:h-[70px] sm:max-w-[238px]"
+        src="/neuro-diversa-logo.png"
+        alt="Neuro Diversa"
+        width="863"
+        height="399"
+        loading="eager"
+        decoding="async"
+      />
     </a>
 
-    <div class="hidden items-center gap-5 text-sm font-bold text-coffee xl:flex">
+    <div class="hidden items-center gap-5 text-[16px] font-bold text-coffee xl:flex">
       {navItems.map((item) => <a class="transition hover:text-wine" href={sectionHref(item.href)}>{item.label}</a>)}
     </div>
 
     <div class="flex items-center gap-3">
-      <a class="rounded-[8px] border border-sand px-3 py-2 text-sm font-bold text-coffee transition hover:bg-beige hover:text-wine" href={languageHref}>{ui.languageLabel}</a>
+      <a class="rounded-[8px] border border-sand px-3 py-2 text-[16px] font-bold text-coffee transition hover:bg-beige hover:text-wine" href={languageHref}>{ui.languageLabel}</a>
       <a class="btn btn-primary hidden sm:inline-flex" href={doctorProfile.doctoraliaUrl} target="_blank" rel="noreferrer">{ui.book}</a>
       <button
         class="js-mobile-menu-toggle grid h-11 w-11 place-items-center rounded-[8px] border border-sand bg-paper text-espresso shadow-[0_10px_24px_rgb(74_48_50_/_0.08)] xl:hidden"
@@ -47,7 +51,7 @@ const sectionHref = (href: string) => isHome ? href : `${homeHref}${href}`;
   </nav>
   <div id="mobile-menu" class="hidden border-t border-sand/80 bg-paper/98 xl:hidden">
     <div class="container-premium grid gap-2 py-4">
-      {navItems.map((item) => <a class="js-mobile-menu-link rounded-[8px] px-4 py-3 text-base font-bold text-coffee transition hover:bg-beige hover:text-wine" href={sectionHref(item.href)}>{item.label}</a>)}
+      {navItems.map((item) => <a class="js-mobile-menu-link rounded-[8px] px-4 py-3 text-[18px] font-bold text-coffee transition hover:bg-beige hover:text-wine" href={sectionHref(item.href)}>{item.label}</a>)}
       <a class="btn btn-primary js-mobile-menu-link mt-2 w-full" href={doctorProfile.doctoraliaUrl} target="_blank" rel="noreferrer">{ui.book}</a>
     </div>
   </div>

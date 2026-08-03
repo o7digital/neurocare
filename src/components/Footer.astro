@@ -12,14 +12,21 @@ const sectionHref = (href: string) => isHome ? href : `${homeHref}${href}`;
   <div class="container-premium">
     <div class="grid gap-8 border-b border-cream/12 pb-9 md:grid-cols-[1.1fr_0.8fr_0.8fr]">
       <div>
-        <a href={isHome ? '#inicio' : homeHref} class="mb-5 flex items-center gap-3.5">
-          <span class="grid h-12 w-12 place-items-center rounded-[8px] bg-red-clay font-semibold text-white">{doctorProfile.monogram}</span>
-          <span>
-            <span class="block text-xl font-semibold">{doctorProfile.brandName}</span>
-            <small class="block text-sm text-cream/62">{doctorProfile.specialty}</small>
-            <small class="block text-sm text-cream/62">{doctorProfile.location}</small>
-          </span>
+        <a href={isHome ? '#inicio' : homeHref} class="mb-5 inline-flex" aria-label={`${doctorProfile.brandName} inicio`}>
+          <img
+            class="h-auto w-[190px] max-w-full object-contain sm:w-[220px]"
+            src="/neuro-diversa-logo-light.png"
+            alt="Neuro Diversa"
+            width="863"
+            height="399"
+            loading="lazy"
+            decoding="async"
+          />
         </a>
+        <p class="mb-5 max-w-sm text-sm text-cream/62">
+          {doctorProfile.specialty}<br />
+          {doctorProfile.location}
+        </p>
         <a class="btn btn-primary" href={doctorProfile.doctoraliaUrl} target="_blank" rel="noreferrer">{ui.book}</a>
       </div>
       <div>
