@@ -6,6 +6,12 @@ interface Props {
   title?: string;
   description?: string;
   keywords?: string | string[];
+  alternateUrls?: {
+    es: string;
+    en: string;
+    default?: string;
+  };
+  schemaType?: 'Physician' | 'Article';
   lang?: string;
   ogLocale?: string;
 }
@@ -131,6 +137,8 @@ const {
   title = `${doctorProfile.brandName} | Psiquiatria y Neuropsiquiatria en San Angel`,
   description = 'Psiquiatria y neuropsiquiatria en San Angel, CDMX. Valoracion integral, atencion humana y tratamientos personalizados basados en evidencia cientifica.',
   keywords = isEnglish ? englishKeywords : spanishKeywords,
+  alternateUrls,
+  schemaType = 'Physician',
   lang = isEnglish ? 'en' : 'es-MX',
   ogLocale = isEnglish ? 'en_US' : 'es_MX',
 } = Astro.props;
@@ -139,10 +147,11 @@ const keywordsContent = Array.isArray(keywords) ? keywords.join(', ') : keywords
 const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://neurocare-one.vercel.app');
 const siteOrigin = canonical.origin;
 const isPrivacyPage = Astro.url.pathname.startsWith('/aviso-de-privacidad') || Astro.url.pathname.startsWith('/en/privacy-notice');
-const spanishUrl = new URL(isPrivacyPage ? '/aviso-de-privacidad/' : '/', siteOrigin).toString();
-const englishUrl = new URL(isPrivacyPage ? '/en/privacy-notice/' : '/en/', siteOrigin).toString();
+const spanishUrl = alternateUrls?.es ?? new URL(isPrivacyPage ? '/aviso-de-privacidad/' : '/', siteOrigin).toString();
+const englishUrl = alternateUrls?.en ?? new URL(isPrivacyPage ? '/en/privacy-notice/' : '/en/', siteOrigin).toString();
+const defaultUrl = alternateUrls?.default ?? spanishUrl;
 const ogImage = new URL(doctorProfile.avatar, siteOrigin).toString();
-const schema = {
+const physicianSchema = {
   '@context': 'https://schema.org',
   '@type': 'Physician',
   name: doctorProfile.fullName,
@@ -160,6 +169,22 @@ const schema = {
   },
   url: canonical.toString(),
 };
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'MedicalWebPage',
+  headline: title,
+  description,
+  image: ogImage,
+  inLanguage: lang,
+  url: canonical.toString(),
+  about: ['Psychiatry', 'Neuropsychiatry', 'Mental health care in San Angel, CDMX'],
+  reviewedBy: {
+    '@type': 'Physician',
+    name: doctorProfile.fullName,
+    medicalSpecialty: ['Psychiatry', 'Neuropsychiatry'],
+  },
+};
+const schema = schemaType === 'Article' ? articleSchema : physicianSchema;
 ---
 
 <!doctype html>
@@ -174,7 +199,7 @@ const schema = {
     <link rel="canonical" href={canonical} />
     <link rel="alternate" hreflang="es-MX" href={spanishUrl} />
     <link rel="alternate" hreflang="en" href={englishUrl} />
-    <link rel="alternate" hreflang="x-default" href={spanishUrl} />
+    <link rel="alternate" hreflang="x-default" href={defaultUrl} />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content={ogLocale} />
     <meta property="og:title" content={title} />

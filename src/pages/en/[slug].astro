@@ -2,7 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
-import { englishArticlePages, getSiteContent } from '../../data/site';
+import { articlePages, englishArticlePages, getSiteContent } from '../../data/site';
 
 export function getStaticPaths() {
   return englishArticlePages.map((article) => ({
@@ -13,9 +13,23 @@ export function getStaticPaths() {
 
 const { article } = Astro.props;
 const { doctorProfile } = getSiteContent(Astro.url.pathname);
+const articleIndex = englishArticlePages.findIndex((item) => item.slug === article.slug);
+const spanishArticle = articlePages[articleIndex];
+const alternateUrls = {
+  es: new URL(spanishArticle.href, Astro.site).toString(),
+  en: new URL(article.href, Astro.site).toString(),
+  default: new URL(spanishArticle.href, Astro.site).toString(),
+};
 ---
 
-<Layout title={`${article.title} | ${doctorProfile.brandName}`} description={article.description} lang="en" ogLocale="en_US">
+<Layout
+  title={`${article.title} in San Angel Mexico City | ${doctorProfile.brandName}`}
+  description={`${article.description} Psychiatric and neuropsychiatric care in San Angel, Mexico City.`}
+  alternateUrls={alternateUrls}
+  schemaType="Article"
+  lang="en"
+  ogLocale="en_US"
+>
   <Header />
   <main class="section-premium bg-paper">
     <article class="container-premium max-w-4xl">

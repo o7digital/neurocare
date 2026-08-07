@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { articlePages, doctorProfile } from '../data/site';
+import { articlePages, doctorProfile, englishArticlePages } from '../data/site';
 
 export function getStaticPaths() {
   return articlePages.map((article) => ({
@@ -12,9 +12,21 @@ export function getStaticPaths() {
 }
 
 const { article } = Astro.props;
+const articleIndex = articlePages.findIndex((item) => item.slug === article.slug);
+const englishArticle = englishArticlePages[articleIndex];
+const alternateUrls = {
+  es: new URL(article.href, Astro.site).toString(),
+  en: new URL(englishArticle.href, Astro.site).toString(),
+  default: new URL(article.href, Astro.site).toString(),
+};
 ---
 
-<Layout title={`${article.title} | ${doctorProfile.brandName}`} description={article.description}>
+<Layout
+  title={`${article.title} en San Angel CDMX | ${doctorProfile.brandName}`}
+  description={`${article.description} Atencion psiquiatrica y neuropsiquiatrica en San Angel, CDMX.`}
+  alternateUrls={alternateUrls}
+  schemaType="Article"
+>
   <Header />
   <main class="section-premium bg-paper">
     <article class="container-premium max-w-4xl">
