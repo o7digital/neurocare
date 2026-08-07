@@ -234,6 +234,14 @@ const schema = schemaType === 'Article' ? articleSchema : physicianSchema;
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content={ogImage} />
     <meta name="theme-color" content="#C98F91" />
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4VX5983W32"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-4VX5983W32');
+    </script>
     <script type="application/ld+json" set:html={JSON.stringify(schema)} />
   </head>
   <body class="min-h-screen overflow-x-hidden bg-cream text-text antialiased">
