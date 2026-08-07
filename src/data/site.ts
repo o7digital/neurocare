@@ -33,7 +33,7 @@ export const navItems = [
 ];
 
 export const heroFacts = [
-  'Adultos y ninos, segun disponibilidad',
+  'Atencion para adultos',
   'Consulta presencial y en linea',
   'Espanol e ingles',
 ];
@@ -445,7 +445,7 @@ export const spanishContent = {
     trustLead: 'Las opiniones verificadas de sus pacientes destacan especialmente la escucha, las explicaciones detalladas, la empatia, la dedicacion durante la consulta y una vision integral de cada caso.',
     locationEyebrow: 'Ubicacion',
     locationTitle: 'Consulta privada en San Angel.',
-    locationLeadA: 'Consulta presencial en San Angel, Alvaro Obregon, CDMX, y videoconsulta para pacientes en Ciudad de Mexico y Mexico. Atencion en espanol e ingles, adultos y ninos sujeto a disponibilidad indicada por la doctora.',
+    locationLeadA: 'Consulta presencial en San Angel, Alvaro Obregon, CDMX, y videoconsulta para pacientes en Ciudad de Mexico y Mexico. Atencion para adultos en espanol e ingles.',
     locationLeadB: 'Formas de pago confirmadas: tarjeta de credito, tarjeta de debito, efectivo y transferencia.',
     contactCardTitle: 'Agendar consulta',
     contactCardLead: 'Para reservar, revisar disponibilidad y confirmar tarifas actualizadas, utiliza el perfil de Doctoralia.',
@@ -515,7 +515,7 @@ export const englishContent = {
     trustLead: 'Verified patient reviews especially highlight listening, detailed explanations, empathy, dedication during consultation and an integrated view of each case.',
     locationEyebrow: 'Location',
     locationTitle: 'Private consultation in San Angel.',
-    locationLeadA: 'In-person consultation in San Angel, Alvaro Obregon, Mexico City, and online consultation for patients in Mexico City and Mexico. Care in Spanish and English, adults and children subject to availability indicated by the doctor.',
+    locationLeadA: 'In-person consultation in San Angel, Alvaro Obregon, Mexico City, and online consultation for patients in Mexico City and Mexico. Adult care in Spanish and English.',
     locationLeadB: 'Confirmed payment methods: credit card, debit card, cash and bank transfer.',
     contactCardTitle: 'Book an appointment',
     contactCardLead: 'To book, review availability and confirm updated fees, use the Doctoralia profile.',
