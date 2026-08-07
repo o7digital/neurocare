@@ -5,18 +5,136 @@ import { getSiteContent } from '../data/site';
 interface Props {
   title?: string;
   description?: string;
+  keywords?: string | string[];
   lang?: string;
   ogLocale?: string;
 }
 
 const { doctorProfile } = getSiteContent(Astro.url.pathname);
+const isEnglish = Astro.url.pathname.startsWith('/en');
+const spanishKeywords = [
+  'psiquiatra en San Angel CDMX',
+  'psiquiatra San Angel Mexico',
+  'psiquiatra en CDMX',
+  'neuropsiquiatra en San Angel CDMX',
+  'neuropsiquiatra San Angel Mexico',
+  'neuropsiquiatra en CDMX',
+  'neuropsiquiatria en San Angel CDMX',
+  'neuropsiquiatria en CDMX',
+  'consulta psiquiatrica en San Angel CDMX',
+  'consulta psiquiatrica San Angel Mexico',
+  'consulta psiquiatrica en CDMX',
+  'consulta psiquiatrica en linea CDMX',
+  'psiquiatria y neuropsiquiatria en San Angel CDMX',
+  'psiquiatria y neuropsiquiatria en CDMX',
+  'Dra. Ariadna Mondragon San Angel CDMX',
+  'Neuro Diversa San Angel CDMX',
+  'primera consulta psiquiatrica en San Angel CDMX',
+  'evaluacion psiquiatrica en San Angel CDMX',
+  'valoracion neuropsiquiatrica en San Angel CDMX',
+  'seguimiento psiquiatrico en San Angel CDMX',
+  'tratamiento psiquiatrico personalizado en San Angel CDMX',
+  'psicoterapia en San Angel CDMX',
+  'terapia cognitivo conductual en San Angel CDMX',
+  'terapia de pareja en San Angel CDMX',
+  'intervencion en crisis en San Angel CDMX',
+  'consulta de salud mental en San Angel CDMX',
+  'tratamiento para ansiedad en San Angel CDMX',
+  'ataques de panico tratamiento en San Angel CDMX',
+  'depresion tratamiento en San Angel CDMX',
+  'trastorno bipolar tratamiento en San Angel CDMX',
+  'TDAH en adultos San Angel CDMX',
+  'autismo valoracion en San Angel CDMX',
+  'trastorno del espectro autista en San Angel CDMX',
+  'trastornos del sueno tratamiento en San Angel CDMX',
+  'insomnio y salud mental en San Angel CDMX',
+  'psicosis tratamiento en San Angel CDMX',
+  'demencia valoracion neuropsiquiatrica en San Angel CDMX',
+  'sintomas cognitivos valoracion en San Angel CDMX',
+  'problemas de memoria valoracion en San Angel CDMX',
+  'sintomas emocionales en enfermedades neurologicas San Angel CDMX',
+  'psiquiatra Alvaro Obregon CDMX',
+  'neuropsiquiatra Alvaro Obregon CDMX',
+  'consulta psiquiatrica Alvaro Obregon CDMX',
+  'psiquiatra cerca de San Angel',
+  'psiquiatra cerca de mi San Angel CDMX',
+  'psiquiatra en linea Mexico CDMX',
+  'psiquiatra bilingue San Angel CDMX',
+  'cuando acudir con un psiquiatra en San Angel CDMX',
+  'que hace un neuropsiquiatra en CDMX',
+  'diferencia entre psiquiatria y neuropsiquiatria CDMX',
+  'ansiedad cuando buscar ayuda profesional CDMX',
+  'TDAH en adultos sintomas CDMX',
+  'primera consulta psiquiatrica que esperar CDMX',
+  'relacion entre sueno y salud mental CDMX',
+  'sintomas emocionales y cognitivos en enfermedades neurologicas CDMX',
+];
+const englishKeywords = [
+  'psychiatrist in San Angel Mexico City',
+  'psychiatrist San Angel Mexico',
+  'psychiatrist in Mexico City',
+  'neuropsychiatrist in San Angel Mexico City',
+  'neuropsychiatrist San Angel Mexico',
+  'neuropsychiatrist in Mexico City',
+  'neuropsychiatry in San Angel Mexico City',
+  'neuropsychiatry in Mexico City',
+  'psychiatric consultation in San Angel Mexico City',
+  'psychiatric consultation San Angel Mexico',
+  'psychiatric consultation in Mexico City',
+  'online psychiatric consultation Mexico City',
+  'psychiatry and neuropsychiatry in San Angel Mexico City',
+  'psychiatry and neuropsychiatry in Mexico City',
+  'Dr Ariadna Mondragon San Angel Mexico City',
+  'Neuro Diversa San Angel Mexico City',
+  'first psychiatric consultation in San Angel Mexico City',
+  'psychiatric evaluation in San Angel Mexico City',
+  'neuropsychiatric assessment in San Angel Mexico City',
+  'psychiatric follow up in San Angel Mexico City',
+  'personalized psychiatric treatment in San Angel Mexico City',
+  'psychotherapy in San Angel Mexico City',
+  'cognitive behavioral therapy in San Angel Mexico City',
+  'couples therapy in San Angel Mexico City',
+  'crisis intervention in San Angel Mexico City',
+  'mental health consultation in San Angel Mexico City',
+  'anxiety treatment in San Angel Mexico City',
+  'panic attacks treatment in San Angel Mexico City',
+  'depression treatment in San Angel Mexico City',
+  'bipolar disorder treatment in San Angel Mexico City',
+  'adult ADHD San Angel Mexico City',
+  'autism assessment in San Angel Mexico City',
+  'autism spectrum disorder in San Angel Mexico City',
+  'sleep disorders treatment in San Angel Mexico City',
+  'insomnia and mental health in San Angel Mexico City',
+  'psychosis treatment in San Angel Mexico City',
+  'dementia neuropsychiatric assessment in San Angel Mexico City',
+  'cognitive symptoms assessment in San Angel Mexico City',
+  'memory problems assessment in San Angel Mexico City',
+  'emotional symptoms in neurological diseases San Angel Mexico City',
+  'psychiatrist Alvaro Obregon Mexico City',
+  'neuropsychiatrist Alvaro Obregon Mexico City',
+  'psychiatric consultation Alvaro Obregon Mexico City',
+  'psychiatrist near San Angel',
+  'psychiatrist near me San Angel Mexico City',
+  'online psychiatrist Mexico City Mexico',
+  'bilingual psychiatrist San Angel Mexico City',
+  'when to see a psychiatrist in San Angel Mexico City',
+  'what does a neuropsychiatrist do in Mexico City',
+  'difference between psychiatry and neuropsychiatry Mexico City',
+  'anxiety when to seek professional help Mexico City',
+  'adult ADHD symptoms Mexico City',
+  'first psychiatric consultation what to expect Mexico City',
+  'sleep and mental health Mexico City',
+  'emotional and cognitive symptoms in neurological diseases Mexico City',
+];
 
 const {
   title = `${doctorProfile.brandName} | Psiquiatria y Neuropsiquiatria en San Angel`,
   description = 'Psiquiatria y neuropsiquiatria en San Angel, CDMX. Valoracion integral, atencion humana y tratamientos personalizados basados en evidencia cientifica.',
-  lang = Astro.url.pathname.startsWith('/en') ? 'en' : 'es-MX',
-  ogLocale = Astro.url.pathname.startsWith('/en') ? 'en_US' : 'es_MX',
+  keywords = isEnglish ? englishKeywords : spanishKeywords,
+  lang = isEnglish ? 'en' : 'es-MX',
+  ogLocale = isEnglish ? 'en_US' : 'es_MX',
 } = Astro.props;
+const keywordsContent = Array.isArray(keywords) ? keywords.join(', ') : keywords;
 
 const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://neurocare-one.vercel.app');
 const siteOrigin = canonical.origin;
@@ -52,6 +170,7 @@ const schema = {
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="keywords" content={keywordsContent} />
     <link rel="canonical" href={canonical} />
     <link rel="alternate" hreflang="es-MX" href={spanishUrl} />
     <link rel="alternate" hreflang="en" href={englishUrl} />
