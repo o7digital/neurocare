@@ -6,6 +6,51 @@ const isEnglish = Astro.url.pathname.startsWith('/en');
 const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '/en/';
 const homeHref = isEnglish ? '/en/' : '/';
 const sectionHref = (href: string) => isHome ? href : `${homeHref}${href}`;
+const footerKeywords = isEnglish
+  ? [
+      'psychiatrist in San Angel Mexico City',
+      'neuropsychiatrist in San Angel Mexico City',
+      'psychiatric consultation in San Angel Mexico City',
+      'psychiatrist Alvaro Obregon Mexico City',
+      'neuropsychiatrist Alvaro Obregon Mexico City',
+      'online psychiatric consultation Mexico City',
+      'psychiatrist near San Angel',
+      'psychiatrist near me San Angel Mexico City',
+      'anxiety treatment in San Angel Mexico City',
+      'depression treatment in San Angel Mexico City',
+      'adult ADHD San Angel Mexico City',
+      'sleep disorders treatment in San Angel Mexico City',
+      'first psychiatric consultation in San Angel Mexico City',
+      'neuropsychiatric assessment in San Angel Mexico City',
+      'bilingual psychiatrist San Angel Mexico City',
+      'mental health consultation in San Angel Mexico City',
+      'psychotherapy in San Angel Mexico City',
+      'panic attacks treatment in San Angel Mexico City',
+      'cognitive symptoms assessment in San Angel Mexico City',
+      'memory problems assessment in San Angel Mexico City',
+    ]
+  : [
+      'psiquiatra en San Angel CDMX',
+      'neuropsiquiatra en San Angel CDMX',
+      'consulta psiquiatrica en San Angel CDMX',
+      'psiquiatra Alvaro Obregon CDMX',
+      'neuropsiquiatra Alvaro Obregon CDMX',
+      'consulta psiquiatrica en linea CDMX',
+      'psiquiatra cerca de San Angel',
+      'psiquiatra cerca de mi San Angel CDMX',
+      'tratamiento para ansiedad en San Angel CDMX',
+      'depresion tratamiento en San Angel CDMX',
+      'TDAH en adultos San Angel CDMX',
+      'trastornos del sueno tratamiento en San Angel CDMX',
+      'primera consulta psiquiatrica en San Angel CDMX',
+      'valoracion neuropsiquiatrica en San Angel CDMX',
+      'psiquiatra bilingue San Angel CDMX',
+      'consulta de salud mental en San Angel CDMX',
+      'psicoterapia en San Angel CDMX',
+      'ataques de panico tratamiento en San Angel CDMX',
+      'sintomas cognitivos valoracion en San Angel CDMX',
+      'problemas de memoria valoracion en San Angel CDMX',
+    ];
 ---
 
 <footer class="bg-burgundy py-16 pb-7 text-cream">
@@ -46,6 +91,14 @@ const sectionHref = (href: string) => isHome ? href : `${homeHref}${href}`;
     </div>
     <div class="pt-5 text-xs text-cream/42">
       {ui.footerDisclaimer}
+    </div>
+    <div class="mt-8 border-t border-cream/10 pt-6 text-center text-[11px] font-semibold leading-7 text-cream/34">
+      {footerKeywords.map((keyword, index) => (
+        <>
+          <span>{keyword}</span>
+          {index < footerKeywords.length - 1 && <span class="px-2 text-cream/18">·</span>}
+        </>
+      ))}
     </div>
   </div>
 </footer>
