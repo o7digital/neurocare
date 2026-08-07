@@ -160,12 +160,34 @@ const physicianSchema = {
   image: ogImage,
   telephone: doctorProfile.phoneLabel,
   areaServed: 'San Angel, Ciudad de Mexico',
+  priceRange: '$$',
+  sameAs: [doctorProfile.doctoraliaUrl],
+  availableService: [
+    'Psychiatry',
+    'Neuropsychiatry',
+    'Psychotherapy',
+    'Online psychiatric consultation',
+  ],
   address: {
     '@type': 'PostalAddress',
     streetAddress: doctorProfile.addressLines.join(', '),
     addressLocality: 'San Angel',
-    addressRegion: 'Ciudad de Mexico',
+    addressRegion: 'CDMX',
+    postalCode: '01000',
     addressCountry: 'MX',
+  },
+  location: {
+    '@type': 'MedicalClinic',
+    name: 'Neuro Diversa',
+    priceRange: '$$',
+    medicalSpecialty: ['Psychiatry', 'Neuropsychiatry'],
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: doctorProfile.addressLines.join(', '),
+      addressLocality: 'San Angel',
+      addressRegion: 'Ciudad de Mexico',
+      addressCountry: 'MX',
+    },
   },
   url: canonical.toString(),
 };
@@ -182,6 +204,7 @@ const articleSchema = {
     '@type': 'Physician',
     name: doctorProfile.fullName,
     medicalSpecialty: ['Psychiatry', 'Neuropsychiatry'],
+    sameAs: doctorProfile.doctoraliaUrl,
   },
 };
 const schema = schemaType === 'Article' ? articleSchema : physicianSchema;

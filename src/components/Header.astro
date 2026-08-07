@@ -16,15 +16,18 @@ const sectionHref = (href: string) => isHome ? href : `${homeHref}${href}`;
 <header class="sticky top-0 z-50 border-b border-sand/80 bg-paper/88 backdrop-blur-2xl">
   <nav class="container-premium flex h-[88px] items-center justify-between gap-5">
     <a href={isHome ? '#inicio' : homeHref} class="flex min-w-0 items-center" aria-label={`${doctorProfile.brandName} inicio`}>
-      <img
-        class="h-[60px] w-auto max-w-[200px] object-contain sm:h-[70px] sm:max-w-[238px]"
-        src="/neuro-diversa-logo.png"
-        alt="Neuro Diversa"
-        width="863"
-        height="399"
-        loading="eager"
-        decoding="async"
-      />
+      <picture>
+        <source srcset="/neuro-diversa-logo.webp" type="image/webp" />
+        <img
+          class="h-[60px] w-auto max-w-[200px] object-contain sm:h-[70px] sm:max-w-[238px]"
+          src="/neuro-diversa-logo.png"
+          alt="Neuro Diversa"
+          width="863"
+          height="399"
+          loading="eager"
+          decoding="async"
+        />
+      </picture>
     </a>
 
     <div class="hidden items-center gap-5 text-[16px] font-bold text-coffee xl:flex">

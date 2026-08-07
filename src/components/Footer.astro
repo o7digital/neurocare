@@ -13,15 +13,18 @@ const sectionHref = (href: string) => isHome ? href : `${homeHref}${href}`;
     <div class="grid gap-8 border-b border-cream/12 pb-9 md:grid-cols-[1.1fr_0.8fr_0.8fr]">
       <div>
         <a href={isHome ? '#inicio' : homeHref} class="mb-5 inline-flex" aria-label={`${doctorProfile.brandName} inicio`}>
-          <img
-            class="h-auto w-[190px] max-w-full object-contain sm:w-[220px]"
-            src="/neuro-diversa-logo-light.png"
-            alt="Neuro Diversa"
-            width="863"
-            height="399"
-            loading="lazy"
-            decoding="async"
-          />
+          <picture>
+            <source srcset="/neuro-diversa-logo-light.webp" type="image/webp" />
+            <img
+              class="h-auto w-[190px] max-w-full object-contain sm:w-[220px]"
+              src="/neuro-diversa-logo-light.png"
+              alt="Neuro Diversa"
+              width="863"
+              height="399"
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
         </a>
         <p class="mb-5 max-w-sm text-sm text-cream/62">
           {doctorProfile.specialty}<br />
