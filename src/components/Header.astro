@@ -9,8 +9,13 @@ const languageHref = Astro.url.pathname.startsWith('/en/privacy-notice')
   ? '/aviso-de-privacidad/'
   : Astro.url.pathname.startsWith('/aviso-de-privacidad')
     ? '/en/privacy-notice/'
-    : ui.languageHref;
+    : Astro.url.pathname.startsWith('/en/blog')
+      ? '/blog/'
+      : Astro.url.pathname.startsWith('/blog')
+        ? '/en/blog/'
+        : ui.languageHref;
 const sectionHref = (href: string) => isHome ? href : `${homeHref}${href}`;
+const navigationHref = (href: string) => href.startsWith('/') ? href : sectionHref(href);
 ---
 
 <header class="sticky top-0 z-50 border-b border-sand/80 bg-paper/88 backdrop-blur-2xl">
@@ -31,7 +36,7 @@ const sectionHref = (href: string) => isHome ? href : `${homeHref}${href}`;
     </a>
 
     <div class="hidden items-center gap-5 text-[16px] font-bold text-coffee xl:flex">
-      {navItems.map((item) => <a class="transition hover:text-wine" href={sectionHref(item.href)}>{item.label}</a>)}
+      {navItems.map((item) => <a class="transition hover:text-wine" href={navigationHref(item.href)}>{item.label}</a>)}
     </div>
 
     <div class="flex items-center gap-3">
@@ -54,7 +59,7 @@ const sectionHref = (href: string) => isHome ? href : `${homeHref}${href}`;
   </nav>
   <div id="mobile-menu" class="hidden border-t border-sand/80 bg-paper/98 xl:hidden">
     <div class="container-premium grid gap-2 py-4">
-      {navItems.map((item) => <a class="js-mobile-menu-link rounded-[8px] px-4 py-3 text-[18px] font-bold text-coffee transition hover:bg-beige hover:text-wine" href={sectionHref(item.href)}>{item.label}</a>)}
+      {navItems.map((item) => <a class="js-mobile-menu-link rounded-[8px] px-4 py-3 text-[18px] font-bold text-coffee transition hover:bg-beige hover:text-wine" href={navigationHref(item.href)}>{item.label}</a>)}
       <a class="btn btn-primary js-mobile-menu-link mt-2 w-full" href={doctorProfile.doctoraliaUrl} target="_blank" rel="noreferrer">{ui.book}</a>
     </div>
   </div>

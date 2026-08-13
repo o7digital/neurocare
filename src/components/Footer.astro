@@ -6,6 +6,7 @@ const isEnglish = Astro.url.pathname.startsWith('/en');
 const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '/en/';
 const homeHref = isEnglish ? '/en/' : '/';
 const sectionHref = (href: string) => isHome ? href : `${homeHref}${href}`;
+const navigationHref = (href: string) => href.startsWith('/') ? href : sectionHref(href);
 const footerKeywords = isEnglish
   ? [
       'psychiatrist in San Angel Mexico City',
@@ -79,7 +80,7 @@ const footerKeywords = isEnglish
       </div>
       <div>
         <h4 class="mb-3 font-semibold">{ui.footerNav}</h4>
-        {navItems.slice(1, 5).map((item) => <a class="my-2 block text-cream/62 hover:text-cream" href={sectionHref(item.href)}>{item.label}</a>)}
+        {navItems.slice(1).map((item) => <a class="my-2 block text-cream/62 hover:text-cream" href={navigationHref(item.href)}>{item.label}</a>)}
         <a class="my-2 block text-cream/62 hover:text-cream" href={ui.privacyHref}>{ui.footerPrivacy}</a>
       </div>
       <div>
