@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import { getSiteContent } from '../data/site';
+import OliviaAI from '../components/OliviaAI.astro';
 
 interface Props {
   title?: string;
@@ -246,6 +247,7 @@ const schema = schemaType === 'Article' ? articleSchema : physicianSchema;
   </head>
   <body class="min-h-screen overflow-x-hidden bg-cream text-text antialiased">
     <slot />
+    <OliviaAI />
     <script>
       const toggle = document.querySelector('.js-mobile-menu-toggle');
       const menu = document.querySelector('#mobile-menu');

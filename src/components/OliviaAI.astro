@@ -1,0 +1,205 @@
+---
+const clientCode = 'neurodiversa';
+---
+
+<div id="neurodiversa-olivia" data-client-code={clientCode}></div>
+
+<style is:inline>
+  #neurodiversa-olivia { position: fixed; right: 22px; bottom: 22px; z-index: 2147483000; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
+  #neurodiversa-olivia * { box-sizing: border-box; }
+  .nd-olivia-panel { display: none; width: min(410px, calc(100vw - 28px)); height: min(720px, calc(100vh - 100px)); margin-bottom: 12px; flex-direction: column; overflow: hidden; border: 1px solid rgb(201 143 145 / .55); border-radius: 20px; background: #fffdf9; color: #4a3032; box-shadow: 0 30px 90px rgb(50 27 31 / .3); }
+  .nd-olivia-panel.is-open { display: flex; }
+  .nd-olivia-header { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 18px; background: linear-gradient(135deg, #722f3b, #9f5e68); color: #fffdf9; }
+  .nd-olivia-title, .nd-olivia-status { margin: 0; }
+  .nd-olivia-title { font-family: Georgia, serif; font-size: 23px; font-weight: 700; }
+  .nd-olivia-status { margin-top: 3px; color: rgb(255 253 249 / .78); font-size: 12px; }
+  .nd-olivia-close, .nd-olivia-toggle, .nd-olivia-teaser, .nd-olivia-lead button, .nd-olivia-composer button { border: 0; cursor: pointer; font: inherit; }
+  .nd-olivia-close { width: 38px; height: 38px; border-radius: 12px; background: rgb(255 255 255 / .14); color: #fff; font-size: 24px; }
+  .nd-olivia-messages { flex: 1; min-height: 170px; overflow-y: auto; padding: 16px; background: #f8f1ee; }
+  .nd-olivia-message { width: fit-content; max-width: 90%; margin: 0 0 10px; padding: 11px 13px; border-radius: 15px; font-size: 14px; line-height: 1.5; white-space: pre-wrap; }
+  .nd-olivia-message.assistant { border: 1px solid #eadbd7; background: #fff; color: #4a3032; }
+  .nd-olivia-message.user { margin-left: auto; background: #722f3b; color: #fff; }
+  .nd-olivia-lead { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 14px; border-top: 1px solid #eadbd7; background: #fffdf9; }
+  .nd-olivia-lead > p, .nd-olivia-lead > label, .nd-olivia-lead > textarea, .nd-olivia-lead > button { grid-column: 1 / -1; }
+  .nd-olivia-lead > p { margin: 0; color: #71575a; font-size: 12px; line-height: 1.45; }
+  .nd-olivia-lead input, .nd-olivia-lead textarea, .nd-olivia-composer input { width: 100%; min-width: 0; border: 1px solid #dfc8c4; border-radius: 11px; background: #fff; padding: 10px 11px; color: #4a3032; font: inherit; font-size: 14px; outline: none; }
+  .nd-olivia-lead input:focus, .nd-olivia-lead textarea:focus, .nd-olivia-composer input:focus { border-color: #9f5e68; box-shadow: 0 0 0 3px rgb(201 143 145 / .15); }
+  .nd-olivia-lead textarea { min-height: 72px; resize: vertical; }
+  .nd-olivia-consent { display: flex; align-items: flex-start; gap: 7px; color: #71575a; font-size: 11px; line-height: 1.35; }
+  .nd-olivia-consent input { width: auto; margin-top: 2px; }
+  .nd-olivia-consent a { color: #722f3b; text-decoration: underline; }
+  .nd-olivia-lead button, .nd-olivia-composer button, .nd-olivia-toggle { background: #722f3b; color: #fff; font-weight: 800; }
+  .nd-olivia-lead button { padding: 12px; border-radius: 11px; }
+  .nd-olivia-composer { display: grid; grid-template-columns: 1fr 50px; gap: 8px; padding: 13px; border-top: 1px solid #eadbd7; background: #fffdf9; }
+  .nd-olivia-composer button { border-radius: 11px; font-size: 22px; }
+  .nd-olivia-composer button:disabled, .nd-olivia-composer input:disabled, .nd-olivia-lead button:disabled { cursor: not-allowed; opacity: .55; }
+  .nd-olivia-closed { display: flex; flex-direction: column; align-items: flex-end; gap: 9px; }
+  .nd-olivia-teaser { display: flex; align-items: center; gap: 9px; padding: 8px 13px 8px 8px; border: 1px solid rgb(114 47 59 / .2); border-radius: 999px; background: #fffdf9; color: #722f3b; box-shadow: 0 16px 42px rgb(50 27 31 / .2); }
+  .nd-olivia-avatar { display: grid; width: 36px; height: 36px; place-items: center; border-radius: 50%; background: #c98f91; color: #fff; font-family: Georgia, serif; font-size: 20px; font-weight: 700; }
+  .nd-olivia-toggle { min-width: 68px; height: 58px; padding: 0 16px; border-radius: 999px; box-shadow: 0 16px 44px rgb(50 27 31 / .28); }
+  @media (max-width: 560px) {
+    #neurodiversa-olivia { right: 8px; bottom: 74px; }
+    .nd-olivia-panel { position: fixed; inset: 8px 8px 74px; width: auto; height: auto; max-height: none; }
+    .nd-olivia-lead { grid-template-columns: 1fr; }
+    .nd-olivia-teaser { display: none; }
+  }
+</style>
+
+<script is:inline>
+  (() => {
+    const root = document.getElementById('neurodiversa-olivia');
+    if (!root || root.dataset.ready === 'true') return;
+    root.dataset.ready = 'true';
+
+    const clientCode = root.dataset.clientCode || 'neurodiversa';
+    const chatEndpoint = 'https://olivia-ai.o7digital.com/api/olivia/chat';
+    const channelEndpoint = 'https://olivia-ai.o7digital.com/api/widget/conversations';
+    const english = document.documentElement.lang.toLowerCase().startsWith('en') || location.pathname.startsWith('/en/');
+    const language = english ? 'en' : 'es';
+    const storageKey = `oliviaVisitorId:${clientCode}`;
+    const visitorId = localStorage.getItem(storageKey) || crypto.randomUUID();
+    localStorage.setItem(storageKey, visitorId);
+
+    const t = english ? {
+      title: 'Olivia AI', status: 'Neuro Diversa assistant', online: 'Online', teaser: 'Need guidance?', open: 'Open chat', close: 'Close chat',
+      welcome: 'Hello, I’m Olivia AI. I can provide general information about Neuro Diversa, psychiatry and neuropsychiatry services, and help you schedule a consultation. I do not replace medical assessment or emergency services.',
+      leadIntro: 'Leave your contact details and a brief reason for your request so the Neuro Diversa team can follow up.',
+      firstName: 'First name', lastName: 'Last name', email: 'Email', phone: 'Phone', need: 'Brief reason for your request',
+      consent: 'I consent to Neuro Diversa processing the information I provide to respond to my request.', privacy: 'Privacy Notice', privacyHref: '/en/privacy-notice/',
+      submitLead: 'Send details', leadThanks: 'Thank you. Your details were sent. You can now ask Olivia your questions without entering them again.',
+      placeholder: 'Write your question...', send: 'Send', error: 'I could not respond right now. Please try again or schedule through Doctoralia.',
+      crisis: 'If you or someone else is in immediate danger, call 911 now or go to the nearest emergency department. In Mexico, Línea de la Vida is available 24/7 at 800 911 2000. This chat is not an emergency service.'
+    } : {
+      title: 'Olivia AI', status: 'Asistente Neuro Diversa', online: 'En línea', teaser: '¿Necesitas orientación?', open: 'Abrir chat', close: 'Cerrar chat',
+      welcome: 'Hola, soy Olivia AI. Puedo brindar información general sobre Neuro Diversa, sus servicios de psiquiatría y neuropsiquiatría, y ayudarte a agendar una consulta. No sustituyo una valoración médica ni los servicios de emergencia.',
+      leadIntro: 'Deja tus datos de contacto y un motivo breve para que el equipo de Neuro Diversa pueda dar seguimiento.',
+      firstName: 'Nombre', lastName: 'Apellido', email: 'Email', phone: 'Teléfono', need: 'Motivo breve de tu solicitud',
+      consent: 'Autorizo a Neuro Diversa a tratar la información que proporcione para atender mi solicitud.', privacy: 'Aviso de Privacidad', privacyHref: '/aviso-de-privacidad/',
+      submitLead: 'Enviar datos', leadThanks: 'Gracias. Tus datos fueron enviados. Ahora puedes hacer preguntas a Olivia sin volver a capturarlos.',
+      placeholder: 'Escribe tu pregunta...', send: 'Enviar', error: 'No pude responder ahora. Intenta nuevamente o agenda mediante Doctoralia.',
+      crisis: 'Si tú u otra persona están en peligro inmediato, llama ahora al 911 o acude al servicio de urgencias más cercano. En México, la Línea de la Vida está disponible 24/7 en el 800 911 2000. Este chat no es un servicio de emergencia.'
+    };
+
+    let isOpen = false;
+    let loading = false;
+    let leadSent = false;
+    let lead = { firstName: '', lastName: '', email: '', phone: '', need: '' };
+    let messages = [{ role: 'assistant', content: t.welcome }];
+    const receivedOperatorMessages = new Set();
+    const escapeHtml = (value) => String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+    const transcript = () => messages.map((message) => `${message.role}: ${message.content}`).join('\n');
+    const isCrisisMessage = (message) => /\b(suicid|suicide|kill myself|self[- ]?harm|hacerme da[nñ]o|quitarme la vida|no quiero vivir|matarme|danger|peligro inmediato)\b/i.test(message);
+
+    const storeVisitorMessage = async (content, metadata = {}) => {
+      const response = await fetch(channelEndpoint, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          clientCode, visitorId, content,
+          visitorName: `${lead.firstName} ${lead.lastName}`.trim(), email: lead.email, phone: lead.phone,
+          source: 'website', language,
+          metadata: { pageUrl: location.href, pageTitle: document.title, originalSource: 'Neuro Diversa website', need: lead.need, necesidad: lead.need, ...metadata },
+        }),
+      });
+      if (!response.ok) throw new Error('channel_failed');
+      return response.json();
+    };
+
+    const storeAssistantMessage = (content, model = 'olivia-ai') => fetch(channelEndpoint, {
+      method: 'PATCH', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ clientCode, visitorId, content, model }),
+    }).catch(() => undefined);
+
+    const renderMessages = () => messages.map((message) => `<div class="nd-olivia-message ${message.role}">${escapeHtml(message.content)}</div>`).join('') + (loading ? '<div class="nd-olivia-message assistant">…</div>' : '');
+    const saveLeadFields = () => {
+      const form = root.querySelector('.nd-olivia-lead');
+      if (!form) return;
+      lead = { firstName: form.firstName?.value || lead.firstName, lastName: form.lastName?.value || lead.lastName, email: form.email?.value || lead.email, phone: form.phone?.value || lead.phone, need: form.need?.value || lead.need };
+    };
+
+    const render = () => {
+      root.innerHTML = `<section class="nd-olivia-panel ${isOpen ? 'is-open' : ''}" aria-label="${escapeHtml(t.status)}">
+        <header class="nd-olivia-header"><div><p class="nd-olivia-title">${t.title}</p><p class="nd-olivia-status">${t.status} · ${t.online}</p></div><button class="nd-olivia-close" type="button" aria-label="${t.close}">×</button></header>
+        <div class="nd-olivia-messages">${renderMessages()}</div>
+        ${leadSent ? '' : `<form class="nd-olivia-lead">
+          <p>${t.leadIntro}</p>
+          <input required name="firstName" autocomplete="given-name" placeholder="${t.firstName}" value="${escapeHtml(lead.firstName)}" />
+          <input required name="lastName" autocomplete="family-name" placeholder="${t.lastName}" value="${escapeHtml(lead.lastName)}" />
+          <input required type="email" name="email" autocomplete="email" placeholder="${t.email}" value="${escapeHtml(lead.email)}" />
+          <input required type="tel" name="phone" autocomplete="tel" placeholder="${t.phone}" value="${escapeHtml(lead.phone)}" />
+          <textarea required name="need" rows="3" placeholder="${t.need}">${escapeHtml(lead.need)}</textarea>
+          <label class="nd-olivia-consent"><input required type="checkbox" name="consent" /><span>${t.consent} <a href="${t.privacyHref}">${t.privacy}</a></span></label>
+          <button type="submit" ${loading ? 'disabled' : ''}>${t.submitLead}</button>
+        </form>`}
+        <div class="nd-olivia-composer"><input class="nd-olivia-input" ${!leadSent || loading ? 'disabled' : ''} placeholder="${t.placeholder}" /><button class="nd-olivia-send" type="button" ${!leadSent || loading ? 'disabled' : ''} aria-label="${t.send}">›</button></div>
+      </section><div class="nd-olivia-closed">${isOpen ? '' : `<button class="nd-olivia-teaser" type="button"><span class="nd-olivia-avatar">O</span><span>${t.teaser}</span></button>`}<button class="nd-olivia-toggle" type="button" aria-label="${isOpen ? t.close : t.open}">${isOpen ? '×' : 'Olivia'}</button></div>`;
+      bindEvents();
+      const container = root.querySelector('.nd-olivia-messages');
+      if (container) container.scrollTop = container.scrollHeight;
+    };
+
+    const submitLead = async (event) => {
+      event.preventDefault();
+      if (loading) return;
+      saveLeadFields();
+      if (!lead.firstName.trim() || !lead.lastName.trim() || !lead.email.trim() || !lead.phone.trim() || !lead.need.trim()) return;
+      loading = true; render();
+      try {
+        await storeVisitorMessage(`Lead: ${lead.firstName} ${lead.lastName} · ${lead.email} · ${lead.phone} · ${t.need}: ${lead.need}`, { type: 'lead', leadStatus: 'captured', consent: true });
+        leadSent = true;
+        messages.push({ role: 'assistant', content: t.leadThanks });
+      } catch (_error) { messages.push({ role: 'assistant', content: t.error }); }
+      finally { loading = false; render(); }
+    };
+
+    const sendMessage = async () => {
+      const input = root.querySelector('.nd-olivia-input');
+      const message = input?.value?.trim() || '';
+      if (!message || loading || !leadSent) return;
+      messages.push({ role: 'user', content: message }); loading = true; render();
+      try {
+        const stored = await storeVisitorMessage(message, { type: 'question', crisisFlag: isCrisisMessage(message) });
+        if (stored?.conversation?.status === 'manual') return;
+        if (isCrisisMessage(message)) {
+          messages.push({ role: 'assistant', content: t.crisis });
+          await storeAssistantMessage(t.crisis, 'olivia-crisis-safety');
+          return;
+        }
+        const response = await fetch(chatEndpoint, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ clientCode, clientId: clientCode, siteCode: clientCode, visitorId, message, language, pageUrl: location.href, metadata: { source: 'Chat Olivia Neuro Diversa', pageTitle: document.title, lead, transcript: transcript() } }),
+        });
+        if (!response.ok) throw new Error('chat_failed');
+        const data = await response.json();
+        const reply = data.reply || t.error;
+        messages.push({ role: 'assistant', content: reply });
+        await storeAssistantMessage(reply, data.model);
+      } catch (_error) { messages.push({ role: 'assistant', content: t.error }); }
+      finally { loading = false; render(); }
+    };
+
+    const pollChannel = async () => {
+      if (!leadSent) return;
+      try {
+        const response = await fetch(`${channelEndpoint}?${new URLSearchParams({ clientCode, visitorId })}`);
+        if (!response.ok) return;
+        const data = await response.json();
+        const incoming = (data.messages || []).filter((message) => message.role === 'operator' && !receivedOperatorMessages.has(message.id));
+        incoming.forEach((message) => receivedOperatorMessages.add(message.id));
+        if (incoming.length) { messages.push(...incoming.map((message) => ({ role: 'assistant', content: message.content }))); render(); }
+      } catch (_error) {}
+    };
+
+    const bindEvents = () => {
+      root.querySelector('.nd-olivia-toggle')?.addEventListener('click', () => { isOpen = !isOpen; render(); });
+      root.querySelector('.nd-olivia-teaser')?.addEventListener('click', () => { isOpen = true; render(); });
+      root.querySelector('.nd-olivia-close')?.addEventListener('click', () => { isOpen = false; render(); });
+      root.querySelector('.nd-olivia-lead')?.addEventListener('submit', submitLead);
+      root.querySelectorAll('.nd-olivia-lead input, .nd-olivia-lead textarea').forEach((field) => field.addEventListener('input', saveLeadFields));
+      root.querySelector('.nd-olivia-send')?.addEventListener('click', sendMessage);
+      root.querySelector('.nd-olivia-input')?.addEventListener('keydown', (event) => { if (event.key === 'Enter') sendMessage(); });
+    };
+
+    setInterval(pollChannel, 5000);
+    render();
+  })();
+</script>
