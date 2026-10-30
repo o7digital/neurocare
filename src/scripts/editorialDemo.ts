@@ -14,6 +14,7 @@ export type DemoProgram = {
   title: string;
 };
 export type SocialDraft = {
+  image?: string;
   id: string;
   body: string;
   channels: string[];
@@ -24,6 +25,8 @@ export const keys = {
   posts: "neurodiversa:demo:posts:v1",
   program: "neurodiversa:demo:program:v1",
   social: "neurodiversa:demo:social:v1",
+  newsletters: "neurodiversa:demo:newsletters:v1",
+  mailing: "neurodiversa:demo:mailing:v1",
 };
 export function readDemo<T>(key: string, fallback: T): T {
   try {

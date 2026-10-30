@@ -1,0 +1,697 @@
+---
+import { demoAudience } from "../lib/campaignDemo";
+import "../styles/campaign-studio.css";
+const exampleMail =
+  "Hola {{firstName}},\n\nEstamos preparando nuevas experiencias y contenidos en Neuro Diversa. Nos encantará compartir contigo las novedades del equipo y del proyecto grupal.\n\nEste mensaje es un ejemplo para probar la administración.\n\nEl equipo de Neuro Diversa.";
+---
+
+<section
+  id="panel-newsletter"
+  class="studio-panel campaign-workspace"
+  hidden
+  aria-labelledby="newsletter-heading"
+>
+  <header class="campaign-intro">
+    <div>
+      <span class="campaign-eyebrow">UN BOLETÍN CON TU IDENTIDAD</span>
+      <h2 id="newsletter-heading">De una lectura a un vínculo.</h2>
+      <p>
+        Prepara una newsletter, revisa cómo se verá y guarda una versión para tu
+        comunidad.
+      </p>
+    </div>
+    <span class="campaign-pill">Adaptado de O7 Pulse</span>
+  </header>
+  <div class="campaign-layout">
+    <form id="newsletter-form" class="campaign-card">
+      <div class="campaign-form-top">
+        <h3>Tu newsletter</h3>
+        <label for="nl-template">
+          Punto de partida
+          <select id="nl-template">
+            <option value="group">Programa de grupo · Ejemplo</option>
+            <option value="readers">Lecturas del blog · Ejemplo</option>
+            <option value="blank">Plantilla en blanco</option>
+          </select>
+        </label>
+      </div>
+      <div class="campaign-tabs" role="group" aria-label="Secciones del editor">
+        <button type="button" data-newsletter-tab="content" aria-pressed="true">
+          Contenido
+        </button>
+        <button type="button" data-newsletter-tab="design" aria-pressed="false">
+          Diseño y programa
+        </button>
+      </div>
+      <div id="nl-content-fields">
+        <label for="nl-name">Nombre interno de la campaña</label>
+        <input id="nl-name" required maxlength="100" />
+        <label for="nl-subject">Asunto del correo</label>
+        <input id="nl-subject" required maxlength="160" />
+        <label for="nl-preheader">Texto de vista previa</label>
+        <input id="nl-preheader" maxlength="180" />
+        <label for="nl-headline">Título principal</label>
+        <input id="nl-headline" required maxlength="150" />
+        <div class="campaign-body-label">
+          <label for="nl-body">Tu mensaje</label>
+          <button type="button" id="nl-personalize">
+            + Nombre de quien lo recibe
+          </button>
+        </div>
+        <textarea id="nl-body" rows="10" required maxlength="20000"></textarea>
+        <p class="campaign-help">
+          Usa {"{{firstName}}"} para personalizar el saludo. En el ejemplo se
+          muestra “María”.
+        </p>
+      </div>
+      <div id="nl-design-fields" hidden>
+        <label for="nl-from">Nombre del remitente</label>
+        <input id="nl-from" required maxlength="100" value="Neuro Diversa" />
+        <label for="nl-cta">Texto del botón</label>
+        <input id="nl-cta" required maxlength="60" />
+        <label for="nl-url">Enlace del botón · HTTPS</label>
+        <input
+          id="nl-url"
+          type="url"
+          pattern="https://.*"
+          required
+          maxlength="1200"
+        />
+        <label for="nl-highlights">Ideas destacadas · Una por línea</label>
+        <textarea id="nl-highlights" rows="4" maxlength="500"></textarea>
+        <label class="campaign-check" for="nl-include-program">
+          <input id="nl-include-program" type="checkbox" /> Incluir el programa
+          de habilidades sociales
+        </label>
+        <p class="campaign-help">
+          Añade una tarjeta con las fechas propuestas del programa. Los datos se
+          pueden ajustar desde “Programa grupal”.
+        </p>
+      </div>
+      <div class="campaign-actions">
+        <button class="btn btn-primary" type="submit">
+          Guardar newsletter
+        </button>
+        <button type="button" id="nl-export" class="btn btn-secondary">
+          Descargar HTML ↧
+        </button>
+      </div>
+      <div class="campaign-actions secondary-actions">
+        <button type="button" id="nl-to-social">
+          Preparar post para Buffer ↗
+        </button>
+        <button type="button" id="nl-to-mailing">
+          Usar texto en mailing ↗
+        </button>
+      </div>
+      <p class="campaign-help">
+        El guardado es local. El export es una plantilla HTML; no envía correos
+        ni crea campañas reales.
+      </p>
+    </form>
+    <aside class="campaign-preview-card">
+      <div class="campaign-preview-toolbar">
+        <span>VISTA PREVIA DEL EMAIL</span>
+        <div role="group" aria-label="Tamaño de vista previa">
+          <button
+            type="button"
+            data-newsletter-size="desktop"
+            aria-pressed="true"
+          >
+            Escritorio
+          </button>
+          <button
+            type="button"
+            data-newsletter-size="mobile"
+            aria-pressed="false"
+          >
+            Móvil
+          </button>
+        </div>
+      </div>
+      <p id="nl-email-subject"></p>
+      <div id="nl-preview-shell">
+        <iframe
+          id="nl-preview"
+          title="Vista previa de la newsletter"
+          sandbox=""
+          referrerpolicy="no-referrer"
+        ></iframe>
+      </div>
+    </aside>
+  </div>
+  <section class="campaign-card campaign-history">
+    <div class="campaign-form-top">
+      <h3>Tus newsletters guardadas</h3>
+      <button type="button" id="nl-new">
+        + Nueva newsletter
+      </button>
+    </div>
+    <div id="newsletter-list"></div>
+  </section>
+</section>
+<section
+  id="panel-mailing"
+  class="studio-panel campaign-workspace"
+  hidden
+  aria-labelledby="mailing-heading"
+>
+  <header class="campaign-intro">
+    <div>
+      <span class="campaign-eyebrow">UN MENSAJE PARA TU COMUNIDAD</span>
+      <h2 id="mailing-heading">Comunicar, con intención.</h2>
+      <p>
+        Selecciona una audiencia, personaliza tu mensaje y recorre el envío en
+        modo de demostración.
+      </p>
+    </div>
+    <span class="campaign-pill">Contactos ficticios</span>
+  </header>
+  <div class="mailing-layout">
+    <aside class="campaign-card">
+      <div class="campaign-form-top">
+        <h3>Audiencia de ejemplo</h3>
+        <span id="mailing-count" class="campaign-pill">
+          3 seleccionados
+        </span>
+      </div>
+      <label for="mailing-segment">Filtrar por interés</label>
+      <select id="mailing-segment">
+        <option value="all">Todos los contactos de ejemplo</option>
+        <option value="group">Interés en programa grupal</option>
+        <option value="readers">Lecturas y novedades</option>
+      </select>
+      <div id="demo-audience">
+        {demoAudience.map((contact) => (
+          <label class="audience-row" data-segment={contact.segment}>
+            <input
+              type="checkbox"
+              name="mailing-contact"
+              value={contact.id}
+              checked={contact.consent}
+              disabled={!contact.consent}
+            />
+            <span>
+              <strong>{contact.name}</strong>
+              <small>{contact.email}</small>
+              <em>
+                {contact.consent
+                  ? "Suscripción de ejemplo activa"
+                  : "Sin autorización de ejemplo · Excluido"}
+              </em>
+            </span>
+          </label>
+        ))}
+      </div>
+      <p class="campaign-help">
+        Estos contactos son ficticios. La versión final usará únicamente las
+        listas autorizadas de Neuro Diversa.
+      </p>
+      <label for="mailing-test-email">Dirección de prueba ficticia</label>
+      <input
+        id="mailing-test-email"
+        type="email"
+        value="prueba@example.test"
+        readonly
+      />
+      <p class="campaign-help">
+        La demo no permite introducir destinatarios reales.
+      </p>
+    </aside>
+    <form id="mailing-form" class="campaign-card">
+      <div class="campaign-form-top">
+        <h3>Redactar mensaje</h3>
+        <button type="button" id="mailing-from-newsletter">
+          Usar mi newsletter ↗
+        </button>
+      </div>
+      <label for="mailing-subject">Asunto</label>
+      <input
+        id="mailing-subject"
+        required
+        maxlength="160"
+        value="Novedades de Neuro Diversa"
+      />
+      <label for="mailing-body">Mensaje</label>
+      <textarea
+        id="mailing-body"
+        rows="9"
+        required
+        maxlength="20000"
+      >{exampleMail}</textarea>
+      <div class="mailing-message-preview">
+        <span class="campaign-eyebrow">ASÍ COMIENZA TU MENSAJE</span>
+        <p id="mailing-preview"></p>
+      </div>
+      <div class="campaign-actions">
+        <button class="btn btn-secondary" type="submit" value="draft">
+          Guardar campaña
+        </button>
+        <button class="btn btn-secondary" type="submit" value="test">
+          Simular prueba
+        </button>
+        <button class="btn btn-primary" type="submit" value="simulate">
+          Simular envío a selección ↗
+        </button>
+      </div>
+      <p class="campaign-help">
+        Simulación sin SMTP ni conexión al CRM. No se entrega ningún correo.
+      </p>
+    </form>
+  </div>
+  <section class="campaign-card campaign-history">
+    <h3>Historial de esta demostración</h3>
+    <div id="mailing-history"></div>
+  </section>
+</section>
+<script>
+  import {
+    buildMailchimpHtml,
+    previewMergeTags,
+    type NewsletterCampaign,
+  } from "../lib/crmMailing";
+  import {
+    demoAudience,
+    newCampaign,
+    getCampaigns,
+    getMailings,
+    type MailingRecord,
+  } from "../lib/campaignDemo";
+  import {
+    keys,
+    readDemo,
+    writeDemo,
+    type DemoProgram,
+  } from "../scripts/editorialDemo";
+  const el = <T extends HTMLElement>(id: string) =>
+    document.getElementById(id) as T;
+  const field = (id: string) => el<HTMLInputElement>(id);
+  const area = (id: string) => el<HTMLTextAreaElement>(id);
+  const notice = (text: string) => {
+    el("studio-status").textContent = text;
+  };
+  const showPanel = (name: string) =>
+    document
+      .querySelector<HTMLButtonElement>(`[data-panel="${name}"]`)
+      ?.click();
+  let campaigns = getCampaigns();
+  let campaign = campaigns[0] || newCampaign();
+  let mailings = getMailings();
+  const newsletterForm = el<HTMLFormElement>("newsletter-form");
+  const setup = () => ({
+    fromName: field("nl-from").value.trim() || "Neuro Diversa",
+    heroImage: "",
+    reservationUrl: "https://neurodiversa.mx/programas/habilidades-sociales/",
+    websiteUrl: "https://neurodiversa.mx/",
+    address: "Calle Cracovia 72, San Ángel, CDMX",
+    phone: "55 7191 9515",
+    gallery: [],
+  });
+  function collectCampaign(): NewsletterCampaign {
+    const include = field("nl-include-program").checked;
+    const p = readDemo<Partial<DemoProgram> | null>(keys.program, null);
+    const start =
+      p && typeof p === "object" && typeof p.start === "string"
+        ? p.start
+        : "Enero 2027*";
+    return {
+      ...campaign,
+      fromName: field("nl-from").value.trim(),
+      month: field("nl-name").value.trim(),
+      subject: field("nl-subject").value.trim(),
+      preheader: field("nl-preheader").value.trim(),
+      headline: field("nl-headline").value.trim(),
+      body: area("nl-body").value,
+      cta: field("nl-cta").value.trim(),
+      ctaUrl: field("nl-url").value.trim(),
+      highlights: area("nl-highlights")
+        .value.split("\n")
+        .map((s) => s.trim())
+        .filter(Boolean)
+        .slice(0, 5),
+      events: include
+        ? [
+            {
+              id: "social-skills",
+              category: "Programa propuesto",
+              title: "Habilidades sociales",
+              date: start,
+              venue: "San Ángel, CDMX",
+              description:
+                "Un proyecto grupal para jóvenes adultos de 18 a 35 años. Fechas, facilitadoras y condiciones por confirmar.",
+              url: "https://neurodiversa.mx/programas/habilidades-sociales/",
+              sourceLabel: "Neuro Diversa",
+            },
+          ]
+        : [],
+      updated: new Date().toISOString(),
+    };
+  }
+  function updateNewsletter() {
+    const c = collectCampaign();
+    el("nl-email-subject").textContent =
+      `Asunto: ${c.subject || "Tu asunto de correo"}`;
+    const preview = { ...c, body: previewMergeTags(c.body) };
+    el<HTMLIFrameElement>("nl-preview").srcdoc = buildMailchimpHtml(
+      preview,
+      setup(),
+    )
+      .replace(
+        "*|HTML:LIST_ADDRESS_HTML|*",
+        "Datos del remitente por configurar",
+      )
+      .replace("*|UNSUB|*", "#");
+  }
+  function loadCampaign(next: NewsletterCampaign) {
+    campaign = next;
+    field("nl-from").value = next.fromName || "Neuro Diversa";
+    field("nl-name").value = next.month;
+    field("nl-subject").value = next.subject;
+    field("nl-preheader").value = next.preheader;
+    field("nl-headline").value = next.headline;
+    area("nl-body").value = next.body;
+    field("nl-cta").value = next.cta;
+    field("nl-url").value = next.ctaUrl;
+    area("nl-highlights").value = next.highlights.join("\n");
+    field("nl-include-program").checked = next.events.length > 0;
+    updateNewsletter();
+  }
+  function historyMessage(list: HTMLElement, message: string) {
+    const p = document.createElement("p");
+    p.className = "campaign-empty";
+    p.textContent = message;
+    list.append(p);
+  }
+  function renderCampaigns() {
+    const list = el("newsletter-list");
+    list.replaceChildren();
+    if (!campaigns.length)
+      historyMessage(
+        list,
+        "Guarda tu primera newsletter para encontrarla aquí.",
+      );
+    for (const c of campaigns) {
+      const row = document.createElement("div");
+      row.className = "campaign-saved-row";
+      const text = document.createElement("div");
+      const title = document.createElement("strong");
+      title.textContent = c.month;
+      const subject = document.createElement("p");
+      subject.textContent = c.subject + " · Borrador guardado";
+      text.append(title, subject);
+      const actions = document.createElement("div");
+      const edit = document.createElement("button");
+      edit.type = "button";
+      edit.textContent = "Editar";
+      edit.setAttribute("aria-label", `Editar newsletter ${c.month}`);
+      edit.addEventListener("click", () => {
+        loadCampaign(c);
+        notice("Newsletter cargada. Puedes editarla y guardar los cambios.");
+      });
+      const remove = document.createElement("button");
+      remove.type = "button";
+      remove.textContent = "Eliminar";
+      remove.setAttribute("aria-label", `Eliminar newsletter ${c.month}`);
+      remove.addEventListener("click", () => {
+        const next = campaigns.filter((v) => v.id !== c.id);
+        if (!writeDemo(keys.newsletters, next)) {
+          notice("No se pudo guardar en este navegador.");
+          return;
+        }
+        campaigns = next;
+        if (campaign.id === c.id) loadCampaign(newCampaign());
+        renderCampaigns();
+        notice("Newsletter eliminada de esta demo.");
+      });
+      actions.append(edit, remove);
+      row.append(text, actions);
+      list.append(row);
+    }
+  }
+  function validateNewsletter() {
+    const invalid = newsletterForm.querySelector<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >(":invalid");
+    if (invalid) {
+      const tab = invalid.closest("#nl-design-fields") ? "design" : "content";
+      document
+        .querySelector<HTMLButtonElement>(`[data-newsletter-tab="${tab}"]`)
+        ?.click();
+      invalid.reportValidity();
+      return false;
+    }
+    const c = collectCampaign();
+    if (!c.subject || !c.body.trim() || !c.month || !c.headline) {
+      document
+        .querySelector<HTMLButtonElement>('[data-newsletter-tab="content"]')
+        ?.click();
+      notice("Completa el nombre, asunto, título y contenido.");
+      return false;
+    }
+    return true;
+  }
+  function resizePreview() {
+    const shell = el("nl-preview-shell");
+    const frame = el<HTMLIFrameElement>("nl-preview");
+    const available = shell.clientWidth - 24;
+    if (available <= 0) return;
+    const mobile = shell.classList.contains("mobile");
+    const width = mobile ? Math.min(340, available) : 680;
+    const scale = mobile ? 1 : Math.min(1, available / width);
+    frame.style.width = width + "px";
+    frame.style.maxWidth = "none";
+    frame.style.height = "1400px";
+    frame.style.transform = `scale(${scale})`;
+    frame.style.transformOrigin = "top left";
+    frame.style.left = (shell.clientWidth - width * scale) / 2 + "px";
+    shell.style.height = 1400 * scale + 24 + "px";
+  }
+  new ResizeObserver(resizePreview).observe(el("nl-preview-shell"));
+
+  newsletterForm.noValidate = true;
+  newsletterForm.addEventListener("input", updateNewsletter);
+  newsletterForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (!validateNewsletter()) return;
+    const nextCampaign = { ...collectCampaign(), status: "SAVED" as const };
+    const next = [
+      nextCampaign,
+      ...campaigns.filter((c) => c.id !== nextCampaign.id),
+    ];
+    if (!writeDemo(keys.newsletters, next)) {
+      notice(
+        "No se pudo guardar. El almacenamiento local puede estar lleno o bloqueado.",
+      );
+      return;
+    }
+    campaigns = next;
+    campaign = nextCampaign;
+    renderCampaigns();
+    notice(
+      "Newsletter guardada en este navegador. No se ha enviado ningún correo.",
+    );
+  });
+  el<HTMLSelectElement>("nl-template").addEventListener("change", (event) => {
+    loadCampaign(newCampaign((event.target as HTMLSelectElement).value));
+    notice("Plantilla cargada como una nueva newsletter.");
+  });
+  el("nl-new").addEventListener("click", () => {
+    loadCampaign(newCampaign("blank"));
+    showPanel("newsletter");
+    notice("Nueva newsletter en blanco.");
+  });
+  el("nl-personalize").addEventListener("click", () => {
+    const body = area("nl-body");
+    body.setRangeText(
+      "{{firstName}}",
+      body.selectionStart,
+      body.selectionEnd,
+      "end",
+    );
+    body.focus();
+    updateNewsletter();
+  });
+  document
+    .querySelectorAll<HTMLButtonElement>("[data-newsletter-tab]")
+    .forEach((button) =>
+      button.addEventListener("click", () => {
+        const design = button.dataset.newsletterTab === "design";
+        el("nl-content-fields").hidden = design;
+        el("nl-design-fields").hidden = !design;
+        document
+          .querySelectorAll("[data-newsletter-tab]")
+          .forEach((b) => b.setAttribute("aria-pressed", String(b === button)));
+      }),
+    );
+  document
+    .querySelectorAll<HTMLButtonElement>("[data-newsletter-size]")
+    .forEach((button) =>
+      button.addEventListener("click", () => {
+        el("nl-preview-shell").classList.toggle(
+          "mobile",
+          button.dataset.newsletterSize === "mobile",
+        );
+        resizePreview();
+        document
+          .querySelectorAll("[data-newsletter-size]")
+          .forEach((b) => b.setAttribute("aria-pressed", String(b === button)));
+      }),
+    );
+  el("nl-export").addEventListener("click", () => {
+    if (!validateNewsletter()) return;
+    const html = buildMailchimpHtml(collectCampaign(), setup());
+    const url = URL.createObjectURL(
+      new Blob([html], { type: "text/html;charset=utf-8" }),
+    );
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "neuro-diversa-newsletter.html";
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    notice(
+      "Plantilla HTML descargada. Los campos de personalización y baja se completarán al conectar el servicio de mailing.",
+    );
+  });
+  el("nl-to-social").addEventListener("click", () => {
+    const c = collectCampaign();
+    document.dispatchEvent(
+      new CustomEvent("nd:use-newsletter", {
+        detail: { title: c.headline, body: c.body },
+      }),
+    );
+  });
+  function useNewsletterForMailing() {
+    const c = collectCampaign();
+    field("mailing-subject").value = c.subject;
+    area("mailing-body").value = c.body;
+    updateMailing();
+    showPanel("mailing");
+    notice(
+      "Texto de la newsletter copiado al mailing. Revísalo antes de simular el envío.",
+    );
+  }
+  el("nl-to-mailing").addEventListener("click", useNewsletterForMailing);
+  el("mailing-from-newsletter").addEventListener(
+    "click",
+    useNewsletterForMailing,
+  );
+  function recipients() {
+    return Array.from(
+      document.querySelectorAll<HTMLInputElement>(
+        'input[name="mailing-contact"]:checked',
+      ),
+    )
+      .filter(
+        (input) =>
+          !input.disabled &&
+          !input.closest<HTMLElement>(".audience-row")?.hidden,
+      )
+      .map((input) => demoAudience.find((c) => c.id === input.value))
+      .filter((c): c is (typeof demoAudience)[number] => !!c && c.consent);
+  }
+  function updateMailing() {
+    const people = recipients();
+    el("mailing-count").textContent = `${people.length} seleccionados`;
+    const name = people[0]?.firstName || "María";
+    el("mailing-preview").textContent = previewMergeTags(
+      area("mailing-body").value.replace(/\{\{\s*firstName\s*\}\}/g, name),
+    );
+  }
+  el<HTMLSelectElement>("mailing-segment").addEventListener(
+    "change",
+    (event) => {
+      const value = (event.target as HTMLSelectElement).value;
+      document.querySelectorAll<HTMLElement>(".audience-row").forEach((row) => {
+        row.hidden = value !== "all" && row.dataset.segment !== value;
+      });
+      updateMailing();
+    },
+  );
+  document
+    .querySelectorAll('input[name="mailing-contact"]')
+    .forEach((input) => input.addEventListener("change", updateMailing));
+  area("mailing-body").addEventListener("input", updateMailing);
+  function renderMailings() {
+    const list = el("mailing-history");
+    list.replaceChildren();
+    if (!mailings.length)
+      historyMessage(list, "Tus campañas y pruebas simuladas aparecerán aquí.");
+    for (const mailing of mailings) {
+      const row = document.createElement("div");
+      row.className = "campaign-saved-row";
+      const text = document.createElement("div");
+      const title = document.createElement("strong");
+      title.textContent = mailing.subject;
+      const meta = document.createElement("p");
+      const labels = {
+        draft: "Borrador local",
+        test: "Prueba simulada",
+        simulated: "Envío simulado",
+      };
+      meta.textContent = `${labels[mailing.status]} · ${mailing.audience.length} destinatario(s) ficticio(s) · Ningún correo entregado`;
+      text.append(title, meta);
+      const remove = document.createElement("button");
+      remove.type = "button";
+      remove.textContent = "Eliminar";
+      remove.setAttribute("aria-label", `Eliminar campaña ${mailing.subject}`);
+      remove.addEventListener("click", () => {
+        const next = mailings.filter((m) => m.id !== mailing.id);
+        if (!writeDemo(keys.mailing, next)) {
+          notice("No se pudo guardar en este navegador.");
+          return;
+        }
+        mailings = next;
+        renderMailings();
+        notice("Registro de demo eliminado.");
+      });
+      row.append(text, remove);
+      list.append(row);
+    }
+  }
+  el<HTMLFormElement>("mailing-form").addEventListener("submit", (event) => {
+    event.preventDefault();
+    const action = (
+      (event as SubmitEvent).submitter as HTMLButtonElement | null
+    )?.value;
+    const subject = field("mailing-subject").value.trim();
+    const body = area("mailing-body").value.trim();
+    if (!subject || !body) {
+      notice("Escribe un asunto y un mensaje.");
+      return;
+    }
+    const people = recipients();
+    if (action === "simulate" && !people.length) {
+      notice("Selecciona al menos un contacto ficticio autorizado.");
+      return;
+    }
+    const record: MailingRecord = {
+      id: crypto.randomUUID(),
+      subject,
+      body,
+      audience: action === "test" ? ["demo-test"] : people.map((c) => c.id),
+      status:
+        action === "test"
+          ? "test"
+          : action === "simulate"
+            ? "simulated"
+            : "draft",
+      updated: new Date().toISOString(),
+    };
+    const next = [record, ...mailings];
+    if (!writeDemo(keys.mailing, next)) {
+      notice("No se pudo guardar en este navegador.");
+      return;
+    }
+    mailings = next;
+    renderMailings();
+    notice(
+      action === "draft"
+        ? "Campaña guardada solo en este navegador."
+        : `Simulación registrada para ${record.audience.length} destinatario(s) ficticio(s). Ningún correo ha sido enviado.`,
+    );
+  });
+  loadCampaign(campaign);
+  renderCampaigns();
+  updateMailing();
+  renderMailings();
+</script>
