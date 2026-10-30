@@ -1,0 +1,375 @@
+---
+const { expanded = false } = Astro.props;
+const en = Astro.url.pathname.startsWith("/en");
+const href = en
+  ? "/en/programs/social-skills/"
+  : "/programas/habilidades-sociales/";
+const skills = en
+  ? [
+      "Starting and maintaining conversations",
+      "Exploring shared interests and friendships",
+      "Participating in social gatherings",
+      "Communicating boundaries and handling disagreements",
+      "Building meaningful connections",
+      "Practising skills in everyday situations",
+    ]
+  : [
+      "Iniciar y mantener conversaciones",
+      "Explorar intereses en común y amistades",
+      "Participar en encuentros y actividades sociales",
+      "Comunicar límites y afrontar desacuerdos",
+      "Construir vínculos significativos",
+      "Practicar habilidades en situaciones cotidianas",
+    ];
+---
+
+<section
+  id="grupos"
+  class:list={["group-section", { "group-expanded": expanded }]}
+>
+  <div class="container-premium">
+    <div class="group-layout">
+      <div class="group-copy">
+        <span class="eyebrow">
+          {en
+            ? "Group experiences · New project"
+            : "Experiencias grupales · Nuevo proyecto"}
+        </span>
+        {expanded ? (
+          <h1 class="group-title" data-program-title={en ? undefined : ""}>
+            {en
+              ? "Social skills. Real connections."
+              : "Habilidades sociales. Conexiones reales."}
+          </h1>
+        ) : (
+          <h2 class="group-title">
+            {en ? "Connecting is also" : "Relacionarnos también"}
+            <br />
+            <em>{en ? "something we can learn." : "se aprende."}</em>
+          </h2>
+        )}
+        <p class="lead">
+          {en
+            ? "A group project for young adults who want to explore their social skills through shared learning, practical exercises and respect for different ways of connecting."
+            : "Un proyecto grupal para jóvenes adultos que desean explorar sus habilidades sociales desde el aprendizaje compartido, la práctica y el respeto a distintas formas de vincularse."}
+        </p>
+        <div class="group-tags">
+          <span>{en ? "Ages 18–35" : "18 a 35 años"}</span>
+          <span>{en ? "In person · San Ángel" : "Presencial · San Ángel"}</span>
+          <span>{en ? "Neurodiversity" : "Neurodiversidad"}</span>
+        </div>
+        <a
+          class="btn btn-primary"
+          href={expanded ? "#programa-contacto" : href}
+        >
+          {en
+            ? expanded
+              ? "Ask about this program"
+              : "Explore the program"
+            : expanded
+              ? "Solicitar información"
+              : "Conoce el programa"}{" "}
+          ↗
+        </a>
+        <p class="group-note">
+          {en
+            ? "*Proposed program. Dates, facilitators and enrollment details pending confirmation."
+            : "*Programa propuesto. Fechas, facilitadoras y detalles de inscripción por confirmar."}
+        </p>
+      </div>
+      <div class="group-board">
+        <p class="board-caption">
+          NEURO DIVERSA / {en ? "SHARED SPACES" : "ESPACIOS COMPARTIDOS"}
+        </p>
+        <div class="circle-composition" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+          <i>✳</i>
+        </div>
+        <p class="board-quote">
+          {en ? "Your way of connecting" : "Tu forma de conectar"}
+          <br />
+          <em>{en ? "has a place here." : "tiene un lugar aquí."}</em>
+        </p>
+        <div class="board-data">
+          <div>
+            <strong data-program-start={en ? undefined : ""}>
+              {en ? "January 2027*" : "Enero 2027*"}
+            </strong>
+            <span>{en ? "Proposed start" : "Inicio propuesto"}</span>
+          </div>
+          <div>
+            <strong>
+              <span data-program-weeks>16</span> {en ? "weeks" : "semanas"}
+            </strong>
+            <span>
+              {en ? "Fridays · " : "Viernes · "}
+              <span data-program-minutes>90</span> min
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    {expanded && (
+      <div class="program-details">
+        <div>
+          <span class="eyebrow">
+            {en ? "What we will explore" : "Lo que exploraremos"}
+          </span>
+          <h2 class="section-title">
+            {en
+              ? "Tools for everyday life."
+              : "Herramientas para la vida cotidiana."}
+          </h2>
+          <div class="skills-grid">
+            {skills.map((skill, index) => (
+              <div class="skill-row">
+                <span>0{index + 1}</span>
+                <p>{skill}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        <aside class="program-aside">
+          <h2>{en ? "Who is it for?" : "¿A quién está dirigido?"}</h2>
+          <p>
+            {en
+              ? "Young adults aged 18–35 who want to strengthen their social skills, including neurodivergent people. Participation and suitability will be discussed individually with the team."
+              : "Jóvenes adultos de 18 a 35 años que desean fortalecer sus habilidades sociales, incluidas personas neurodivergentes. La participación y la pertinencia del grupo se revisarán individualmente con el equipo."}
+          </p>
+          <h2>{en ? "How will we work?" : "¿Cómo trabajaremos?"}</h2>
+          <p>
+            {en
+              ? "Structured group sessions, practical exercises and everyday examples. The final format and facilitators will be confirmed before registration."
+              : "Sesiones grupales estructuradas, ejercicios prácticos y ejemplos cotidianos. El formato definitivo y las facilitadoras se confirmarán antes de la inscripción."}
+          </p>
+        </aside>
+      </div>
+    )}
+  </div>
+</section>
+{expanded && (
+  <section id="programa-contacto" class="section-premium bg-paper">
+    <div class="container-premium program-contact">
+      <div>
+        <span class="eyebrow">{en ? "Let’s talk" : "Conversemos"}</span>
+        <h2 class="section-title">
+          {en ? "Would you like to know more?" : "¿Te gustaría saber más?"}
+        </h2>
+        <p class="lead">
+          {en
+            ? "Contact Neuro Diversa to ask about availability, fees and the enrollment process. This preview does not register participants."
+            : "Contacta a Neuro Diversa para consultar disponibilidad, costos y proceso de inscripción. Esta vista previa no registra participantes."}
+        </p>
+      </div>
+      <a class="btn btn-primary" href="tel:+525571919515">
+        {en ? "Call " : "Llamar al "}55 7191 9515 ↗
+      </a>
+    </div>
+  </section>
+)}
+<script>
+  import { applyProgramPreview } from "../scripts/editorialDemo";
+  applyProgramPreview();
+</script>
+<style>
+  .group-section {
+    padding: 100px 0;
+    background: #eee8ee;
+  }
+  .group-layout {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .group-title {
+    font-family: Georgia, serif;
+    font-size: clamp(38px, 4.1vw, 59px);
+    line-height: 1.08;
+    margin: 22px 0;
+    color: var(--color-burgundy);
+    letter-spacing: -0.025em;
+  }
+  .group-title em {
+    color: var(--color-wine);
+    font-weight: 400;
+  }
+  .group-copy .lead {
+    font-size: 17px;
+    line-height: 1.8;
+  }
+  .group-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 25px 0;
+  }
+  .group-tags span {
+    border: 1px solid #c7b9c7;
+    padding: 6px 11px;
+    border-radius: 30px;
+    font-size: 11px;
+    color: #655267;
+  }
+  .group-note {
+    font-size: 11px;
+    color: #756673;
+    max-width: 410px;
+    margin-top: 18px;
+  }
+  .group-board {
+    background: #faf6ef;
+    border-radius: 160px 160px 14px 14px;
+    padding: 48px 30px 26px;
+    text-align: center;
+    border: 1px solid #e0d5cd;
+  }
+  .board-caption {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    color: #786570;
+  }
+  .circle-composition {
+    height: 170px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .circle-composition span {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 1px solid #ad95a7;
+    margin-left: -23px;
+    background: #d3c3d147;
+  }
+  .circle-composition span:first-child {
+    margin-left: 0;
+    background: #dac8bd55;
+  }
+  .circle-composition span:nth-child(2) {
+    transform: translateY(-18px);
+    background: #c0c7b866;
+    border-color: #9ca591;
+  }
+  .circle-composition i {
+    position: absolute;
+    bottom: 6px;
+    right: 30px;
+    font-size: 34px;
+    color: #a07b8a;
+  }
+  .board-quote {
+    font-family: Georgia, serif;
+    font-size: 28px;
+    line-height: 1.25;
+    color: #654855;
+    margin-bottom: 30px;
+  }
+  .board-data {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-top: 1px solid #dacdce;
+    padding-top: 22px;
+    text-align: left;
+    gap: 15px;
+  }
+  .board-data strong {
+    display: block;
+    font-size: 16px;
+  }
+  .board-data div > span {
+    font-size: 11px;
+    color: var(--color-muted);
+  }
+  .program-details {
+    display: grid;
+    grid-template-columns: 1.3fr 0.7fr;
+    gap: 70px;
+    border-top: 1px solid #d9ccd9;
+    margin-top: 85px;
+    padding-top: 65px;
+  }
+  .program-details .section-title {
+    font-size: 42px;
+  }
+  .skills-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    margin-top: 30px;
+  }
+  .skill-row {
+    display: flex;
+    gap: 14px;
+    border-top: 1px solid #d6c9d5;
+    padding-top: 18px;
+  }
+  .skill-row > span {
+    font-family: Georgia, serif;
+    color: var(--color-wine);
+    font-size: 22px;
+  }
+  .skill-row p {
+    font-size: 14px;
+    color: var(--color-coffee);
+  }
+  .program-aside {
+    padding: 28px;
+    background: #faf6ef;
+    border-radius: 12px;
+    align-self: start;
+  }
+  .program-aside h2 {
+    font-family: Georgia, serif;
+    font-size: 25px;
+    margin-bottom: 12px;
+  }
+  .program-aside p {
+    font-size: 14px;
+    color: var(--color-muted);
+    line-height: 1.8;
+  }
+  .program-aside h2:not(:first-child) {
+    margin-top: 28px;
+  }
+  .program-contact {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    justify-content: space-between;
+  }
+  .program-contact .lead {
+    max-width: 680px;
+  }
+  @media (max-width: 700px) {
+    .group-section {
+      padding: 65px 0;
+    }
+    .group-layout,
+    .program-details {
+      grid-template-columns: 1fr;
+      gap: 36px;
+    }
+    .group-board {
+      max-width: 420px;
+      width: 100%;
+      margin: auto;
+    }
+    .program-details {
+      margin-top: 50px;
+      padding-top: 40px;
+    }
+    .skills-grid {
+      grid-template-columns: 1fr;
+    }
+    .program-contact {
+      flex-direction: column;
+      align-items: start;
+      gap: 25px;
+    }
+  }
+</style>

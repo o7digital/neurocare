@@ -5,7 +5,11 @@ const { doctorProfile, navItems, ui } = getSiteContent(Astro.url.pathname);
 const isEnglish = Astro.url.pathname.startsWith('/en');
 const isHome = Astro.url.pathname === '/' || Astro.url.pathname === '/en/';
 const homeHref = isEnglish ? '/en/' : '/';
-const languageHref = Astro.url.pathname.startsWith('/en/privacy-notice')
+const languageHref = Astro.url.pathname.startsWith('/en/programs/social-skills')
+  ? '/programas/habilidades-sociales/'
+  : Astro.url.pathname.startsWith('/programas/habilidades-sociales')
+    ? '/en/programs/social-skills/'
+  : Astro.url.pathname.startsWith('/en/privacy-notice')
   ? '/aviso-de-privacidad/'
   : Astro.url.pathname.startsWith('/aviso-de-privacidad')
     ? '/en/privacy-notice/'

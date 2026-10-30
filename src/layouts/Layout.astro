@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import { getSiteContent } from '../data/site';
 import OliviaAI from '../components/OliviaAI.astro';
+import PreviewNotice from '../components/PreviewNotice.astro';
 
 interface Props {
   title?: string;
@@ -12,12 +13,13 @@ interface Props {
     en: string;
     default?: string;
   };
-  schemaType?: 'Physician' | 'Article';
+  schemaType?: 'Physician' | 'Article' | 'WebPage';
   lang?: string;
   ogLocale?: string;
 }
 
 const { doctorProfile } = getSiteContent(Astro.url.pathname);
+const isPreview = process.env.VERCEL_ENV !== 'production';
 const isEnglish = Astro.url.pathname.startsWith('/en');
 const spanishKeywords = [
   'psiquiatra en San Ángel CDMX',
@@ -213,7 +215,11 @@ const articleSchema = {
     sameAs: doctorProfile.doctoraliaUrl,
   },
 };
-const schema = schemaType === 'Article' ? articleSchema : physicianSchema;
+const schema = schemaType === 'Article' ? articleSchema : schemaType === 'WebPage' ? {
+  '@context': 'https://schema.org', '@type': 'WebPage', name: title, description,
+  inLanguage: lang, url: canonical.toString(),
+  publisher: { '@type': 'Organization', name: 'Neuro Diversa', url: siteOrigin },
+} : physicianSchema;
 ---
 
 <!doctype html>
@@ -222,6 +228,7 @@ const schema = schemaType === 'Article' ? articleSchema : physicianSchema;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
+    {isPreview && <meta name="robots" content="noindex, nofollow" />}
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="keywords" content={keywordsContent} />
@@ -236,23 +243,24 @@ const schema = schemaType === 'Article' ? articleSchema : physicianSchema;
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:alt" content={`${doctorProfile.brandName} professional portrait`} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:site_name" content={doctorProfile.fullName} />
+    <meta property="og:site_name" content="Neuro Diversa" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content={ogImage} />
     <meta name="theme-color" content="#C98F91" />
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4VX5983W32"></script>
-    <script is:inline>
+    {!isPreview && <script async src="https://www.googletagmanager.com/gtag/js?id=G-4VX5983W32"></script>}
+    {!isPreview && <script is:inline>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
 
       gtag('config', 'G-4VX5983W32');
-    </script>
+    </script>}
     <script type="application/ld+json" set:html={JSON.stringify(schema)} />
   </head>
   <body class="min-h-screen overflow-x-hidden bg-cream text-text antialiased">
+    {isPreview && <PreviewNotice />}
     <slot />
-    <OliviaAI />
+    {!isPreview && <OliviaAI />}
     <script>
       const toggle = document.querySelector('.js-mobile-menu-toggle');
       const menu = document.querySelector('#mobile-menu');

@@ -1,0 +1,86 @@
+---
+const en = Astro.url.pathname.startsWith("/en");
+---
+
+<section id="demo-posts" class="demo-posts" hidden data-english={String(en)}>
+  <span class="eyebrow">
+    {en
+      ? "Your editorial workspace · Demo"
+      : "Desde tu espacio editorial · Demo"}
+  </span>
+  <h2>{en ? "Your preview articles" : "Tus artículos de prueba"}</h2>
+  <p>
+    {en
+      ? "These articles are saved only in this browser. They are not published on the live website."
+      : "Estos artículos se guardan solo en este navegador. No se publican en el sitio real."}
+  </p>
+  <div id="demo-post-list"></div>
+</section>
+<script>
+  import { getPosts } from "../scripts/editorialDemo";
+  const section = document.querySelector<HTMLElement>("#demo-posts");
+  const list = document.querySelector("#demo-post-list");
+  if (section && list) {
+    const posts = getPosts().filter((p) => p.status === "preview");
+    section.hidden = !posts.length;
+    for (const post of posts) {
+      const item = document.createElement("article");
+      const category = document.createElement("span");
+      category.textContent = post.category;
+      const heading = document.createElement("h3");
+      heading.textContent = post.title;
+      const author = document.createElement("p");
+      author.textContent = post.author;
+      const body = document.createElement("p");
+      body.textContent = post.body;
+      body.className = "demo-post-body";
+      item.append(category, heading, author, body);
+      list.append(item);
+    }
+  }
+</script>
+<style>
+  .demo-posts {
+    padding: 30px 0 45px;
+    margin-top: 30px;
+    border-bottom: 1px solid var(--color-sand);
+  }
+  .demo-posts[hidden] {
+    display: none;
+  }
+  .demo-posts h2 {
+    font-family: Georgia, serif;
+    font-size: 30px;
+    margin: 15px 0 8px;
+  }
+  .demo-posts > p {
+    font-size: 13px;
+    color: var(--color-muted);
+  }
+  .demo-posts :global(article) {
+    padding: 25px;
+    background: var(--color-beige);
+    border-radius: 10px;
+    margin-top: 20px;
+  }
+  .demo-posts :global(article > span) {
+    font-size: 12px;
+    color: var(--color-wine);
+    font-weight: 700;
+  }
+  .demo-posts :global(h3) {
+    font-family: Georgia, serif;
+    font-size: 26px;
+    margin: 10px 0;
+  }
+  .demo-posts :global(article > p) {
+    font-size: 13px;
+    color: var(--color-muted);
+  }
+  .demo-posts :global(.demo-post-body) {
+    white-space: pre-wrap;
+    font-size: 16px;
+    margin-top: 18px;
+    overflow-wrap: anywhere;
+  }
+</style>
