@@ -1,0 +1,186 @@
+<section class="buffer-pricing" aria-labelledby="buffer-pricing-heading">
+  <div class="pricing-heading">
+    <div>
+      <span class="small-label">EMPIEZA A TU RITMO</span>
+      <h3 id="buffer-pricing-heading">¿Cuánto cuesta Buffer?</h3>
+    </div>
+    <a href="https://buffer.com/pricing" target="_blank" rel="noreferrer">
+      Ver tarifas oficiales ↗
+    </a>
+  </div>
+  <div class="pricing-grid">
+    <article>
+      <span class="plan-label">FREE</span>
+      <p class="plan-price">
+        0 <small>USD</small>
+      </p>
+      <p>
+        Hasta <strong>3 canales</strong> y{" "}
+        <strong>10 publicaciones en espera por canal</strong>. Al publicarse
+        una, se libera su lugar: no son solo los primeros diez posts.
+      </p>
+    </article>
+    <article>
+      <span class="plan-label">ESSENTIALS · OPCIONAL</span>
+      <p class="plan-price">
+        5 <small>USD / mes / canal</small>
+      </p>
+      <p>
+        Con pago anual de <strong>60 USD por canal</strong>. Si prefieres pagar
+        mes a mes, son <strong>6 USD por canal al mes</strong>.
+      </p>
+    </article>
+    <article class="price-calculator">
+      <label for="buffer-channel-count">Canales que quieres conectar</label>
+      <select id="buffer-channel-count">
+        <option value="1">1 canal</option>
+        <option value="2" selected>
+          2 canales · Instagram + Facebook
+        </option>
+        <option value="3">3 canales</option>
+      </select>
+      <label for="buffer-billing">Forma de pago de Essentials</label>
+      <select id="buffer-billing">
+        <option value="annual">Anual · 5 USD/mes/canal equivalentes</option>
+        <option value="monthly">Mensual · 6 USD/mes/canal</option>
+      </select>
+      <p id="buffer-cost" role="status" aria-live="polite">
+        10 USD/mes equivalentes · 120 USD pagados al año
+      </p>
+    </article>
+  </div>
+  <p class="pricing-footnote">
+    La suscripción a Buffer se contrata aparte. Free y Essentials incluyen un
+    usuario dentro de Buffer; los dos accesos previstos a esta administración
+    son independientes. Tarifas consultadas el 29 de octubre de 2026.
+  </p>
+</section>
+<script>
+  const count = document.querySelector<HTMLSelectElement>(
+    "#buffer-channel-count",
+  );
+  const billing = document.querySelector<HTMLSelectElement>("#buffer-billing");
+  const cost = document.querySelector("#buffer-cost");
+  function updatePrice() {
+    if (!count || !billing || !cost) return;
+    const channels = Number(count.value);
+    cost.textContent =
+      billing.value === "annual"
+        ? `${channels * 5} USD/mes equivalentes · ${channels * 60} USD pagados al año`
+        : `${channels * 6} USD al mes · pago mensual`;
+  }
+  count?.addEventListener("change", updatePrice);
+  billing?.addEventListener("change", updatePrice);
+</script>
+<style>
+  .buffer-pricing {
+    border: 1px solid #decfdc;
+    background: #fffdf9;
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+  .pricing-heading {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: center;
+    margin-bottom: 22px;
+  }
+  .pricing-heading h3 {
+    font-family: Georgia, serif;
+    font-size: 27px;
+    margin-top: 7px;
+  }
+  .pricing-heading a {
+    font-size: 11px;
+    font-weight: 700;
+    color: #87424d;
+  }
+  .pricing-heading .small-label {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    color: #987d87;
+  }
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.05fr;
+    gap: 24px;
+  }
+  .pricing-grid article {
+    border-right: 1px solid #e9dde5;
+    padding-right: 20px;
+  }
+  .pricing-grid article:last-child {
+    border: 0;
+    padding: 0;
+  }
+  .plan-label {
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: #8a627c;
+    font-weight: 700;
+  }
+  .plan-price {
+    font-family: Georgia, serif;
+    font-size: 38px;
+    margin: 7px 0 12px;
+    color: #6d425e;
+  }
+  .plan-price small {
+    font-family: Inter, sans-serif;
+    font-size: 10px;
+  }
+  .pricing-grid article > p:not(.plan-price) {
+    font-size: 11px;
+    line-height: 1.8;
+    color: #7a6572;
+  }
+  .price-calculator label {
+    display: block;
+    font-size: 10px;
+    font-weight: 600;
+    color: #6b5262;
+    margin-bottom: 6px;
+  }
+  .price-calculator select {
+    width: 100%;
+    padding: 9px 7px;
+    border: 1px solid #dfd2d9;
+    border-radius: 5px;
+    font-size: 10px;
+    color: #6c4b62;
+    background: #fffaf7;
+    margin-bottom: 10px;
+  }
+  .price-calculator #buffer-cost {
+    font-size: 12px;
+    font-weight: 700;
+    color: #87424d;
+    margin-top: 4px;
+  }
+  .pricing-footnote {
+    font-size: 10px;
+    color: #917c87;
+    margin-top: 20px;
+    border-top: 1px solid #ecdee5;
+    padding-top: 15px;
+    line-height: 1.8;
+  }
+  @media (max-width: 900px) {
+    .pricing-grid {
+      grid-template-columns: 1fr;
+    }
+    .pricing-grid article {
+      border-right: 0;
+      border-bottom: 1px solid #e9dde5;
+      padding-right: 0;
+      padding-bottom: 20px;
+    }
+    .pricing-heading {
+      align-items: start;
+      flex-direction: column;
+      gap: 10px;
+    }
+  }
+</style>
