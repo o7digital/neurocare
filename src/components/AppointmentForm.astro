@@ -68,12 +68,16 @@ const { doctorProfile, serviceGroups, ui } = getSiteContent(Astro.url.pathname);
       <p class="mt-4 text-muted">
         {ui.locationLeadB}
       </p>
+      <a class="btn btn-secondary mt-7" href={doctorProfile.mapsUrl} target="_blank" rel="noreferrer">
+        {ui.seeLocation}
+      </a>
     </div>
     <div class="reveal rounded-[8px] border border-sand bg-paper p-7 shadow-soft">
       <h3 class="mb-4 text-2xl font-semibold text-text">{ui.contactCardTitle}</h3>
       <p class="mb-6 text-muted">{ui.contactCardLead}</p>
       <div class="grid gap-3">
         <a class="btn btn-primary w-full" href={doctorProfile.doctoraliaUrl} target="_blank" rel="noreferrer">{ui.bookDoctoralia}</a>
+        <a class="btn btn-secondary w-full" href={doctorProfile.mapsUrl} target="_blank" rel="noreferrer">{ui.seeLocation}</a>
         <a class="btn btn-secondary w-full" href={doctorProfile.phoneHref}>{doctorProfile.phoneLabel}</a>
         <a class="btn btn-secondary w-full" href={doctorProfile.secondaryPhoneHref}>{doctorProfile.secondaryPhoneLabel}</a>
       </div>

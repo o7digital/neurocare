@@ -2,7 +2,9 @@
 import { articlePages, englishArticlePages, getSiteContent } from '../data/site';
 
 const { ui } = getSiteContent(Astro.url.pathname);
-const articles = Astro.url.pathname.startsWith('/en') ? englishArticlePages : articlePages;
+const isEnglish = Astro.url.pathname.startsWith('/en');
+const articles = isEnglish ? englishArticlePages : articlePages;
+const blogHref = isEnglish ? '/en/blog/' : '/blog/';
 ---
 
 <section id="articulos" class="section-premium bg-paper">
@@ -13,7 +15,7 @@ const articles = Astro.url.pathname.startsWith('/en') ? englishArticlePages : ar
       {ui.articlesLead}
     </p>
     <div class="mt-12 divide-y divide-sand border-y border-sand">
-      {articles.map(({ category, title, description, sections }) => (
+      {articles.map(({ category, title, description, sections, href }) => (
         <details class="reveal group">
           <summary class="grid cursor-pointer list-none gap-3 py-6 transition hover:bg-beige/45 md:grid-cols-[44px_180px_1fr] md:items-center">
             <span class="grid h-10 w-10 place-items-center rounded-[8px] border border-sand text-2xl font-semibold leading-none text-wine transition group-open:border-wine group-open:bg-wine group-open:text-white" aria-hidden="true">
@@ -33,9 +35,13 @@ const articles = Astro.url.pathname.startsWith('/en') ? englishArticlePages : ar
                 </section>
               ))}
             </div>
+            <a class="btn btn-secondary mt-7" href={href}>{isEnglish ? 'Read the full article' : 'Leer el artículo completo'}</a>
           </div>
         </details>
       ))}
+    </div>
+    <div class="mt-10 flex justify-center">
+      <a class="btn btn-primary" href={blogHref}>{isEnglish ? 'View the blog' : 'Ver todo el blog'}</a>
     </div>
   </div>
 </section>

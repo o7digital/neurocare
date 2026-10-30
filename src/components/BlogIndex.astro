@@ -1,0 +1,38 @@
+---
+import { articlePages, englishArticlePages } from '../data/site';
+
+const isEnglish = Astro.url.pathname.startsWith('/en');
+const articles = isEnglish ? englishArticlePages : articlePages;
+const copy = isEnglish
+  ? {
+      eyebrow: 'Neuro Diversa blog',
+      title: 'Clear information about mental and neurological health.',
+      lead: 'Educational articles about psychiatry and neuropsychiatry. This content does not replace an individual medical assessment.',
+      read: 'Read article',
+    }
+  : {
+      eyebrow: 'Blog Neuro Diversa',
+      title: 'Información clara sobre salud mental y neurológica.',
+      lead: 'Artículos de orientación sobre psiquiatría y neuropsiquiatría. Este contenido no sustituye una valoración médica individual.',
+      read: 'Leer artículo',
+    };
+---
+
+<main class="section-premium bg-paper">
+  <section class="container-premium">
+    <span class="eyebrow">{copy.eyebrow}</span>
+    <h1 class="section-title max-w-4xl">{copy.title}</h1>
+    <p class="lead max-w-3xl">{copy.lead}</p>
+
+    <div class="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+      {articles.map((article) => (
+        <article class="flex h-full flex-col rounded-[18px] border border-sand bg-white p-7 shadow-[0_18px_45px_rgb(74_48_50_/_0.08)]">
+          <span class="mb-4 text-sm font-bold text-camel">{article.category}</span>
+          <h2 class="mb-4 text-2xl font-semibold text-text">{article.title}</h2>
+          <p class="mb-7 flex-1 leading-7 text-muted">{article.description}</p>
+          <a class="font-bold text-wine transition hover:text-coffee" href={article.href}>{copy.read} →</a>
+        </article>
+      ))}
+    </div>
+  </section>
+</main>
