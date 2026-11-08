@@ -1,6 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { articlePages } from "../data/site";
+import { articlePages, psychologistProfile } from "../data/site";
 ---
 
 <Layout
@@ -81,8 +81,8 @@ import { articlePages } from "../data/site";
             <option value="Dra. Ariadna Mondragón">
               Dra. Ariadna Mondragón
             </option>
-            <option value="Psicóloga colaboradora (perfil pendiente)">
-              Psicóloga colaboradora
+            <option value={psychologistProfile.displayName}>
+              {psychologistProfile.displayName}
             </option>
           </select>
         </label>
@@ -147,7 +147,7 @@ import { articlePages } from "../data/site";
                 <label for="post-author">Autora</label>
                 <select id="post-author">
                   <option>Dra. Ariadna Mondragón</option>
-                  <option>Psicóloga colaboradora (perfil pendiente)</option>
+                  <option>{psychologistProfile.displayName}</option>
                 </select>
               </div>
               <div>

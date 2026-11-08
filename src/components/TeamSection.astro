@@ -1,5 +1,5 @@
 ---
-import { doctorProfile, timeline } from "../data/site";
+import { doctorProfile, psychologistProfile, timeline } from "../data/site";
 const en = Astro.url.pathname.startsWith("/en");
 ---
 
@@ -88,17 +88,15 @@ const en = Astro.url.pathname.startsWith("/en");
           </a>
         </div>
       </article>
-      <article class="team-person">
-        <div class="team-image team-placeholder">
-          <div class="portrait-placeholder" aria-hidden="true">
-            <div></div>
-            <span></span>
-          </div>
-          <p>
-            {en
-              ? "A new perspective joins the team"
-              : "Una nueva mirada se suma al equipo"}
-          </p>
+      <article id="la-psicologa" class="team-person">
+        <div class="team-image team-image-cindy">
+          <img
+            src={psychologistProfile.portrait}
+            alt={psychologistProfile.fullName}
+            width="464"
+            height="463"
+            loading="lazy"
+          />
           <span class="team-number">
             02 / {en ? "Psychology" : "Psicología"}
           </span>
@@ -106,24 +104,55 @@ const en = Astro.url.pathname.startsWith("/en");
         <div class="team-person-copy">
           <p class="eyebrow">
             {en
-              ? "Psychology · Neurodiversity"
-              : "Psicología · Neurodiversidad"}
+              ? "Psychology · CBT & ACT"
+              : "Psicología · TCC y ACT"}
           </p>
           <h3>
-            {en ? "Our psychology" : "Nuestra profesional"}
+            {en ? "Psychologist Cindy" : "Psic. Cindy"}
             <br />
-            {en ? "professional" : "de psicología"}
+            Alvarado Mondragón
           </h3>
           <p>
             {en
-              ? "A place for the collaborating psychologist and the shared project around neurodiversity, social connection and group interventions."
-              : "Un lugar para presentar a la psicóloga colaboradora y el proyecto compartido sobre neurodiversidad, vínculos e intervenciones grupales."}
+              ? "UNAM-trained psychologist with specialized training in neuropsychology at the INNN. Psychological and neuropsychological assessment and psychotherapy for adolescents and adults, with an affirming, respectful approach to neurodiversity."
+              : "Psicóloga egresada de la UNAM, con formación especializada en neuropsicología en el INNN. Evaluación psicológica y neuropsicológica y psicoterapia para adolescentes y personas adultas, con una mirada afirmativa y respetuosa de la neurodiversidad."}
           </p>
-          <p class="profile-pending">
-            {en
-              ? "Preview profile. Name, photo, qualifications and biography to be supplied."
-              : "Perfil de muestra. Nombre, fotografía, cédula y semblanza por integrar."}
-          </p>
+          <details class="team-bio">
+            <summary>
+              {en
+                ? "Background and approach to care"
+                : "Formación y enfoque de atención"}{" "}
+              <span aria-hidden="true">+</span>
+            </summary>
+            <div>
+              <p>{psychologistProfile.fullName}</p>
+              <p>
+                <strong>{en ? "Psychology degree" : "Licenciatura en Psicología"}</strong>
+                <br />
+                Universidad Nacional Autónoma de México (UNAM)
+              </p>
+              <p>
+                <strong>{en ? "Specialized training in neuropsychology" : "Formación especializada en Neuropsicología"}</strong>
+                <br />
+                Instituto Nacional de Neurología y Neurocirugía (INNN)
+              </p>
+              <p>
+                {en
+                  ? "Her practice draws on Cognitive Behavioral Therapy (CBT) and Acceptance and Commitment Therapy (ACT), with goals agreed together and practical tools for everyday life."
+                  : "Su práctica integra Terapia Cognitivo-Conductual (TCC) y Terapia de Aceptación y Compromiso (ACT), con objetivos acordados con la persona y herramientas prácticas para la vida diaria."}
+              </p>
+              <p>
+                {en
+                  ? "Areas of practice include attention, memory and executive functions; assessment of ADHD and autism-related profiles; anxiety, emotional regulation, self-esteem and interpersonal relationships."
+                  : "Sus áreas de práctica incluyen atención, memoria y funciones ejecutivas; exploración clínica de perfiles asociados con TDAH y autismo; ansiedad, regulación emocional, autoestima y relaciones interpersonales."}
+              </p>
+              <p>
+                {en
+                  ? "In-person care in San Ángel and Colonia del Valle, Mexico City, subject to availability, and online care. Neuropsychological assessment is organized in stages according to each person's needs."
+                  : "Atención presencial en San Ángel y Colonia del Valle, CDMX, según disponibilidad, y en línea. La evaluación neuropsicológica se organiza por etapas según las necesidades de cada persona."}
+              </p>
+            </div>
+          </details>
           <a
             class="team-link"
             href={
@@ -209,53 +238,18 @@ const en = Astro.url.pathname.startsWith("/en");
   .team-person-copy > p:not(.eyebrow) {
     color: var(--color-muted);
   }
-  .team-placeholder {
+  .team-image-cindy {
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 24px 24px 52px;
     background:
       radial-gradient(ellipse at 50% 80%, #d7ced8, transparent 65%), #eae4eb;
   }
-  .team-placeholder > p {
-    font-family: Georgia, serif;
-    color: #655367;
-    font-style: italic;
-    font-size: 19px;
-    margin-top: 14px;
-  }
-  .portrait-placeholder {
-    position: relative;
-    width: 150px;
-    height: 160px;
-    overflow: hidden;
-  }
-  .portrait-placeholder div {
-    position: absolute;
-    top: 4px;
-    left: 45px;
-    width: 60px;
-    height: 70px;
-    border: 1px solid #a48e9c;
-    border-radius: 50%;
-    background: #e6dce5;
-  }
-  .portrait-placeholder span {
-    position: absolute;
-    left: 4px;
-    bottom: -50px;
-    width: 142px;
-    height: 120px;
-    border: 1px solid #a48e9c;
-    border-radius: 50%;
-    background: #ded1df;
-  }
-  .profile-pending {
-    margin-top: 20px;
-    padding: 12px 14px;
-    border-left: 2px solid #b297b1;
-    font-size: 12px;
-    background: #eee6ed;
+  .team-image-cindy img {
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
   }
   .team-link {
     display: flex;

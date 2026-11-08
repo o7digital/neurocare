@@ -24,6 +24,12 @@ export const doctorProfile = {
   reviewCount: 7,
 };
 
+export const psychologistProfile = {
+  fullName: 'Cindy Alvarado Mondragón',
+  displayName: 'Psic. Cindy Alvarado Mondragón',
+  portrait: '/cindy-alvarado-mondragon.webp',
+};
+
 export const navItems = [
   { label: 'Inicio', href: '#inicio' },
   { label: 'Nuestro equipo', href: '#equipo' },
