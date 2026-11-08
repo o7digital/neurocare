@@ -1,0 +1,24 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Header from "../../components/Header.astro";
+import GroupProgram from "../../components/GroupProgram.astro";
+import Footer from "../../components/Footer.astro";
+const alternateUrls = {
+  es: new URL("/programas/habilidades-sociales/", Astro.site).toString(),
+  en: new URL("/en/programs/social-skills/", Astro.site).toString(),
+  default: new URL("/programas/habilidades-sociales/", Astro.site).toString(),
+};
+---
+
+<Layout
+  title="Habilidades sociales en grupo | Neuro Diversa"
+  description="Conoce el proyecto de habilidades sociales para jóvenes adultos de 18 a 35 años en San Ángel, CDMX."
+  schemaType="WebPage"
+  alternateUrls={alternateUrls}
+>
+  <Header />
+  <main>
+    <GroupProgram expanded />
+  </main>
+  <Footer />
+</Layout>

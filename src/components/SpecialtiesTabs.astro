@@ -1,7 +1,7 @@
 ---
 import { getSiteContent } from '../data/site';
 
-const { consultationReasons, doctorProfile, ui } = getSiteContent(Astro.url.pathname);
+const { consultationReasons, psychologicalCare, doctorProfile, ui } = getSiteContent(Astro.url.pathname);
 ---
 
 <section id="motivos" class="section-premium">
@@ -31,6 +31,30 @@ const { consultationReasons, doctorProfile, ui } = getSiteContent(Astro.url.path
           </div>
         </article>
       ))}
+      <article
+        id="seguimiento-psicologico"
+        class="reveal relative overflow-hidden rounded-[8px] border border-water/30 bg-[linear-gradient(135deg,#fffdf9,#f4ebe6_48%,#eef6f4)] p-6 text-text shadow-soft md:col-span-2 lg:col-span-3 lg:p-8"
+      >
+        <span class="number-bg">{String(consultationReasons.length + 1).padStart(2, '0')}</span>
+        <div class="relative grid gap-6 lg:grid-cols-2 lg:gap-10">
+          <div>
+            <p class="mb-4 text-sm font-bold text-wine">{psychologicalCare.eyebrow}</p>
+            <h3 class="mb-4 text-3xl font-semibold leading-tight">{psychologicalCare.title}</h3>
+            <p class="text-muted">{psychologicalCare.description}</p>
+            <a class="mt-6 inline-block font-black text-wine" href="#la-psicologa">
+              {psychologicalCare.profileLink} ↗
+            </a>
+          </div>
+          <div>
+            <ul class="grid gap-3 text-sm font-bold text-coffee">
+              {psychologicalCare.items.map((item) => (
+                <li class="border-b border-sand pb-3">{item}</li>
+              ))}
+            </ul>
+            <p class="mt-4 text-sm text-muted">{psychologicalCare.approach}</p>
+          </div>
+        </div>
+      </article>
     </div>
 
     <p class="mt-8 max-w-3xl text-sm font-bold text-muted">

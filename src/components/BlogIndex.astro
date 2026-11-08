@@ -1,19 +1,20 @@
 ---
 import { articlePages, englishArticlePages } from '../data/site';
+import DemoPosts from './DemoPosts.astro';
 
 const isEnglish = Astro.url.pathname.startsWith('/en');
 const articles = isEnglish ? englishArticlePages : articlePages;
 const copy = isEnglish
   ? {
       eyebrow: 'Neuro Diversa blog',
-      title: 'Clear information about mental and neurological health.',
-      lead: 'Educational articles about psychiatry and neuropsychiatry. This content does not replace an individual medical assessment.',
+      title: 'Ideas for understanding ourselves and connecting.',
+      lead: 'A shared editorial space for psychiatry, psychology and neurodiversity. Educational content does not replace individual professional assessment.',
       read: 'Read article',
     }
   : {
       eyebrow: 'Blog Neuro Diversa',
-      title: 'Información clara sobre salud mental y neurológica.',
-      lead: 'Artículos de orientación sobre psiquiatría y neuropsiquiatría. Este contenido no sustituye una valoración médica individual.',
+      title: 'Ideas para comprendernos y conectar.',
+      lead: 'Un espacio editorial compartido sobre psiquiatría, psicología y neurodiversidad. El contenido informativo no sustituye una valoración profesional individual.',
       read: 'Leer artículo',
     };
 ---
@@ -23,6 +24,7 @@ const copy = isEnglish
     <span class="eyebrow">{copy.eyebrow}</span>
     <h1 class="section-title max-w-4xl">{copy.title}</h1>
     <p class="lead max-w-3xl">{copy.lead}</p>
+    <DemoPosts />
 
     <div class="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
       {articles.map((article) => (

@@ -1,0 +1,299 @@
+---
+import { doctorProfile, psychologistProfile, timeline } from "../data/site";
+const en = Astro.url.pathname.startsWith("/en");
+---
+
+<section id="equipo" class="section-premium bg-paper">
+  <div class="container-premium">
+    <div class="team-intro">
+      <div>
+        <span class="eyebrow">
+          {en
+            ? "The people behind Neuro Diversa"
+            : "Las personas detrás de Neuro Diversa"}
+        </span>
+        <h2 class="section-title">
+          {en ? "Two perspectives." : "Dos miradas."}
+          <br />
+          <em class="text-wine">
+            {en ? "One shared purpose." : "Un mismo propósito."}
+          </em>
+        </h2>
+      </div>
+      <p class="lead">
+        {en
+          ? "A shared space for psychiatry and psychology, with respect for each person’s story and way of experiencing the world."
+          : "Un espacio que reúne psiquiatría y psicología, con respeto por la historia y la forma de vivir el mundo de cada persona."}
+      </p>
+    </div>
+    <div class="team-grid">
+      <article id="la-doctora" class="team-person">
+        <div class="team-image">
+          <picture>
+            <source srcset={doctorProfile.portraitWebp} type="image/webp" />
+            <img
+              src={doctorProfile.portrait}
+              alt={doctorProfile.fullName}
+              width="640"
+              height="640"
+              loading="lazy"
+            />
+          </picture>
+          <span class="team-number">
+            01 / {en ? "Psychiatry" : "Psiquiatría"}
+          </span>
+        </div>
+        <div class="team-person-copy">
+          <p class="eyebrow">
+            {en
+              ? "Psychiatry · Neuropsychiatry"
+              : "Psiquiatría · Neuropsiquiatría"}
+          </p>
+          <h3>
+            Dra. Ariadna
+            <br />
+            Mondragón
+          </h3>
+          <p>
+            {en
+              ? "An integrated view of emotional, cognitive and neurological symptoms. Individual assessment and personalized medical care for adults."
+              : "Una mirada integral a los síntomas emocionales, cognitivos y neurológicos. Valoración individual y atención médica personalizada para adultos."}
+          </p>
+          <details class="team-bio">
+            <summary>
+              {en
+                ? "Background and professional details"
+                : "Trayectoria y datos profesionales"}{" "}
+              <span aria-hidden="true">+</span>
+            </summary>
+            <div>
+              <p>{doctorProfile.fullName}</p>
+              {timeline.map((item) => (
+                <p>
+                  <strong>{item.title}</strong>
+                  <br />
+                  {item.institution} · {item.year}
+                </p>
+              ))}
+              <p>{doctorProfile.license}</p>
+            </div>
+          </details>
+          <a
+            class="team-link"
+            href={doctorProfile.doctoraliaUrl}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {en ? "Book with Dr. Ariadna" : "Agendar con la Dra. Ariadna"} ↗
+          </a>
+        </div>
+      </article>
+      <article id="la-psicologa" class="team-person">
+        <div class="team-image team-image-cindy">
+          <img
+            src={psychologistProfile.portrait}
+            alt={psychologistProfile.fullName}
+            width="464"
+            height="463"
+            loading="lazy"
+          />
+          <span class="team-number">
+            02 / {en ? "Psychology" : "Psicología"}
+          </span>
+        </div>
+        <div class="team-person-copy">
+          <p class="eyebrow">
+            {en
+              ? "Psychology · CBT & ACT"
+              : "Psicología · TCC y ACT"}
+          </p>
+          <h3>
+            {en ? "Psychologist Cindy" : "Psic. Cindy"}
+            <br />
+            Alvarado Mondragón
+          </h3>
+          <p>
+            {en
+              ? "UNAM-trained psychologist with specialized training in neuropsychology at the INNN. Psychological and neuropsychological assessment and psychotherapy for adolescents and adults, with an affirming, respectful approach to neurodiversity."
+              : "Psicóloga egresada de la UNAM, con formación especializada en neuropsicología en el INNN. Evaluación psicológica y neuropsicológica y psicoterapia para adolescentes y personas adultas, con una mirada afirmativa y respetuosa de la neurodiversidad."}
+          </p>
+          <details class="team-bio">
+            <summary>
+              {en
+                ? "Background and approach to care"
+                : "Formación y enfoque de atención"}{" "}
+              <span aria-hidden="true">+</span>
+            </summary>
+            <div>
+              <p>{psychologistProfile.fullName}</p>
+              <p>
+                <strong>{en ? "Psychology degree" : "Licenciatura en Psicología"}</strong>
+                <br />
+                Universidad Nacional Autónoma de México (UNAM)
+              </p>
+              <p>
+                <strong>{en ? "Specialized training in neuropsychology" : "Formación especializada en Neuropsicología"}</strong>
+                <br />
+                Instituto Nacional de Neurología y Neurocirugía (INNN)
+              </p>
+              <p>
+                {en
+                  ? "Her practice draws on Cognitive Behavioral Therapy (CBT) and Acceptance and Commitment Therapy (ACT), with goals agreed together and practical tools for everyday life."
+                  : "Su práctica integra Terapia Cognitivo-Conductual (TCC) y Terapia de Aceptación y Compromiso (ACT), con objetivos acordados con la persona y herramientas prácticas para la vida diaria."}
+              </p>
+              <p>
+                {en
+                  ? "Areas of practice include attention, memory and executive functions; assessment of ADHD and autism-related profiles; anxiety, emotional regulation, self-esteem and interpersonal relationships."
+                  : "Sus áreas de práctica incluyen atención, memoria y funciones ejecutivas; exploración clínica de perfiles asociados con TDAH y autismo; ansiedad, regulación emocional, autoestima y relaciones interpersonales."}
+              </p>
+              <p>
+                {en
+                  ? "In-person care in San Ángel and Colonia del Valle, Mexico City, subject to availability, and online care. Neuropsychological assessment is organized in stages according to each person's needs."
+                  : "Atención presencial en San Ángel y Colonia del Valle, CDMX, según disponibilidad, y en línea. La evaluación neuropsicológica se organiza por etapas según las necesidades de cada persona."}
+              </p>
+            </div>
+          </details>
+          <a
+            class="team-link"
+            href={
+              en
+                ? "/en/programs/social-skills/"
+                : "/programas/habilidades-sociales/"
+            }
+          >
+            {en
+              ? "Discover the shared project"
+              : "Conocer el proyecto conjunto"}{" "}
+            ↗
+          </a>
+        </div>
+      </article>
+    </div>
+    <p class="team-footnote">
+      {en
+        ? "Individual care and group activities, with a clear role for each professional."
+        : "Atención individual y actividades grupales, con una función clara para cada profesional."}
+    </p>
+  </div>
+</section>
+<style>
+  .team-intro {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 60px;
+    align-items: center;
+    margin-bottom: 48px;
+  }
+  .team-intro .section-title {
+    font-size: clamp(36px, 4vw, 56px);
+  }
+  .team-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+  .team-person {
+    border: 1px solid var(--color-sand);
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--color-cream);
+  }
+  .team-image {
+    height: 340px;
+    position: relative;
+    overflow: hidden;
+    background: #e8dbd5;
+  }
+  .team-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
+  .team-image picture {
+    display: block;
+    height: 100%;
+  }
+  .team-number {
+    position: absolute;
+    bottom: 20px;
+    left: 24px;
+    padding: 7px 13px;
+    background: var(--color-paper);
+    border-radius: 5px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .team-person-copy {
+    padding: 32px;
+  }
+  .team-person-copy h3 {
+    font-family: Georgia, serif;
+    font-size: 36px;
+    line-height: 1.12;
+    margin: 15px 0;
+  }
+  .team-person-copy > p:not(.eyebrow) {
+    color: var(--color-muted);
+  }
+  .team-image-cindy {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 24px 52px;
+    background:
+      radial-gradient(ellipse at 50% 80%, #d7ced8, transparent 65%), #eae4eb;
+  }
+  .team-image-cindy img {
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+  }
+  .team-link {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 22px;
+    margin-top: 24px;
+    border-top: 1px solid var(--color-sand);
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--color-wine);
+  }
+  .team-bio {
+    margin-top: 20px;
+    font-size: 13px;
+  }
+  .team-bio summary {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    cursor: pointer;
+    font-weight: 700;
+  }
+  .team-bio div p {
+    margin-top: 12px;
+    color: var(--color-muted);
+  }
+  .team-footnote {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--color-muted);
+  }
+  @media (max-width: 700px) {
+    .team-intro,
+    .team-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    .team-image {
+      height: 300px;
+    }
+    .team-person-copy {
+      padding: 24px;
+    }
+  }
+</style>

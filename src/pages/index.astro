@@ -2,7 +2,8 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
-import ExperienceSection from '../components/ExperienceSection.astro';
+import TeamSection from '../components/TeamSection.astro';
+import GroupProgram from '../components/GroupProgram.astro';
 import SpecialtiesTabs from '../components/SpecialtiesTabs.astro';
 import PatientJourney from '../components/PatientJourney.astro';
 import AppointmentForm from '../components/AppointmentForm.astro';
@@ -14,13 +15,15 @@ const { doctorProfile, ui } = getSiteContent(Astro.url.pathname);
 ---
 
 <Layout
-  title={`${doctorProfile.brandName} | Psiquiatra y Neuropsiquiatra en San Ángel CDMX`}
-  description="Psiquiatra y neuropsiquiatra en San Ángel, CDMX. Atención especializada para ansiedad, depresión, TDAH, sueño y síntomas cognitivos. Consulta presencial y en línea."
+  title="Neuro Diversa | Psiquiatría, Psicología y Neurodiversidad en San Ángel"
+  description="Un espacio de psiquiatría y psicología en San Ángel, CDMX. Conoce al equipo, la atención individual y el proyecto de habilidades sociales en grupo."
+  schemaType="WebPage"
 >
   <Header />
   <main>
     <Hero />
-    <ExperienceSection />
+    <TeamSection />
+    <GroupProgram />
     <SpecialtiesTabs />
     <PatientJourney />
     <AppointmentForm />

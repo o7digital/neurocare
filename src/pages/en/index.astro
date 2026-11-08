@@ -2,7 +2,8 @@
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 import Hero from '../../components/Hero.astro';
-import ExperienceSection from '../../components/ExperienceSection.astro';
+import TeamSection from '../../components/TeamSection.astro';
+import GroupProgram from '../../components/GroupProgram.astro';
 import SpecialtiesTabs from '../../components/SpecialtiesTabs.astro';
 import PatientJourney from '../../components/PatientJourney.astro';
 import AppointmentForm from '../../components/AppointmentForm.astro';
@@ -14,15 +15,17 @@ const { doctorProfile, ui } = getSiteContent(Astro.url.pathname);
 ---
 
 <Layout
-  title={`${doctorProfile.brandName} | Psychiatrist and Neuropsychiatrist in San Ángel Mexico City`}
-  description="Psychiatrist and neuropsychiatrist in San Ángel, Mexico City. Specialized care for anxiety, depression, ADHD, sleep concerns and cognitive symptoms. In-person and online consultations."
+  title="Neuro Diversa | Psychiatry, Psychology and Neurodiversity in San Ángel"
+  description="A space for psychiatry and psychology in San Ángel, Mexico City. Meet the team and explore individual care and our proposed social skills group."
+  schemaType="WebPage"
   lang="en"
   ogLocale="en_US"
 >
   <Header />
   <main>
     <Hero />
-    <ExperienceSection />
+    <TeamSection />
+    <GroupProgram />
     <SpecialtiesTabs />
     <PatientJourney />
     <AppointmentForm />

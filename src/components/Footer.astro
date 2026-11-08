@@ -73,7 +73,7 @@ const footerKeywords = isEnglish
           </picture>
         </a>
         <p class="mb-5 max-w-sm text-sm text-cream/62">
-          {doctorProfile.specialty}<br />
+          {isEnglish ? 'Psychiatry · Psychology · Neurodiversity' : 'Psiquiatría · Psicología · Neurodiversidad'}<br />
           {doctorProfile.location}
         </p>
         <a class="btn btn-primary" href={doctorProfile.doctoraliaUrl} target="_blank" rel="noreferrer">{ui.book}</a>
