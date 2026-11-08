@@ -135,6 +135,20 @@ export const consultationReasons = [
   },
 ];
 
+export const psychologicalCare = {
+  eyebrow: 'Psicología · Adolescentes y personas adultas',
+  title: 'Seguimiento psicológico y psicoterapia',
+  description: 'Un proceso de acompañamiento con Cindy Alvarado Mondragón, con objetivos acordados contigo y herramientas prácticas para afrontar las dificultades de la vida cotidiana.',
+  items: [
+    'Terapia Cognitivo-Conductual (TCC) y Terapia de Aceptación y Compromiso (ACT)',
+    'Ansiedad, regulación emocional y dificultades de adaptación',
+    'Autoestima y relaciones interpersonales',
+    'Estrategias para el estudio, el trabajo y la vida diaria',
+  ],
+  approach: 'Una mirada afirmativa y respetuosa de la neurodiversidad, a tu ritmo y según tus necesidades.',
+  profileLink: 'Conoce a Cindy y su enfoque',
+};
+
 export const serviceGroups = [
   {
     title: 'Evaluación',
@@ -405,6 +419,7 @@ export const spanishContent = {
   authorityPoints,
   approachPoints,
   consultationReasons,
+  psychologicalCare,
   serviceGroups,
   academicItems,
   firstConsultationSteps,
@@ -434,7 +449,7 @@ export const spanishContent = {
     reasonsEyebrow: 'Motivos de consulta',
     reasonsTitle: 'Distintas necesidades. Una atención que escucha.',
     reasonsLead: 'Psiquiatría, neuropsiquiatría y acompañamiento psicológico: el punto de partida es comprender qué necesita cada persona y orientar su atención con claridad.',
-    reasonsDisclaimer: 'La información de esta página es orientativa. Cada diagnóstico requiere una valoración médica individual.',
+    reasonsDisclaimer: 'La información de esta página es orientativa. Cada diagnóstico requiere una valoración profesional individual.',
     medicalApproachEyebrow: 'Enfoque médico',
     medicalApproachTitle: 'Formación especializada al servicio de una atención más clara.',
     firstVisitEyebrow: 'Primera consulta',
@@ -469,6 +484,19 @@ export const spanishContent = {
 
 export const englishContent = {
   ...spanishContent,
+  psychologicalCare: {
+    eyebrow: 'Psychology · Adolescents and adults',
+    title: 'Ongoing psychological support and psychotherapy',
+    description: 'Ongoing support with Cindy Alvarado Mondragón, with goals agreed together and practical tools for navigating everyday difficulties.',
+    items: [
+      'Cognitive Behavioral Therapy (CBT) and Acceptance and Commitment Therapy (ACT)',
+      'Anxiety, emotional regulation and adjustment difficulties',
+      'Self-esteem and interpersonal relationships',
+      'Strategies for studying, work and everyday life',
+    ],
+    approach: 'An affirming, respectful approach to neurodiversity, at your own pace and according to your needs.',
+    profileLink: 'Meet Cindy and explore her approach',
+  },
   navItems: [
     { label: 'Home', href: '#inicio' },
     { label: 'Our team', href: '#equipo' },
@@ -504,7 +532,7 @@ export const englishContent = {
     reasonsEyebrow: 'Reasons for consultation',
     reasonsTitle: 'Different needs. Care that listens.',
     reasonsLead: 'Psychiatry, neuropsychiatry and psychological support: we start by understanding what each person needs and identifying clear next steps.',
-    reasonsDisclaimer: 'The information on this page is educational. Each diagnosis requires an individual medical assessment.',
+    reasonsDisclaimer: 'The information on this page is educational. Each diagnosis requires an individual professional assessment.',
     medicalApproachEyebrow: 'Medical approach',
     medicalApproachTitle: 'Specialized training for clearer care.',
     firstVisitEyebrow: 'First visit',
