@@ -159,19 +159,24 @@ const skills = en
         </h2>
         <p class="lead">
           {en
-            ? "Contact Neuro Diversa to ask about availability, fees and the enrollment process. This preview does not register participants."
-            : "Contacta a Neuro Diversa para consultar disponibilidad, costos y proceso de inscripción. Esta vista previa no registra participantes."}
+            ? "Leave your details to ask about availability, fees and the enrollment process. The team will contact you to confirm the details."
+            : "Déjanos tus datos para consultar disponibilidad, costos y proceso de inscripción. El equipo te contactará para confirmar los detalles."}
         </p>
       </div>
-      <a class="btn btn-primary" href="tel:+525571919515">
-        {en ? "Call " : "Llamar al "}55 7191 9515 ↗
-      </a>
+      <button class="btn btn-primary" type="button" data-olivia-contact="group">
+        {en ? "I’m interested in the group" : "Me interesa el grupo"}
+      </button>
     </div>
   </section>
 )}
 <script>
-  import { applyProgramPreview } from "../scripts/editorialDemo";
-  applyProgramPreview();
+  fetch('/api/public/content').then(r => r.ok ? r.json() : null).then(data => {
+    const p = data?.program;
+    if (!p) return;
+    for (const [field, selector] of Object.entries({ title: '[data-program-title]', start: '[data-program-start]', weeks: '[data-program-weeks]', minutes: '[data-program-minutes]' })) {
+      if (typeof p[field] === 'string' || typeof p[field] === 'number') document.querySelectorAll(selector).forEach(el => el.textContent = String(p[field]));
+    }
+  }).catch(() => {});
 </script>
 <style>
   .group-section {

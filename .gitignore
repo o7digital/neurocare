@@ -24,3 +24,8 @@ pnpm-debug.log*
 .idea/
 .vercel
 .env*.local
+backend/data/
+backend/.env*
+!backend/.env.example
+playwright-report/
+test-results/

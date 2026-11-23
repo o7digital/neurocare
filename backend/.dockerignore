@@ -1,0 +1,8 @@
+.env*
+.bootstrap.json
+.bootstrapped
+data
+node_modules
+tests
+*.sqlite*
+*.tar.gz

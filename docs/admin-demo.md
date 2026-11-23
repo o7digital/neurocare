@@ -1,5 +1,8 @@
 # Neuro Diversa administration preview
 
+Historical demo documentation. The live implementation replaces these browser-only flows;
+see [backend.md](./backend.md) for the current workspace, deployment and deferred account setup.
+
 Branch: `admin`, created from `dev` at `4e1e9ff`. Deploy this branch to Vercel Preview only.
 
 ## Routes

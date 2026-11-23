@@ -7,6 +7,9 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   site: 'https://neurodiversa.mx',
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
+    server: process.env.NEURODIVERSA_DEV_BACKEND_URL ? {
+      proxy: { '/api': { target: process.env.NEURODIVERSA_DEV_BACKEND_URL, headers: { 'x-neurodiversa-key': process.env.NEURODIVERSA_DEV_GATEWAY_KEY || '' } } }
+    } : undefined
   }
 });

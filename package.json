@@ -9,11 +9,12 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "test": "node --test backend/tests/*.test.mjs tests/*.test.mjs",
     "astro": "astro"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.1",
-    "astro": "^6.4.7",
+    "astro": "^7.4.13",
     "tailwindcss": "^4.3.1"
   }
 }

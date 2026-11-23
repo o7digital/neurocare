@@ -1,0 +1,58 @@
+name: neurodiversa
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: neurodiversa-olivia36-db
+    restart: unless-stopped
+    env_file: .env.db
+    volumes: ["core-data:/var/lib/postgresql/data"]
+    networks: [private]
+    mem_limit: 256m
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U postgres -d neurodiversa"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+  core:
+    # Existing reviewed Olivia v3.6 release, from o7digital/olivia-v3 at 9286428.
+    image: neurodiversa-olivia36-core:9286428
+    container_name: neurodiversa-olivia36
+    restart: unless-stopped
+    env_file: .env.core
+    depends_on:
+      postgres: {condition: service_healthy}
+    volumes: ["./site-instructions.txt:/app/site-instructions.txt:ro"]
+    networks: [private, egress]
+    mem_limit: 512m
+    cpus: 1
+    healthcheck:
+      test: [CMD, python, -c, 'import urllib.request,json; assert json.load(urllib.request.urlopen("http://localhost:8093/health",timeout=5))["version"]=="3.6.0"']
+      interval: 15s
+      timeout: 6s
+      retries: 10
+  backend:
+    build: .
+    container_name: neurodiversa-backend
+    restart: unless-stopped
+    env_file: .env
+    volumes: ["./data:/data"]
+    networks: [private, egress, o7-apps]
+    depends_on:
+      core: {condition: service_healthy}
+    read_only: true
+    tmpfs: ["/tmp:size=32m,mode=1777"]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    mem_limit: 256m
+    cpus: 1
+    healthcheck:
+      test: [CMD, node, -e, 'fetch("http://localhost:8080/health").then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))']
+      interval: 15s
+      timeout: 7s
+      retries: 8
+networks:
+  private: {internal: true}
+  egress: {}
+  o7-apps: {external: true, name: o7-apps}
+volumes:
+  core-data: {}

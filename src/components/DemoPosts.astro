@@ -5,23 +5,24 @@ const en = Astro.url.pathname.startsWith("/en");
 <section id="demo-posts" class="demo-posts" hidden data-english={String(en)}>
   <span class="eyebrow">
     {en
-      ? "Your editorial workspace · Demo"
-      : "Desde tu espacio editorial · Demo"}
+      ? "From the Neuro Diversa team"
+      : "Desde el equipo de Neuro Diversa"}
   </span>
-  <h2>{en ? "Your preview articles" : "Tus artículos de prueba"}</h2>
+  <h2>{en ? "Our latest articles" : "Nuestras últimas publicaciones"}</h2>
   <p>
     {en
-      ? "These articles are saved only in this browser. They are not published on the live website."
-      : "Estos artículos se guardan solo en este navegador. No se publican en el sitio real."}
+      ? "Ideas and resources shared by our professionals."
+      : "Ideas y recursos compartidos por nuestras profesionales."}
   </p>
   <div id="demo-post-list"></div>
 </section>
 <script>
-  import { getPosts } from "../scripts/editorialDemo";
   const section = document.querySelector<HTMLElement>("#demo-posts");
   const list = document.querySelector("#demo-post-list");
   if (section && list) {
-    const posts = getPosts().filter((p) => p.status === "preview");
+    const language = section.dataset.english === 'true' ? 'en' : 'es';
+    fetch(`/api/public/content?language=${language}`).then(r => r.ok ? r.json() : { posts: [] }).then(data => {
+    const posts = data.posts || [];
     section.hidden = !posts.length;
     for (const post of posts) {
       const item = document.createElement("article");
@@ -37,6 +38,7 @@ const en = Astro.url.pathname.startsWith("/en");
       item.append(category, heading, author, body);
       list.append(item);
     }
+    }).catch(() => {});
   }
 </script>
 <style>

@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /estudio/
+Disallow: /api/
 
 Sitemap: https://neurodiversa.mx/sitemap.xml
