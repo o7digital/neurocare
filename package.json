@@ -7,11 +7,12 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && node cms/build.mjs",
+    "build": "node scripts/export-admin-guide.mjs && astro build && node cms/build.mjs",
     "preview": "astro preview",
     "test": "node --test backend/tests/*.test.mjs tests/*.test.mjs",
     "astro": "astro",
-    "check:admin": "tsc --project tsconfig.admin.json"
+    "check:admin": "tsc --project tsconfig.admin.json",
+    "docs:guide": "node scripts/export-admin-guide.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^7.1.9",

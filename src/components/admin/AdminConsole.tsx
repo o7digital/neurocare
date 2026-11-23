@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import {
   Inbox as InboxIcon,
   House,
+  CircleHelp,
   PanelsTopLeft,
   MessagesSquare,
   Mail,
@@ -24,6 +25,7 @@ import type { Workspace } from "./types";
 import Inbox from "./Inbox";
 import ChannelManager from "./ChannelManager";
 import SiteStudio from "./SiteStudio";
+import UserGuide from "./UserGuide";
 
 import NewsletterStudio from "./NewsletterStudio";
 import SocialStudio from "./SocialStudio";
@@ -65,6 +67,7 @@ const navigation = [
     icon: Plug,
     group: "ADMINISTRACIÓN",
   },
+  { id: "guide", label: "Guía de uso", icon: CircleHelp, group: "AYUDA" },
 ];
 export default function AdminConsole() {
   const [workspace, setWorkspace] = useState<Workspace | null>(null),
@@ -376,6 +379,15 @@ export default function AdminConsole() {
             <strong>{current.label}</strong>
           </div>
           <div>
+            <button
+              type="button"
+              className="admin-help-link"
+              aria-label="Abrir guía de uso"
+              onClick={() => navigate("guide")}
+            >
+              <CircleHelp size={15} />
+              <span>Guía de uso</span>
+            </button>
             <span className="private-indicator">
               <ShieldCheck size={13} />
               Espacio privado
@@ -456,6 +468,12 @@ export default function AdminConsole() {
                     text: "Cuentas del equipo y conexiones de comunicación.",
                     icon: Plug,
                   },
+                  {
+                    id: "guide",
+                    title: "Guía de uso",
+                    text: "Cómo editar, publicar, atender solicitudes y preparar campañas, paso a paso.",
+                    icon: CircleHelp,
+                  },
                 ].map(({ id, title, text, icon: Icon }) => (
                   <button key={id} onClick={() => navigate(id)}>
                     <Icon size={25} />
@@ -466,6 +484,7 @@ export default function AdminConsole() {
               </div>
             </div>
           )}
+          {panel === "guide" && <UserGuide onOpen={navigate} />}
           {panel === "site" && <SiteStudio notify={notify} />}
           {panel === "inbox" && <Inbox notify={notify} />}
           {panel === "channel" && (

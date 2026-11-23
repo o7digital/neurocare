@@ -1,0 +1,214 @@
+{
+  "title": "Guía de uso",
+  "description": "Tu guía para trabajar con el sitio, las solicitudes de pacientes y la comunicación de Neuro Diversa.",
+  "sections": [
+    {
+      "id": "primeros-pasos",
+      "title": "Empezar en el panel",
+      "summary": "Todo el trabajo diario está reunido en un mismo espacio privado.",
+      "steps": [
+        "Abre neurodiversa.mx/admin/ e inicia sesión con tu correo personal y la contraseña de tu cuenta.",
+        "En Inicio del admin encontrarás accesos a las herramientas. El menú lateral permite cambiar de sección; en el móvil se abre con el botón de menú de la cabecera.",
+        "Para modificar una página, abre Editor visual del sitio. Para revisar solicitudes, abre Inbox pacientes. Para atender conversaciones, abre Olivia · Channel manager.",
+        "Puedes volver a esta Guía de uso desde el menú o desde el botón de ayuda de la cabecera.",
+        "Cuando termines en un equipo compartido, utiliza Cerrar sesión."
+      ],
+      "note": "Si no puedes entrar, revisa el correo y la contraseña recibidos y solicita ayuda a la administración. El acceso al panel y el acceso avanzado a Directus son cuentas independientes.",
+      "panel": "overview",
+      "action": "Ir al inicio del admin"
+    },
+    {
+      "id": "editor-visual",
+      "title": "Editar textos y fotografías del sitio",
+      "summary": "El Editor visual del sitio muestra las páginas con su diseño real. El contenido se guarda en Directus.",
+      "steps": [
+        "Selecciona Español o English y después la página que quieras modificar. Usa Buscar página si no la encuentras en la lista.",
+        "Deja Toda la página seleccionada o elige una sección para centrarte en su contenido.",
+        "Haz clic en un texto y escribe sobre el diseño. El panel Editar permite ajustar el texto seleccionado; Contenido muestra la lista de textos, enlaces y fotografías de la sección.",
+        "Para cambiar un enlace, busca la entrada Enlace en Contenido y modifica su dirección. Las direcciones de las páginas del propio sitio comienzan por /.",
+        "Haz clic en una fotografía, elige Subir una fotografía y selecciona un archivo JPG, PNG, WebP o AVIF de hasta 25 MB. El editor prepara la imagen y muestra el resultado.",
+        "Revisa el diseño con Ordenador, Tableta y Móvil. Vista previa permite comprobar el resultado sin editar; Editar página vuelve al modo de edición.",
+        "Pulsa Guardar cambios para conservar el borrador. Cuando la página esté revisada, pulsa Publicar página y abre Ver sitio para comprobar el resultado público."
+      ],
+      "note": "Guardar cambios conserva un borrador privado. Publicar página actualiza la página elegida y sus elementos compartidos: navegación y pie de página del idioma, e información común del programa. Los borradores de otras páginas siguen privados. Español y English se revisan por separado.",
+      "panel": "site",
+      "action": "Abrir el editor visual"
+    },
+    {
+      "id": "seo",
+      "title": "Título y descripción para buscadores",
+      "summary": "Cada página dispone de sus propios ajustes SEO.",
+      "steps": [
+        "En Editor visual del sitio, selecciona la página y su idioma.",
+        "Abre SEO y publicación. Escribe el Título para buscadores y la Descripción para buscadores; la muestra inferior ayuda a revisar el texto.",
+        "Guarda los cambios y pulsa Publicar página para actualizar el título y la descripción en el sitio.",
+        "La opción No mostrar esta página en buscadores marca la página para que los buscadores no la indexen. Actívala únicamente si quieres retirar esa página de los resultados de búsqueda."
+      ],
+      "note": "La publicación actualiza el HTML del sitio. Los buscadores necesitan volver a visitar la página para reflejar el cambio en sus resultados.",
+      "panel": "site",
+      "action": "Revisar el SEO de una página"
+    },
+    {
+      "id": "pacientes",
+      "title": "Dar seguimiento a solicitudes de pacientes",
+      "summary": "Inbox pacientes reúne los formularios de interés en el grupo y en la atención individual.",
+      "steps": [
+        "Abre Inbox pacientes y selecciona una solicitud para consultar el nombre, los datos de contacto, el interés y el mensaje recibido.",
+        "Utiliza las búsquedas y los filtros disponibles para localizar a una persona o revisar el seguimiento.",
+        "Añade una nota con el siguiente paso y actualiza el estado de la solicitud conforme avance la atención.",
+        "Si la solicitud está asociada a una conversación, revisa también Olivia · Channel manager para continuar el intercambio con la persona."
+      ],
+      "note": "Una solicitud expresa interés; no confirma una cita ni una inscripción. El equipo confirma disponibilidad, condiciones y siguientes pasos con la persona.",
+      "panel": "inbox",
+      "action": "Abrir Inbox pacientes"
+    },
+    {
+      "id": "olivia",
+      "title": "Atender conversaciones con Olivia",
+      "summary": "Olivia · Channel manager centraliza las conversaciones del chat del sitio y el trabajo del equipo.",
+      "steps": [
+        "Selecciona una conversación para revisar los mensajes, los datos disponibles y el seguimiento del equipo.",
+        "Antes de responder personalmente, toma el control de la conversación. En modo manual, las respuestas automáticas de Olivia quedan suspendidas para ese intercambio.",
+        "Escribe la respuesta y envíala. Puedes utilizar respuestas rápidas o preparar una sugerencia con Olivia IA 3.6; revisa cualquier sugerencia antes de enviarla.",
+        "Utiliza la asignación, las etiquetas y las notas internas para organizar el seguimiento. Las notas internas no se muestran al visitante.",
+        "Cuando el chat esté bajo tu control, puedes adjuntar los archivos admitidos por el panel. Estos se entregan dentro de la conversación correspondiente.",
+        "Devuelve la conversación a la IA cuando quieras que Olivia continúe respondiendo. Si el asunto está atendido, márcalo como resuelto; puedes reabrirlo si es necesario."
+      ],
+      "note": "El historial de navegación se muestra cuando el visitante ha dado su consentimiento. Los canales externos que aparezcan pendientes requieren una conexión adicional; su presencia en el menú no significa que ya estén conectados.",
+      "panel": "channel",
+      "action": "Abrir Olivia · Channel manager"
+    },
+    {
+      "id": "articulos",
+      "title": "Preparar y publicar artículos",
+      "summary": "Artículos del sitio reúne los borradores y las lecturas del equipo.",
+      "steps": [
+        "Abre Artículos del sitio y prepara un artículo nuevo o selecciona uno de la Biblioteca del sitio.",
+        "Completa el título, la autora, el idioma, la categoría y el contenido.",
+        "Elige Borrador privado y pulsa Guardar artículo para seguir trabajando sin publicarlo.",
+        "Cuando esté revisado, selecciona Publicado en el blog y vuelve a pulsar Guardar artículo. Comprueba el resultado con Ver en el sitio."
+      ],
+      "note": "El estado elegido al guardar determina si el artículo se muestra al público. Revisa también el idioma antes de publicar.",
+      "panel": "articles",
+      "action": "Abrir Artículos del sitio"
+    },
+    {
+      "id": "programa",
+      "title": "Actualizar el programa grupal",
+      "summary": "Programa grupal permite mantener al día los datos comunes del programa.",
+      "steps": [
+        "Abre Programa grupal y revisa el título, el inicio propuesto, las semanas y los minutos por sesión.",
+        "Modifica los datos que el equipo haya confirmado y pulsa Guardar en el sitio.",
+        "Abre Ver en el sitio para comprobar la información pública. Las solicitudes de interés se consultan en Inbox pacientes."
+      ],
+      "note": "Guardar en el sitio actualiza directamente estos datos públicos. Para editar otros textos o fotografías de la página del programa, utiliza el Editor visual del sitio.",
+      "panel": "program",
+      "action": "Abrir Programa grupal"
+    },
+    {
+      "id": "newsletter",
+      "title": "Crear newsletters y campañas de correo",
+      "summary": "Mailing & newsletters permite preparar el documento, sus imágenes, las actividades y la vista previa.",
+      "steps": [
+        "Abre Mailing & newsletters y selecciona o prepara la campaña que quieras trabajar.",
+        "Completa el asunto, el texto de presentación, el título y los bloques de contenido. Utiliza Editar documento para trabajar en el editor de texto enriquecido.",
+        "Añade fotografías y actividades del catálogo y comprueba la vista previa. Guarda la campaña para conservar el trabajo.",
+        "Si publicas una versión para la agenda, revisa el enlace público y su contenido: una versión publicada es visible fuera del panel.",
+        "Con Mailchimp conectado, puedes preparar un borrador en esa plataforma. Crear el borrador de Mailchimp no envía la newsletter.",
+        "El envío por correo requiere un remitente configurado y una audiencia con consentimiento. Revisa los destinatarios y la confirmación antes de iniciar un envío."
+      ],
+      "note": "Guardar una campaña no la envía. Si falta la conexión de correo, puedes seguir preparando borradores; la administración configura el remitente y las conexiones.",
+      "panel": "mailing",
+      "action": "Abrir Mailing & newsletters"
+    },
+    {
+      "id": "buffer",
+      "title": "Preparar publicaciones para redes sociales",
+      "summary": "Buffer Studio reúne los textos, las imágenes y las acciones de publicación en redes.",
+      "steps": [
+        "Abre Buffer Studio y prepara el texto y las imágenes. También puedes partir del contenido de una newsletter.",
+        "Guarda el trabajo y revisa la vista previa antes de enviarlo a un canal.",
+        "Cuando Buffer esté conectado, selecciona el canal y la opción disponible: crear un borrador, añadir a la cola o programar una fecha.",
+        "Si programas, revisa la fecha, la hora y el canal elegido. Comprueba después el estado que devuelve Buffer."
+      ],
+      "note": "Sin una cuenta de Buffer conectada puedes preparar borradores locales. Guardar en el panel y enviar una publicación a Buffer son acciones diferentes.",
+      "panel": "social",
+      "action": "Abrir Buffer Studio"
+    },
+    {
+      "id": "catalogo",
+      "title": "Organizar actividades y recursos",
+      "summary": "El catálogo guarda los contenidos que se pueden reutilizar en las campañas.",
+      "steps": [
+        "Abre Actividades y recursos y crea una actividad o edita una existente.",
+        "Completa los datos disponibles: título, categoría, fecha, lugar, descripción, enlace e imagen.",
+        "Pulsa Guardar actividad. Después podrás seleccionar esa actividad desde las herramientas editoriales.",
+        "Antes de publicar una campaña, revisa la versión de cada actividad incluida y sus enlaces."
+      ],
+      "note": "Guardar una actividad en el catálogo no envía una campaña ni publica una entrada en redes.",
+      "panel": "catalog",
+      "action": "Abrir Actividades y recursos"
+    },
+    {
+      "id": "suscriptores",
+      "title": "Gestionar suscriptores",
+      "summary": "Suscriptores muestra la audiencia de las comunicaciones por correo.",
+      "steps": [
+        "Abre Suscriptores para consultar los contactos y su estado de suscripción.",
+        "Al añadir un contacto, completa sus datos y registra la aceptación de comunicaciones y su origen.",
+        "Antes de preparar un envío, comprueba que los destinatarios estén suscritos. Las bajas se respetan en los envíos."
+      ],
+      "note": "Dejar una solicitud de atención no equivale a suscribirse a una newsletter. El consentimiento para comunicaciones se recoge por separado.",
+      "panel": "contacts",
+      "action": "Abrir Suscriptores"
+    },
+    {
+      "id": "conexiones",
+      "title": "Conexiones y permisos del equipo",
+      "summary": "El equipo trabaja con contenidos, solicitudes y campañas. La administración gestiona las conexiones y los accesos.",
+      "steps": [
+        "En Conexiones y accesos puedes consultar el estado disponible para tu cuenta.",
+        "La cuenta de administración configura Buffer, Mailchimp y el remitente de correo. Si aparece Pendiente o falta una conexión, solicita su configuración antes de intentar enviar o programar.",
+        "La administración también puede preparar invitaciones personales para nuevas integrantes del equipo.",
+        "El acceso avanzado a Directus está disponible desde el Editor visual del sitio. Para editar y publicar páginas con el diseño real, utiliza el editor del panel principal."
+      ],
+      "note": "No necesitas entrar en Directus avanzado para el trabajo diario. Las credenciales del panel y de Directus son independientes: cambiar una no actualiza automáticamente la otra.",
+      "panel": "connections",
+      "action": "Abrir Conexiones y accesos"
+    }
+  ],
+  "faqs": [
+    {
+      "question": "Guardé el texto, pero todavía no aparece en el sitio.",
+      "answer": "En el Editor visual del sitio, Guardar cambios conserva el borrador. Selecciona la página y pulsa Publicar página para hacerla visible. Comprueba también que estés revisando el mismo idioma y la misma página."
+    },
+    {
+      "question": "¿Publicar una página publica todos los borradores?",
+      "answer": "No. Se publica la página elegida y sus elementos compartidos: navegación y pie de página del idioma e información común del programa. Los borradores de las otras páginas se conservan en privado."
+    },
+    {
+      "question": "Cambié el menú o el pie de página y lo veo en varias páginas.",
+      "answer": "Es el funcionamiento previsto: la navegación y el pie de página se comparten entre las páginas del mismo idioma. Revisa esos elementos antes de publicar."
+    },
+    {
+      "question": "¿Los cambios en español se traducen automáticamente al inglés?",
+      "answer": "No. Selecciona English y revisa el contenido de esa página por separado. La información común del programa, como semanas y minutos, se comparte."
+    },
+    {
+      "question": "Otra persona modificó la misma página.",
+      "answer": "Si el panel avisa de que la versión cambió, no sigas publicando sobre esa versión. Conserva el texto que necesites, vuelve a abrir la página y revisa la versión más reciente antes de guardar."
+    },
+    {
+      "question": "No puedo enviar una newsletter o programar en Buffer.",
+      "answer": "Comprueba el estado de la conexión y los avisos de la herramienta. La administración configura el remitente, Mailchimp y Buffer. Puedes continuar preparando borradores mientras se completa esa conexión."
+    },
+    {
+      "question": "¿Una sugerencia de Olivia se envía automáticamente al paciente?",
+      "answer": "La sugerencia preparada para el equipo queda como borrador: revísala y envíala cuando esté lista. Las respuestas automáticas del chat se suspenden al tomar el control de una conversación."
+    },
+    {
+      "question": "¿Dónde consulto una solicitud del grupo?",
+      "answer": "En Inbox pacientes. Si existe una conversación asociada, puedes revisar el intercambio en Olivia · Channel manager. La solicitud requiere seguimiento del equipo para confirmar las condiciones y los siguientes pasos."
+    }
+  ]
+}
