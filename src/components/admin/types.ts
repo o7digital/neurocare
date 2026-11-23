@@ -118,7 +118,7 @@ export type Message = {
   created: string;
 };
 export type Workspace = {
-  user: { name: string; email: string; role: string };
+  user: { id: string; name: string; email: string; role: string };
   posts: Array<Record<string, unknown>>;
   campaigns: NewsletterCampaign[];
   program: Record<string, unknown> | null;

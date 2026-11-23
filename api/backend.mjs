@@ -64,7 +64,11 @@ export default async function handler(req, res) {
       signal: AbortSignal.timeout(65000),
     });
     res.statusCode = response.status;
-    for (const key of ["content-type", "content-security-policy"])
+    for (const key of [
+      "content-type",
+      "content-security-policy",
+      "content-disposition",
+    ])
       if (response.headers.get(key))
         res.setHeader(key, response.headers.get(key));
     res.setHeader("Cache-Control", "private, no-store");

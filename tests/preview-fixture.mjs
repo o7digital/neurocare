@@ -15,6 +15,12 @@ const app = await createApplication(
     disableWorker: true,
     providers: {
       health: async () => "3.6.0",
+      assist: async (transcript, language, task) => ({
+        text:
+          task === "summary"
+            ? "Solicitud de información sobre el grupo. Confirmar detalles con el equipo."
+            : "Hola, gracias por tu interés. El equipo confirmará contigo los detalles del grupo.",
+      }),
       chat: async () => ({
         answer:
           "El grupo de habilidades sociales es para jóvenes adultos de 18 a 35 años. Puedes dejar tus datos en el formulario para que el equipo confirme los detalles.",

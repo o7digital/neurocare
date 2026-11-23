@@ -35,6 +35,15 @@ export function openStore(path, vaultKey) {
     CREATE TABLE IF NOT EXISTS catalog (id TEXT PRIMARY KEY, data TEXT NOT NULL, version INTEGER NOT NULL DEFAULT 1, updated TEXT NOT NULL);
     CREATE TABLE IF NOT EXISTS publications (id TEXT PRIMARY KEY, campaign_id TEXT NOT NULL UNIQUE, month_key TEXT NOT NULL, data TEXT NOT NULL, version INTEGER NOT NULL, updated TEXT NOT NULL);
     CREATE TABLE IF NOT EXISTS media (id TEXT PRIMARY KEY, name TEXT NOT NULL, bytes BLOB NOT NULL, created TEXT NOT NULL);
+    CREATE TABLE IF NOT EXISTS channel_threads (visitor_id TEXT PRIMARY KEY REFERENCES visitors(id), assignee_id TEXT, tags TEXT NOT NULL DEFAULT '[]', version INTEGER NOT NULL DEFAULT 1);
+    CREATE TABLE IF NOT EXISTS channel_profiles (visitor_id TEXT PRIMARY KEY REFERENCES visitors(id), name TEXT NOT NULL DEFAULT '', email TEXT NOT NULL DEFAULT '', phone TEXT NOT NULL DEFAULT '');
+    CREATE TABLE IF NOT EXISTS channel_reads (visitor_id TEXT NOT NULL REFERENCES visitors(id), user_id TEXT NOT NULL, last_row INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(visitor_id,user_id));
+    CREATE TABLE IF NOT EXISTS channel_notes (id TEXT PRIMARY KEY, visitor_id TEXT NOT NULL REFERENCES visitors(id), author_id TEXT NOT NULL, content TEXT NOT NULL, created TEXT NOT NULL);
+    CREATE INDEX IF NOT EXISTS channel_notes_visitor ON channel_notes(visitor_id,created);
+    CREATE TABLE IF NOT EXISTS page_visits (id TEXT PRIMARY KEY, visitor_id TEXT NOT NULL REFERENCES visitors(id), path TEXT NOT NULL, title TEXT NOT NULL, created TEXT NOT NULL);
+    CREATE INDEX IF NOT EXISTS page_visits_visitor ON page_visits(visitor_id,created);
+    CREATE TABLE IF NOT EXISTS channel_files (id TEXT PRIMARY KEY, visitor_id TEXT NOT NULL REFERENCES visitors(id), author_id TEXT NOT NULL, name TEXT NOT NULL, mime TEXT NOT NULL, size INTEGER NOT NULL, bytes BLOB NOT NULL, created TEXT NOT NULL);
+    CREATE TABLE IF NOT EXISTS message_files (message_id TEXT PRIMARY KEY REFERENCES messages(id), file_id TEXT NOT NULL REFERENCES channel_files(id));
   `);
   const key = createHash("sha256").update(vaultKey).digest();
   const seal = (value) => {

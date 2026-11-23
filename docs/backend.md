@@ -20,7 +20,8 @@ is backed up and validated with `nginx -t` before reload.
 ## Modules
 
 - Inbox: contact details, requested service or group, consent date, status and internal notes.
-- Channel manager: visitor/assistant/operator transcript, operator replies and AI/manual/closed mode.
+- Channel manager: standalone full-window Olivia console at `/inbox/`, ported from `suitesmine-bot/app/inbox/page.js` (the reference screenshot). Includes live counts and filters, assignment, read state, search, version-checked takeover/AI return/resolve/reopen, customer tags, editable contact profile, internal notes, consent-based page history, quick replies, Olivia 3.6 draft suggestions, private attachments and transcript export. It is also available from the backend’s Olivia navigation item.
+- Olivia automation: owner-controlled automatic replies and explicit human-request handoff, with editable quick replies. A visitor message reopens a resolved conversation. When control returns to AI, the actual operator exchange is passed as context; private notes are excluded.
 - Articles: shared drafts and publication in the ES or EN blog.
 - Group: title, proposed start, weeks and minutes, reflected on the public program.
 - Mailing: monthly campaigns, three editable starter templates, live desktop/mobile previews, full document editing with TipTap, design/gallery controls, personalization, HTML export, Mailchimp draft creation and SMTP test/send actions.
@@ -36,6 +37,8 @@ The newsletter editors and preview are ported from `crm-suitesmine` dev
 `suitesmine-bot/app/inbox/page.js`. Hotel events, credentials and tenant data
 are not copied. `backend/newsletter.mjs` is the shared HTML renderer; this pure
 module is the only backend source included in the frontend deployment.
+The channel console uses the existing Better Auth account and this dedicated tenant. It does not copy the reference instance’s clients, messages, access configuration or provider secrets. Website chat is active; external mailbox and Meta channels remain explicitly unconnected, as requested.
+
 Server-side sanitization uses sanitize-html, and campaign revisions retain their
 own design snapshot. Mailchimp uses its 3.0 draft/content API; Buffer uses its
 GraphQL API at `https://api.buffer.com`. Mailchimp remote campaign IDs are
@@ -121,3 +124,9 @@ desktop/mobile layouts.
 Production verification must separately check the real 3.6 engine, public
 routes, proxy cookies and denied anonymous admin access. Real Mailchimp, SMTP and Buffer
 provider writes remain untested until the owner connects those accounts.
+
+## Channel console verification
+
+`tests/channel-browser.mjs` runs the exact reference layout in Firefox against the isolated fixture. It exercises a real fixture visitor and a separate authenticated operator context: group lead and chat, consenting page history, tags, takeover, private notes, AI draft without automatic sending, a private text attachment delivered back to that visitor, resolution, reopening, reload persistence and mobile drawers. The backend tests additionally cover competing operators, stale versions, read isolation, provider handoff context and binary delivery through the Vercel bridge. No production patients or external channel credentials are used.
+
+The new channel tables are additive. Take a SQLite online backup before deploying. Do not delete or reset existing visitors, messages, leads, users or authentication state.

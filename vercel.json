@@ -1,15 +1,70 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "functions": { "api/backend.mjs": { "maxDuration": 75 } },
-  "rewrites": [{ "source": "/api/:path*", "destination": "/api/backend?route=:path*" }],
+  "functions": {
+    "api/backend.mjs": {
+      "maxDuration": 75
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "/api/backend?route=:path*"
+    }
+  ],
   "headers": [
-    { "source": "/admin/:path*", "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }, { "key": "Referrer-Policy", "value": "no-referrer" }, { "key": "Cache-Control", "value": "private, no-store" }] },
-    { "source": "/estudio/:path*", "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }] }
+    {
+      "source": "/admin/:path*",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "no-referrer"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "private, no-store"
+        }
+      ]
+    },
+    {
+      "source": "/estudio/:path*",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/inbox/:path*",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "no-referrer"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "private, no-store"
+        }
+      ]
+    }
   ],
   "redirects": [
     {
       "source": "/(.*)",
-      "has": [{ "type": "host", "value": "www.neurodiversa.mx" }],
+      "has": [
+        {
+          "type": "host",
+          "value": "www.neurodiversa.mx"
+        }
+      ],
       "destination": "https://neurodiversa.mx/$1",
       "permanent": true
     }

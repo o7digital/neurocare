@@ -20,6 +20,8 @@ import {
 import { api } from "./api";
 import type { Workspace } from "./types";
 import Inbox from "./Inbox";
+import ChannelManager from "./ChannelManager";
+
 import NewsletterStudio from "./NewsletterStudio";
 import SocialStudio from "./SocialStudio";
 import { Catalog, Connections, WebsiteContent, Contacts } from "./Management";
@@ -55,7 +57,9 @@ export default function AdminConsole() {
     [panel, setPanel] = useState(() =>
       navigation.some((n) => n.id === window.location.hash.slice(1))
         ? window.location.hash.slice(1)
-        : "mailing",
+        : window.location.pathname.startsWith("/inbox")
+          ? "channel"
+          : "mailing",
     ),
     [notice, setNotice] = useState(""),
     [mobile, setMobile] = useState(false),
@@ -263,7 +267,9 @@ export default function AdminConsole() {
   const props = { workspace, refresh, notify },
     current = navigation.find((n) => n.id === panel)!;
   return (
-    <div className={`workspace-shell ${mobile ? "nav-open" : ""}`}>
+    <div
+      className={`workspace-shell ${mobile ? "nav-open" : ""} ${panel === "channel" ? "channel-fullscreen" : ""}`}
+    >
       <aside className="workspace-sidebar">
         <a className="workspace-brand" href="/">
           <img
@@ -371,8 +377,14 @@ export default function AdminConsole() {
           </div>
         </header>
         <div className="workspace-content">
-          {(panel === "inbox" || panel === "channel") && (
-            <Inbox key={panel} channel={panel === "channel"} notify={notify} />
+          {panel === "inbox" && <Inbox notify={notify} />}
+          {panel === "channel" && (
+            <ChannelManager
+              user={workspace.user}
+              notify={notify}
+              onBack={() => navigate("mailing")}
+              onConnections={() => navigate("connections")}
+            />
           )}{" "}
           {panel === "mailing" && (
             <NewsletterStudio {...props} onSocial={() => navigate("social")} />

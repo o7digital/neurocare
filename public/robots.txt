@@ -3,5 +3,6 @@ Allow: /
 Disallow: /admin/
 Disallow: /estudio/
 Disallow: /api/
+Disallow: /inbox/
 
 Sitemap: https://neurodiversa.mx/sitemap.xml

@@ -6,6 +6,13 @@ import { getMigrations } from "better-auth/db/migration";
 import { z } from "zod";
 import { openStore, hash } from "./store.mjs";
 import {
+  channelRoute,
+  threadMessages,
+  recordVisit,
+  fileResponse,
+  defaultAutomation,
+} from "./channel.mjs";
+import {
   campaignSchema,
   validateCampaignUrls,
   marketingWorkspace,
@@ -420,16 +427,44 @@ export async function createApplication(env = process.env, dependencies = {}) {
           return json({ available: false });
         }
       }
+      const download = path.match(/^\/api\/widget\/attachments\/([a-f0-9-]+)$/);
+      if (download && request.method === "GET") {
+        try {
+          await admin(request);
+          return fileResponse(store, download[1]);
+        } catch (error) {
+          if (error instanceof ServiceError && error.status === 404)
+            throw error;
+        }
+        return fileResponse(store, download[1], visitor(request).id);
+      }
       if (path.startsWith("/api/widget/")) {
         const v = visitor(request);
+        if (path === "/api/widget/context" && request.method === "POST") {
+          const data = z
+            .object({
+              page: text(1, 1000),
+              title: text(0, 240).default(""),
+              consent: z.literal(true),
+            })
+            .parse(await body());
+          db.prepare(
+            "UPDATE visitors SET consent_at=COALESCE(consent_at,?) WHERE id=?",
+          ).run(now(), v.id);
+          recordVisit(
+            store,
+            { ...v, consent_at: v.consent_at || now() },
+            data.page,
+            data.title,
+          );
+          return json({ ok: true });
+        }
         if (path === "/api/widget/messages" && request.method === "GET")
           return json({
             mode: v.mode,
-            messages: db
-              .prepare(
-                "SELECT id,role,content,created FROM messages WHERE visitor_id=? ORDER BY rowid",
-              )
-              .all(v.id),
+            messages: threadMessages(db, v.id).map(
+              ({ sequence, ...message }) => message,
+            ),
             lead: !!db
               .prepare("SELECT id FROM leads WHERE visitor_id=?")
               .get(v.id),
@@ -442,6 +477,7 @@ export async function createApplication(env = process.env, dependencies = {}) {
               consent: z.literal(true),
               requestId: z.string().uuid(),
               page: text(0, 1000).default(""),
+              pageTitle: text(0, 240).default(""),
             })
             .parse(await body());
           if (!store.limit(`chat:${v.id}`, 12))
@@ -473,11 +509,61 @@ export async function createApplication(env = process.env, dependencies = {}) {
             "UPDATE visitors SET language=?,page=?,consent_at=COALESCE(consent_at,?) WHERE id=?",
           ).run(data.language, data.page, now(), v.id);
           addMessage(v.id, "visitor", data.message, data.requestId);
-          if (v.mode !== "ai") return json({ ok: true, mode: v.mode });
+          recordVisit(
+            store,
+            { ...v, consent_at: v.consent_at || now() },
+            data.page,
+            data.pageTitle,
+          );
+          if (v.mode === "closed") {
+            db.prepare("UPDATE visitors SET mode='ai' WHERE id=?").run(v.id);
+            db.prepare(
+              "UPDATE channel_threads SET assignee_id=NULL,version=version+1 WHERE visitor_id=?",
+            ).run(v.id);
+          }
+          const automation = {
+            ...defaultAutomation,
+            ...store.get("oliviaAutomation", {}),
+          };
+          const asksHuman =
+            automation.humanHandoff &&
+            /(hablar con (una persona|alguien del equipo|un humano)|quiero (hablar con el equipo|una persona)|speak to (a human|a person)|talk to (a human|a person)|parler [àa] (une personne|un humain))/i.test(
+              data.message,
+            );
+          if (!automation.autoReply || asksHuman) {
+            db.prepare("UPDATE visitors SET mode='manual' WHERE id=?").run(
+              v.id,
+            );
+            db.prepare(
+              "INSERT INTO channel_threads(visitor_id) VALUES (?) ON CONFLICT(visitor_id) DO UPDATE SET version=version+1",
+            ).run(v.id);
+            if (asksHuman)
+              addMessage(
+                v.id,
+                "assistant",
+                data.language === "en"
+                  ? "Your request is in the team’s inbox. You can continue writing here."
+                  : "Tu solicitud está en la bandeja del equipo. Puedes seguir escribiendo aquí.",
+              );
+            return json({ ok: true, mode: "manual" });
+          }
+          const mode = db
+            .prepare("SELECT mode FROM visitors WHERE id=?")
+            .get(v.id).mode;
+          if (mode !== "ai") return json({ ok: true, mode });
           activeChats.add(v.id);
           let result;
           try {
-            result = await providers.chat(data.message, v.core_id);
+            const recent = db
+              .prepare(
+                "SELECT role,content FROM messages WHERE visitor_id=? AND rowid>COALESCE((SELECT max(rowid) FROM messages WHERE visitor_id=? AND role='assistant'),0) ORDER BY rowid",
+              )
+              .all(v.id, v.id)
+              .slice(-16);
+            const handoff = recent.some((m) => m.role === "operator")
+              ? recent
+              : [];
+            result = await providers.chat(data.message, v.core_id, handoff);
           } finally {
             activeChats.delete(v.id);
           }
@@ -506,6 +592,7 @@ export async function createApplication(env = process.env, dependencies = {}) {
               marketingConsent: z.boolean().default(false),
               language: z.enum(["es", "en"]).default("es"),
               page: text(0, 1000).default(""),
+              pageTitle: text(0, 240).default(""),
             })
             .parse(await body());
           if (!store.limit(`lead:${v.id}`, 5, 3600))
@@ -547,6 +634,12 @@ export async function createApplication(env = process.env, dependencies = {}) {
                 `Formulario Olivia · ${stamp}`,
                 stamp,
               );
+            recordVisit(
+              store,
+              { ...v, consent_at: v.consent_at || stamp },
+              data.page,
+              data.pageTitle,
+            );
             store.audit("visitor", "lead.capture", id);
           })();
           return json({ ok: true, id });
@@ -559,7 +652,12 @@ export async function createApplication(env = process.env, dependencies = {}) {
       if (path === "/api/admin/workspace" && request.method === "GET") {
         const settings = store.get("connections", {});
         return json({
-          user: { name: user.name, email: user.email, role: user.role },
+          user: {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+          },
           posts: db
             .prepare("SELECT * FROM posts ORDER BY updated DESC")
             .all()
@@ -604,6 +702,17 @@ export async function createApplication(env = process.env, dependencies = {}) {
             .all(),
         });
       }
+      const channelResponse = await channelRoute({
+        path,
+        url,
+        request,
+        body,
+        user,
+        store,
+        providers,
+        addMessage,
+      });
+      if (channelResponse) return channelResponse;
       const marketingResponse = await marketingRoute({
         path,
         request,
@@ -651,6 +760,9 @@ export async function createApplication(env = process.env, dependencies = {}) {
             db.prepare("UPDATE visitors SET mode='manual' WHERE id=?").run(
               conversation[1],
             );
+            db.prepare(
+              "INSERT INTO channel_threads(visitor_id,assignee_id) VALUES (?,?) ON CONFLICT(visitor_id) DO UPDATE SET assignee_id=excluded.assignee_id,version=channel_threads.version+1",
+            ).run(conversation[1], user.id);
             addMessage(conversation[1], "operator", data.content);
             store.audit(user.id, "conversation.reply", conversation[1]);
           })();
@@ -664,6 +776,9 @@ export async function createApplication(env = process.env, dependencies = {}) {
             data.mode,
             conversation[1],
           );
+          db.prepare(
+            "UPDATE channel_threads SET assignee_id=CASE WHEN ?='ai' THEN NULL ELSE assignee_id END,version=version+1 WHERE visitor_id=?",
+          ).run(data.mode, conversation[1]);
           store.audit(user.id, "conversation.mode", conversation[1]);
           return json({ ok: true });
         }

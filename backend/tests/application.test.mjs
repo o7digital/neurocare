@@ -19,6 +19,9 @@ function fixtures() {
   return {
     calls,
     health: async () => "3.6.0",
+    assist: async () => ({
+      text: "Propuesta del equipo, pendiente de revisión.",
+    }),
     chat: async () => {
       calls.chat++;
       return {
@@ -848,4 +851,491 @@ test("Mailchimp adapter creates only a draft and Buffer status pagination is com
     organizationId: "org",
   });
   assert.deepEqual(Object.keys(posts.posts), ["first", "second"]);
+});
+
+async function channelVisitor(h, name = "Canal") {
+  const session = await h.request("/api/widget/session", {
+    method: "POST",
+    body: {},
+  });
+  await h.request("/api/widget/chat", {
+    method: "POST",
+    cookie: session.cookie,
+    body: {
+      message: "Quisiera conocer el grupo.",
+      language: "es",
+      consent: true,
+      requestId: randomUUID(),
+      page: "/programas/habilidades-sociales/",
+      pageTitle: "Programa grupal",
+    },
+  });
+  const id = h.app.store.db
+    .prepare(
+      "SELECT id FROM visitors WHERE token_hash IS NOT NULL ORDER BY rowid DESC LIMIT 1",
+    )
+    .get().id;
+  return { id, cookie: session.cookie };
+}
+
+test("channel manager filters, unread state, assignment and takeover protect concurrent operators", async (t) => {
+  const h = await harness();
+  t.after(() => h.app.close());
+  const a = await h.actor("editor"),
+    b = await h.actor("editor"),
+    v = await channelVisitor(h);
+  assert.equal(
+    (await h.request("/api/admin/channel/conversations")).status,
+    401,
+  );
+  const inbox = (
+    await h.request("/api/admin/channel/conversations?view=open", {
+      cookie: a.cookie,
+    })
+  ).data;
+  assert.equal(inbox.counts.open, 1);
+  assert.equal(inbox.counts.unassigned, 1);
+  assert.equal(inbox.conversations[0].unread, 1);
+  const read = () =>
+    h.request(`/api/admin/channel/conversations/${v.id}`, { cookie: a.cookie });
+  let detail = (await read()).data;
+  assert.equal(
+    (
+      await h.request(`/api/admin/channel/conversations/${v.id}/reply`, {
+        method: "POST",
+        cookie: a.cookie,
+        body: { content: "Before takeover", requestId: randomUUID() },
+      })
+    ).status,
+    409,
+  );
+  assert.equal(
+    (
+      await h.request(`/api/admin/channel/conversations/${v.id}/status`, {
+        method: "PATCH",
+        cookie: a.cookie,
+        body: { mode: "manual", version: detail.conversation.version },
+      })
+    ).status,
+    200,
+  );
+  assert.equal(
+    (
+      await h.request(`/api/admin/channel/conversations/${v.id}/status`, {
+        method: "PATCH",
+        cookie: b.cookie,
+        body: { mode: "manual", version: detail.conversation.version },
+      })
+    ).status,
+    409,
+  );
+  detail = (await read()).data;
+  assert.equal(
+    (
+      await h.request(`/api/admin/channel/conversations/${v.id}/status`, {
+        method: "PATCH",
+        cookie: b.cookie,
+        body: { mode: "manual", version: detail.conversation.version },
+      })
+    ).status,
+    409,
+  );
+  assert.equal(
+    (
+      await h.request("/api/admin/channel/conversations?view=mine", {
+        cookie: a.cookie,
+      })
+    ).data.total,
+    1,
+  );
+  assert.equal(
+    (
+      await h.request("/api/admin/channel/conversations?view=mine", {
+        cookie: b.cookie,
+      })
+    ).data.total,
+    0,
+  );
+  await h.request(`/api/admin/channel/conversations/${v.id}/read`, {
+    method: "POST",
+    cookie: a.cookie,
+    body: {},
+  });
+  assert.equal(
+    (
+      await h.request("/api/admin/channel/conversations?view=open", {
+        cookie: a.cookie,
+      })
+    ).data.conversations[0].unread,
+    0,
+  );
+  assert.equal(
+    (
+      await h.request("/api/admin/channel/conversations?view=open", {
+        cookie: b.cookie,
+      })
+    ).data.conversations[0].unread,
+    1,
+  );
+  const payload = { content: "Respuesta del equipo", requestId: randomUUID() };
+  await h.request(`/api/admin/channel/conversations/${v.id}/reply`, {
+    method: "POST",
+    cookie: a.cookie,
+    body: payload,
+  });
+  await h.request(`/api/admin/channel/conversations/${v.id}/reply`, {
+    method: "POST",
+    cookie: a.cookie,
+    body: payload,
+  });
+  assert.equal(
+    (await read()).data.messages.filter((m) => m.role === "operator").length,
+    1,
+  );
+  await h.request(`/api/admin/channel/conversations/${v.id}/status`, {
+    method: "PATCH",
+    cookie: a.cookie,
+    body: { mode: "closed", version: detail.conversation.version },
+  });
+  assert.equal(
+    (
+      await h.request("/api/admin/channel/conversations?view=solved", {
+        cookie: a.cookie,
+      })
+    ).data.total,
+    1,
+  );
+  await h.request("/api/widget/chat", {
+    method: "POST",
+    cookie: v.cookie,
+    body: {
+      message: "Una nueva pregunta",
+      consent: true,
+      language: "es",
+      requestId: randomUUID(),
+    },
+  });
+  assert.equal((await read()).data.conversation.mode, "ai");
+  assert.equal(
+    (
+      await h.request("/api/admin/channel/conversations?view=solved", {
+        cookie: a.cookie,
+      })
+    ).data.total,
+    0,
+  );
+});
+
+test("channel notes and tags are shared privately; page history requires explicit consent and rejects foreign URLs", async (t) => {
+  const h = await harness();
+  t.after(() => h.app.close());
+  const { cookie } = await h.actor(),
+    v = await channelVisitor(h);
+  const path = `/api/admin/channel/conversations/${v.id}`;
+  let detail = (await h.request(path, { cookie })).data;
+  assert.equal(detail.pages[0].path, "/programas/habilidades-sociales/");
+  assert.equal(
+    (
+      await h.request("/api/widget/context", {
+        method: "POST",
+        cookie: v.cookie,
+        body: { page: "/blog/", title: "Blog", consent: false },
+      })
+    ).status,
+    400,
+  );
+  await h.request("/api/widget/context", {
+    method: "POST",
+    cookie: v.cookie,
+    body: { page: "//outside.example/path", title: "Rejected", consent: true },
+  });
+  await h.request("/api/widget/context", {
+    method: "POST",
+    cookie: v.cookie,
+    body: { page: "/blog/", title: "Lecturas", consent: true },
+  });
+  const note = {
+    id: randomUUID(),
+    content: "Nota privada, nunca enviada al visitante.",
+  };
+  await h.request(path + "/notes", { method: "POST", cookie, body: note });
+  await h.request(path + "/notes", { method: "POST", cookie, body: note });
+  await h.request(path + "/tags", {
+    method: "PATCH",
+    cookie,
+    body: {
+      tags: ["Grupo", "Seguimiento"],
+      version: detail.conversation.version,
+    },
+  });
+  detail = (await h.request(path, { cookie })).data;
+  assert.equal(detail.notes.length, 1);
+  assert.deepEqual(detail.conversation.tags, ["Grupo", "Seguimiento"]);
+  assert.deepEqual(
+    detail.pages.map((p) => p.path),
+    ["/blog/", "/programas/habilidades-sociales/"],
+  );
+  assert.equal(
+    (
+      await h.request(path + "/tags", {
+        method: "PATCH",
+        cookie,
+        body: { tags: ["Stale"], version: 1 },
+      })
+    ).status,
+    409,
+  );
+  await h.request(path + "/profile", {
+    method: "PATCH",
+    cookie,
+    body: {
+      name: "Nombre actualizado",
+      email: "updated@example.test",
+      phone: "+52 5550001234",
+    },
+  });
+  assert.equal(
+    (await h.request("/api/admin/channel/conversations?q=updated", { cookie }))
+      .data.total,
+    1,
+  );
+  const widget = (await h.request("/api/widget/messages", { cookie: v.cookie }))
+    .data;
+  assert.ok(!JSON.stringify(widget).includes(note.content));
+  assert.equal(widget.notes, undefined);
+  assert.equal(widget.pages, undefined);
+});
+
+test("private channel files validate uploads, require manual ownership and remain isolated between visitors", async (t) => {
+  const h = await harness();
+  t.after(() => h.app.close());
+  const { cookie } = await h.actor(),
+    v = await channelVisitor(h),
+    other = await channelVisitor(h),
+    path = `/api/admin/channel/conversations/${v.id}`;
+  const bad = await h.request(path + "/attachments", {
+    method: "POST",
+    cookie,
+    body: {
+      name: "malicious.svg",
+      base64: Buffer.from("<svg onload=alert(1)>").toString("base64"),
+    },
+  });
+  assert.equal(bad.status, 400);
+  const uploaded = await h.request(path + "/attachments", {
+    method: "POST",
+    cookie,
+    body: {
+      name: "informacion.txt",
+      base64: Buffer.from("Información privada del equipo.").toString("base64"),
+    },
+  });
+  assert.equal(uploaded.status, 200);
+  assert.equal(
+    (
+      await h.request("/api/widget/attachments/" + uploaded.data.id, {
+        cookie: v.cookie,
+      })
+    ).status,
+    404,
+  );
+  const detail = (await h.request(path, { cookie })).data;
+  await h.request(path + "/status", {
+    method: "PATCH",
+    cookie,
+    body: { mode: "manual", version: detail.conversation.version },
+  });
+  await h.request(path + "/reply", {
+    method: "POST",
+    cookie,
+    body: {
+      content: "Archivo para tu solicitud",
+      attachmentId: uploaded.data.id,
+      requestId: randomUUID(),
+    },
+  });
+  const messages = (
+    await h.request("/api/widget/messages", { cookie: v.cookie })
+  ).data.messages;
+  assert.equal(messages.at(-1).attachment.name, "informacion.txt");
+  const filePath = "/api/widget/attachments/" + uploaded.data.id;
+  assert.equal(
+    (await h.request(filePath, { cookie: v.cookie })).data,
+    "Información privada del equipo.",
+  );
+  assert.equal(
+    (await h.request(filePath, { cookie: other.cookie })).status,
+    404,
+  );
+  assert.equal((await h.request(filePath)).status, 401);
+  const response = await h.app.handle(
+    new Request(h.env.SITE_URL + filePath, {
+      headers: { "x-neurodiversa-key": h.env.GATEWAY_KEY, cookie },
+    }),
+  );
+  assert.equal(response.status, 200);
+  assert.match(response.headers.get("Content-Disposition"), /attachment/);
+  assert.match(response.headers.get("Content-Security-Policy"), /sandbox/);
+});
+
+test("Olivia suggestions stay drafts and automation switches affect real widget routing", async (t) => {
+  const h = await harness();
+  t.after(() => h.app.close());
+  const owner = await h.actor(),
+    editor = await h.actor("editor"),
+    v = await channelVisitor(h),
+    path = `/api/admin/channel/conversations/${v.id}`;
+  const before = (await h.request(path, { cookie: owner.cookie })).data.messages
+    .length;
+  const suggestion = await h.request(path + "/suggestion", {
+    method: "POST",
+    cookie: owner.cookie,
+    body: { language: "es", task: "reply" },
+  });
+  assert.equal(suggestion.status, 200);
+  assert.match(suggestion.data.text, /Propuesta/);
+  assert.equal(
+    (await h.request(path, { cookie: owner.cookie })).data.messages.length,
+    before,
+  );
+  const rules = {
+    autoReply: false,
+    humanHandoff: true,
+    quickReplies: ["Un saludo del equipo."],
+  };
+  assert.equal(
+    (
+      await h.request("/api/admin/channel/settings", {
+        method: "PUT",
+        cookie: editor.cookie,
+        body: rules,
+      })
+    ).status,
+    403,
+  );
+  await h.request("/api/admin/channel/settings", {
+    method: "PUT",
+    cookie: owner.cookie,
+    body: rules,
+  });
+  const calls = h.providers.calls.chat;
+  await h.request("/api/widget/chat", {
+    method: "POST",
+    cookie: v.cookie,
+    body: {
+      message: "Otra pregunta",
+      language: "es",
+      consent: true,
+      requestId: randomUUID(),
+    },
+  });
+  assert.equal(h.providers.calls.chat, calls);
+  assert.equal(
+    (await h.request(path, { cookie: owner.cookie })).data.conversation.mode,
+    "manual",
+  );
+  await h.request("/api/admin/channel/settings", {
+    method: "PUT",
+    cookie: owner.cookie,
+    body: { ...rules, autoReply: true },
+  });
+  const second = await channelVisitor(h);
+  const count = h.providers.calls.chat;
+  await h.request("/api/widget/chat", {
+    method: "POST",
+    cookie: second.cookie,
+    body: {
+      message: "Quiero hablar con una persona",
+      language: "es",
+      consent: true,
+      requestId: randomUUID(),
+    },
+  });
+  assert.equal(h.providers.calls.chat, count);
+  assert.equal(
+    (
+      await h.request(`/api/admin/channel/conversations/${second.id}`, {
+        cookie: owner.cookie,
+      })
+    ).data.conversation.mode,
+    "manual",
+  );
+  const config = (
+    await h.request("/api/admin/channel/settings", { cookie: owner.cookie })
+  ).data;
+  assert.equal(config.channels.website.connected, true);
+  assert.equal(config.channels.whatsapp.connected, false);
+});
+
+test("returning to AI preserves the actual operator exchange without exposing internal notes", async (t) => {
+  const h = await harness();
+  t.after(() => h.app.close());
+  const { cookie } = await h.actor(),
+    v = await channelVisitor(h),
+    path = `/api/admin/channel/conversations/${v.id}`;
+  let d = (await h.request(path, { cookie })).data;
+  await h.request(path + "/status", {
+    method: "PATCH",
+    cookie,
+    body: { mode: "manual", version: d.conversation.version },
+  });
+  await h.request(path + "/reply", {
+    method: "POST",
+    cookie,
+    body: {
+      content:
+        "El equipo te contactará el viernes para confirmar disponibilidad.",
+      requestId: randomUUID(),
+    },
+  });
+  await h.request(path + "/notes", {
+    method: "POST",
+    cookie,
+    body: { id: randomUUID(), content: "INTERNAL-ONLY-NOTE" },
+  });
+  d = (await h.request(path, { cookie })).data;
+  await h.request(path + "/status", {
+    method: "PATCH",
+    cookie,
+    body: { mode: "ai", version: d.conversation.version },
+  });
+  let context;
+  h.providers.chat = async (message, conversationId, handoff) => {
+    context = handoff;
+    return {
+      answer: "De acuerdo, el equipo confirmará la disponibilidad.",
+      conversation_id: "a".repeat(24),
+    };
+  };
+  await h.request("/api/widget/chat", {
+    method: "POST",
+    cookie: v.cookie,
+    body: {
+      message: "¿Cuándo me contactan?",
+      language: "es",
+      consent: true,
+      requestId: randomUUID(),
+    },
+  });
+  assert.ok(
+    context.some((m) => m.role === "operator" && m.content.includes("viernes")),
+  );
+  assert.ok(!JSON.stringify(context).includes("INTERNAL-ONLY-NOTE"));
+  const calls = [],
+    provider = createProviders(
+      { VAULT_KEY: "test", OLIVIA_API_URL: "http://core" },
+      async (url, options = {}) => {
+        calls.push({ url, ...options });
+        if (url.endsWith("/health")) return Response.json({ version: "3.6.0" });
+        if (url.endsWith("/login"))
+          return Response.json({ access_token: "test" });
+        return Response.json({
+          answer: "Respuesta",
+          conversation_id: "a".repeat(24),
+        });
+      },
+    );
+  await provider.chat("¿Cuándo me contactan?", null, context);
+  assert.match(JSON.parse(calls.at(-1).body).message, /viernes/);
+  assert.equal(JSON.parse(calls.at(-1).body).conversation_id, undefined);
 });
