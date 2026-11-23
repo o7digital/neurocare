@@ -1,0 +1,14 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import PublicAgenda from '../components/admin/PublicAgenda';
+---
+<Layout title="Agenda y recursos | Neuro Diversa" description="Actividades, lecturas y recursos compartidos por el equipo de Neuro Diversa.">
+  <Header />
+  <main class="public-agenda"><a href="/">NEURO DIVERSA</a><h1>Actividades y recursos</h1><PublicAgenda client:only="react"><p slot="fallback">Cargando agenda…</p></PublicAgenda></main>
+  <Footer />
+</Layout>
+<style>
+.public-agenda{padding:145px 22px 80px;max-width:830px;margin:auto}.public-agenda>a{font-size:10px;letter-spacing:3px;color:#92797a}.public-agenda>h1{font:38px Georgia,serif;color:#402b35;margin:18px 0 35px}.public-agenda :global(.agenda-message){background:#f7ebe6;border:1px solid #ead8d3;border-radius:12px;padding:35px;color:#92797a}.public-agenda :global(.newsletter-doc-prose p){margin-bottom:18px}.public-agenda :global(.newsletter-doc-prose ul){padding-left:22px;list-style:disc}.public-agenda :global(.newsletter-doc-prose ol){padding-left:22px;list-style:decimal}
+</style>

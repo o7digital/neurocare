@@ -23,15 +23,23 @@ is backed up and validated with `nginx -t` before reload.
 - Channel manager: visitor/assistant/operator transcript, operator replies and AI/manual/closed mode.
 - Articles: shared drafts and publication in the ES or EN blog.
 - Group: title, proposed start, weeks and minutes, reflected on the public program.
-- Mailing: shared newsletter drafts, HTML preview, personalization, explicit test/send actions, opt-in contacts and signed unsubscribe links.
-- Buffer: account channels, images by public HTTPS URL, draft, queue or a future schedule.
+- Mailing: monthly campaigns, three editable starter templates, live desktop/mobile previews, full document editing with TipTap, design/gallery controls, personalization, HTML export, Mailchimp draft creation and SMTP test/send actions.
+- Buffer Studio: campaign library grouped by month, linked newsletter activities, image library/upload, per-channel destinations, draft/queue/scheduled delivery and a paginated remote status refresh. Existing social drafts are preserved when preparing a newsletter again.
+- Catalog: reusable, versioned ES/EN activities and resources with dates, venue, image and official link.
+- Public agenda: explicit publication creates a snapshot at `/agenda/?id=…`; later private draft edits do not change it until it is published again. The link can be withdrawn.
+- Media: private staff upload of valid images up to 2 MB, decoded and normalized by Sharp into a public 1200×900 JPEG. SVG and invalid files are rejected; original bytes and metadata are discarded.
 - Connections: encrypted provider credentials and invitation links restricted to workspace owners.
 
-The mailing and Buffer adapters reuse the behavior of `o7digital/crm-suites-o7`
-(`api/src/marketing/buffer.adapter.ts` and `api/src/tenant/tenant.service.ts`).
-The previous admin branch's newsletter renderer remains available in
-`src/lib/crmMailing.ts`; the live backend renders escaped, personalized HTML.
-Buffer requests use its current GraphQL API at `https://api.buffer.com`.
+The newsletter editors and preview are ported from `crm-suitesmine` dev
+`bfd0ce3` (`frontend/src/app/admin/mail/page.tsx`). Buffer Studio follows
+`CampaignTools.tsx` and `BufferSyncPanel.tsx`; the three-pane inbox follows
+`suitesmine-bot/app/inbox/page.js`. Hotel events, credentials and tenant data
+are not copied. `backend/newsletter.mjs` is the shared HTML renderer; this pure
+module is the only backend source included in the frontend deployment.
+Server-side sanitization uses sanitize-html, and campaign revisions retain their
+own design snapshot. Mailchimp uses its 3.0 draft/content API; Buffer uses its
+GraphQL API at `https://api.buffer.com`. Mailchimp remote campaign IDs are
+persisted before content upload so a partial failure remains identifiable.
 
 Provider writes run through a persistent outbox. Each campaign revision,
 recipient/channel and provider has a unique delivery record. Re-saving unchanged
@@ -41,12 +49,13 @@ claim inbox delivery or completed social publication. Newsletter consent is
 separate from permission to follow up on an information request, and is checked
 again just before delivery.
 
-## Access deferred by the owner
+## Access and deferred connections
 
-Human accounts, staff email addresses, SMTP and Buffer accounts are intentionally
-left unconfigured. No invitations or emails are sent during provisioning.
-When the owner supplies an address, create the first private owner invitation
-inside the dedicated container:
+The owner account requested for `olivier.steineur@gmail.com` has been activated.
+Its password is runtime state and is never stored in this repository. Staff
+accounts and Mailchimp, SMTP and Buffer credentials remain deferred. No staff
+invitations, emails or posts are sent during this update. For a future approved
+invitation, run inside the dedicated container:
 
 ```sh
 docker exec neurodiversa-backend node manage.mjs invite OWNER_EMAIL owner
@@ -67,6 +76,7 @@ Backend dependencies and tests are separate from the static frontend:
 npm ci
 npm --prefix backend ci
 npm test
+npm run check:admin
 npm run build
 ```
 
@@ -76,7 +86,11 @@ into an image. `backend/.dockerignore` and the scoped Dockerfile enforce this.
 For a new isolated installation, `provision.py` has configure, database, isolate
 and bootstrap phases; it does not configure human access or marketing accounts.
 For updates, preserve those private files and persistent data, copy the reviewed
-backend source, then run `docker compose up -d --build backend`.
+backend source, then run `docker compose up -d --build backend`. Back up SQLite
+using its online backup API before an update. `install-proxy.py` upgrades only
+the dedicated route to a 3 MB request limit for image upload.
+For isolated HTTP development, `PUBLIC_SITE_URL` can retain the canonical HTTPS
+media URL while `SITE_URL` supplies the local authentication origin.
 
 The Vercel project uses production-only `NEURODIVERSA_BACKEND_URL` (config) and
 `NEURODIVERSA_GATEWAY_KEY` (secret). The latter is transferred through stdin,
@@ -100,8 +114,10 @@ For isolated Firefox browser QA, run `tests/preview-fixture.mjs` with
 only reserved `example.test` contacts and fake provider adapters, with no real
 emails or social posts. Run `tests/browser.mjs` with an installed Playwright
 module. It exercises lead → inbox → operator → visitor, blog publication,
-program updates, newsletter preview, Buffer queue and desktop/mobile layouts.
+program updates, live preview, full document editing, image upload, catalog,
+public agenda snapshot, social draft preparation, Buffer queue/status and
+desktop/mobile layouts.
 
 Production verification must separately check the real 3.6 engine, public
-routes, proxy cookies and denied anonymous admin access. Real SMTP and Buffer
-delivery remains untested until the owner connects those accounts.
+routes, proxy cookies and denied anonymous admin access. Real Mailchimp, SMTP and Buffer
+provider writes remain untested until the owner connects those accounts.

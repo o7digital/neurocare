@@ -1,4 +1,5 @@
-backend
+backend/**
+!backend/newsletter.mjs
 tests
 docs
 node_modules
