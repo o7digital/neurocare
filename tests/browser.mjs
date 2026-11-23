@@ -71,6 +71,10 @@ try {
     .getByRole("button", { name: "Entrar al workspace", exact: true })
     .click();
   await admin
+    .locator(".workspace-sidebar")
+    .getByRole("button", { name: "Mailing & newsletters", exact: true })
+    .click();
+  await admin
     .getByRole("heading", { name: "Mailing & newsletters", exact: true })
     .waitFor();
   const editor = admin.locator(".newsletter-editor");

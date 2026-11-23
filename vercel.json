@@ -3,9 +3,289 @@
   "functions": {
     "api/backend.mjs": {
       "maxDuration": 75
+    },
+    "api/render.mjs": {
+      "maxDuration": 30,
+      "includeFiles": "dist/_studio/pages/**"
     }
   },
   "rewrites": [
+    {
+      "source": "/",
+      "destination": "/api/render?page=/"
+    },
+    {
+      "source": "/sintomas-emocionales-cognitivos-enfermedades-neurologicas",
+      "destination": "/api/render?page=/sintomas-emocionales-cognitivos-enfermedades-neurologicas"
+    },
+    {
+      "source": "/sintomas-emocionales-cognitivos-enfermedades-neurologicas/",
+      "destination": "/api/render?page=/sintomas-emocionales-cognitivos-enfermedades-neurologicas/"
+    },
+    {
+      "source": "/aviso-de-privacidad",
+      "destination": "/api/render?page=/aviso-de-privacidad"
+    },
+    {
+      "source": "/aviso-de-privacidad/",
+      "destination": "/api/render?page=/aviso-de-privacidad/"
+    },
+    {
+      "source": "/que-es-la-neuropsiquiatria",
+      "destination": "/api/render?page=/que-es-la-neuropsiquiatria"
+    },
+    {
+      "source": "/que-es-la-neuropsiquiatria/",
+      "destination": "/api/render?page=/que-es-la-neuropsiquiatria/"
+    },
+    {
+      "source": "/tdah-en-adultos",
+      "destination": "/api/render?page=/tdah-en-adultos"
+    },
+    {
+      "source": "/tdah-en-adultos/",
+      "destination": "/api/render?page=/tdah-en-adultos/"
+    },
+    {
+      "source": "/sueno-y-salud-mental",
+      "destination": "/api/render?page=/sueno-y-salud-mental"
+    },
+    {
+      "source": "/sueno-y-salud-mental/",
+      "destination": "/api/render?page=/sueno-y-salud-mental/"
+    },
+    {
+      "source": "/tdah-adultos-san-angel-cdmx",
+      "destination": "/api/render?page=/tdah-adultos-san-angel-cdmx"
+    },
+    {
+      "source": "/tdah-adultos-san-angel-cdmx/",
+      "destination": "/api/render?page=/tdah-adultos-san-angel-cdmx/"
+    },
+    {
+      "source": "/ansiedad-cuando-solicitar-valoracion",
+      "destination": "/api/render?page=/ansiedad-cuando-solicitar-valoracion"
+    },
+    {
+      "source": "/ansiedad-cuando-solicitar-valoracion/",
+      "destination": "/api/render?page=/ansiedad-cuando-solicitar-valoracion/"
+    },
+    {
+      "source": "/cuando-acudir-con-un-psiquiatra",
+      "destination": "/api/render?page=/cuando-acudir-con-un-psiquiatra"
+    },
+    {
+      "source": "/cuando-acudir-con-un-psiquiatra/",
+      "destination": "/api/render?page=/cuando-acudir-con-un-psiquiatra/"
+    },
+    {
+      "source": "/blog",
+      "destination": "/api/render?page=/blog"
+    },
+    {
+      "source": "/blog/",
+      "destination": "/api/render?page=/blog/"
+    },
+    {
+      "source": "/neuropsiquiatra-san-angel-cdmx",
+      "destination": "/api/render?page=/neuropsiquiatra-san-angel-cdmx"
+    },
+    {
+      "source": "/neuropsiquiatra-san-angel-cdmx/",
+      "destination": "/api/render?page=/neuropsiquiatra-san-angel-cdmx/"
+    },
+    {
+      "source": "/consulta-psiquiatrica-en-linea-cdmx",
+      "destination": "/api/render?page=/consulta-psiquiatrica-en-linea-cdmx"
+    },
+    {
+      "source": "/consulta-psiquiatrica-en-linea-cdmx/",
+      "destination": "/api/render?page=/consulta-psiquiatrica-en-linea-cdmx/"
+    },
+    {
+      "source": "/diferencias-psiquiatria-neuropsiquiatria",
+      "destination": "/api/render?page=/diferencias-psiquiatria-neuropsiquiatria"
+    },
+    {
+      "source": "/diferencias-psiquiatria-neuropsiquiatria/",
+      "destination": "/api/render?page=/diferencias-psiquiatria-neuropsiquiatria/"
+    },
+    {
+      "source": "/primera-consulta-psiquiatrica",
+      "destination": "/api/render?page=/primera-consulta-psiquiatrica"
+    },
+    {
+      "source": "/primera-consulta-psiquiatrica/",
+      "destination": "/api/render?page=/primera-consulta-psiquiatrica/"
+    },
+    {
+      "source": "/ansiedad-san-angel-cdmx",
+      "destination": "/api/render?page=/ansiedad-san-angel-cdmx"
+    },
+    {
+      "source": "/ansiedad-san-angel-cdmx/",
+      "destination": "/api/render?page=/ansiedad-san-angel-cdmx/"
+    },
+    {
+      "source": "/psiquiatra-san-angel-cdmx",
+      "destination": "/api/render?page=/psiquiatra-san-angel-cdmx"
+    },
+    {
+      "source": "/psiquiatra-san-angel-cdmx/",
+      "destination": "/api/render?page=/psiquiatra-san-angel-cdmx/"
+    },
+    {
+      "source": "/agenda",
+      "destination": "/api/render?page=/agenda"
+    },
+    {
+      "source": "/agenda/",
+      "destination": "/api/render?page=/agenda/"
+    },
+    {
+      "source": "/en",
+      "destination": "/api/render?page=/en"
+    },
+    {
+      "source": "/en/",
+      "destination": "/api/render?page=/en/"
+    },
+    {
+      "source": "/en/psychiatrist-san-angel-mexico-city",
+      "destination": "/api/render?page=/en/psychiatrist-san-angel-mexico-city"
+    },
+    {
+      "source": "/en/psychiatrist-san-angel-mexico-city/",
+      "destination": "/api/render?page=/en/psychiatrist-san-angel-mexico-city/"
+    },
+    {
+      "source": "/en/adhd-in-adults",
+      "destination": "/api/render?page=/en/adhd-in-adults"
+    },
+    {
+      "source": "/en/adhd-in-adults/",
+      "destination": "/api/render?page=/en/adhd-in-adults/"
+    },
+    {
+      "source": "/en/sleep-and-mental-health",
+      "destination": "/api/render?page=/en/sleep-and-mental-health"
+    },
+    {
+      "source": "/en/sleep-and-mental-health/",
+      "destination": "/api/render?page=/en/sleep-and-mental-health/"
+    },
+    {
+      "source": "/en/adult-adhd-san-angel-mexico-city",
+      "destination": "/api/render?page=/en/adult-adhd-san-angel-mexico-city"
+    },
+    {
+      "source": "/en/adult-adhd-san-angel-mexico-city/",
+      "destination": "/api/render?page=/en/adult-adhd-san-angel-mexico-city/"
+    },
+    {
+      "source": "/en/privacy-notice",
+      "destination": "/api/render?page=/en/privacy-notice"
+    },
+    {
+      "source": "/en/privacy-notice/",
+      "destination": "/api/render?page=/en/privacy-notice/"
+    },
+    {
+      "source": "/en/what-is-neuropsychiatry",
+      "destination": "/api/render?page=/en/what-is-neuropsychiatry"
+    },
+    {
+      "source": "/en/what-is-neuropsychiatry/",
+      "destination": "/api/render?page=/en/what-is-neuropsychiatry/"
+    },
+    {
+      "source": "/en/anxiety-treatment-san-angel-mexico-city",
+      "destination": "/api/render?page=/en/anxiety-treatment-san-angel-mexico-city"
+    },
+    {
+      "source": "/en/anxiety-treatment-san-angel-mexico-city/",
+      "destination": "/api/render?page=/en/anxiety-treatment-san-angel-mexico-city/"
+    },
+    {
+      "source": "/en/anxiety-when-to-seek-assessment",
+      "destination": "/api/render?page=/en/anxiety-when-to-seek-assessment"
+    },
+    {
+      "source": "/en/anxiety-when-to-seek-assessment/",
+      "destination": "/api/render?page=/en/anxiety-when-to-seek-assessment/"
+    },
+    {
+      "source": "/en/blog",
+      "destination": "/api/render?page=/en/blog"
+    },
+    {
+      "source": "/en/blog/",
+      "destination": "/api/render?page=/en/blog/"
+    },
+    {
+      "source": "/en/neuropsychiatrist-san-angel-mexico-city",
+      "destination": "/api/render?page=/en/neuropsychiatrist-san-angel-mexico-city"
+    },
+    {
+      "source": "/en/neuropsychiatrist-san-angel-mexico-city/",
+      "destination": "/api/render?page=/en/neuropsychiatrist-san-angel-mexico-city/"
+    },
+    {
+      "source": "/en/first-psychiatric-consultation",
+      "destination": "/api/render?page=/en/first-psychiatric-consultation"
+    },
+    {
+      "source": "/en/first-psychiatric-consultation/",
+      "destination": "/api/render?page=/en/first-psychiatric-consultation/"
+    },
+    {
+      "source": "/en/emotional-cognitive-symptoms-neurological-diseases",
+      "destination": "/api/render?page=/en/emotional-cognitive-symptoms-neurological-diseases"
+    },
+    {
+      "source": "/en/emotional-cognitive-symptoms-neurological-diseases/",
+      "destination": "/api/render?page=/en/emotional-cognitive-symptoms-neurological-diseases/"
+    },
+    {
+      "source": "/en/psychiatry-vs-neuropsychiatry",
+      "destination": "/api/render?page=/en/psychiatry-vs-neuropsychiatry"
+    },
+    {
+      "source": "/en/psychiatry-vs-neuropsychiatry/",
+      "destination": "/api/render?page=/en/psychiatry-vs-neuropsychiatry/"
+    },
+    {
+      "source": "/en/when-to-see-a-psychiatrist",
+      "destination": "/api/render?page=/en/when-to-see-a-psychiatrist"
+    },
+    {
+      "source": "/en/when-to-see-a-psychiatrist/",
+      "destination": "/api/render?page=/en/when-to-see-a-psychiatrist/"
+    },
+    {
+      "source": "/en/online-psychiatric-consultation-mexico-city",
+      "destination": "/api/render?page=/en/online-psychiatric-consultation-mexico-city"
+    },
+    {
+      "source": "/en/online-psychiatric-consultation-mexico-city/",
+      "destination": "/api/render?page=/en/online-psychiatric-consultation-mexico-city/"
+    },
+    {
+      "source": "/en/programs/social-skills",
+      "destination": "/api/render?page=/en/programs/social-skills"
+    },
+    {
+      "source": "/en/programs/social-skills/",
+      "destination": "/api/render?page=/en/programs/social-skills/"
+    },
+    {
+      "source": "/programas/habilidades-sociales",
+      "destination": "/api/render?page=/programas/habilidades-sociales"
+    },
+    {
+      "source": "/programas/habilidades-sociales/",
+      "destination": "/api/render?page=/programas/habilidades-sociales/"
+    },
     {
       "source": "/api/:path*",
       "destination": "/api/backend?route=:path*"

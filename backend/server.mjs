@@ -5,6 +5,9 @@ import { betterAuth } from "better-auth";
 import { getMigrations } from "better-auth/db/migration";
 import { z } from "zod";
 import { openStore, hash } from "./store.mjs";
+import { createCms } from "./cms-client.mjs";
+import { siteRoute } from "./site-cms.mjs";
+import { documentId, canonicalPath, digest } from "./site-engine.mjs";
 import {
   channelRoute,
   threadMessages,
@@ -61,6 +64,7 @@ export async function createApplication(env = process.env, dependencies = {}) {
     ),
     { db } = store;
   const providers = dependencies.providers || createProviders(env);
+  const cms = dependencies.cms || createCms(env, store);
   const activeChats = new Set();
   const auth = betterAuth({
     database: db,
@@ -163,15 +167,29 @@ export async function createApplication(env = process.env, dependencies = {}) {
       ).run(id, data.kind, JSON.stringify(document), now());
     return id;
   };
-  const publicContent = (language) => ({
-    posts: db
-      .prepare(
-        "SELECT * FROM posts WHERE status=? AND language=? ORDER BY updated DESC",
-      )
-      .all("published", language === "en" ? "en" : "es")
-      .map((p) => ({ ...JSON.parse(p.data), id: p.id, updated: p.updated })),
-    program: store.get("program", null),
-  });
+  const publicContent = async (language) =>
+    cms.configured
+      ? {
+          posts: (await cms.posts()).filter(
+            (p) =>
+              p.status === "published" &&
+              p.language === (language === "en" ? "en" : "es"),
+          ),
+          program: await cms.program(),
+        }
+      : {
+          posts: db
+            .prepare(
+              "SELECT * FROM posts WHERE status=? AND language=? ORDER BY updated DESC",
+            )
+            .all("published", language === "en" ? "en" : "es")
+            .map((p) => ({
+              ...JSON.parse(p.data),
+              id: p.id,
+              updated: p.updated,
+            })),
+          program: store.get("program", null),
+        };
   function invite(email, role = "editor") {
     const token = randomBytes(32).toString("base64url");
     db.prepare("INSERT INTO invitations VALUES (?,?,?,?,0)").run(
@@ -374,12 +392,39 @@ export async function createApplication(env = process.env, dependencies = {}) {
           throw error;
         }
       }
+      if (path === "/api/public/site-page" && request.method === "GET") {
+        if (!cms.configured) return json({ release: "initial", documents: {} });
+        const pagePath = canonicalPath(url.searchParams.get("page") || "/"),
+          locale = pagePath.startsWith("/en/") ? "en" : "es",
+          id = documentId(pagePath),
+          release = await cms.published();
+        const documents = Object.fromEntries(
+          [id, `global-${locale}`, "global-program"]
+            .filter((key) => release.documents[key])
+            .map((key) => [key, release.documents[key]]),
+        );
+        if (release.program) {
+          documents["global-program"] = {
+            ...(documents["global-program"] || {}),
+            values: { ...documents["global-program"]?.values },
+          };
+          for (const key of ["title", "start", "weeks", "minutes"])
+            if (release.program[key] !== undefined)
+              documents["global-program"].values[
+                "global-program:" + digest("program." + key).slice(0, 24)
+              ] = String(release.program[key]);
+        }
+        return json({ release: release.release, documents });
+      }
+      const cmsImage = path.match(/^\/api\/public\/site-image\/([a-f0-9-]+)$/);
+      if (cmsImage && request.method === "GET")
+        return await cms.asset(cmsImage[1]);
       if (request.method === "GET" && path.startsWith("/api/public/")) {
         const response = await publicMarketing(path, store);
         if (response) return response;
       }
       if (path === "/api/public/content" && request.method === "GET")
-        return json(publicContent(url.searchParams.get("language")));
+        return json(await publicContent(url.searchParams.get("language")));
       if (path === "/api/unsubscribe") {
         const token = url.searchParams.get("token") || "",
           id = token.split(".")[0];
@@ -658,20 +703,24 @@ export async function createApplication(env = process.env, dependencies = {}) {
             email: user.email,
             role: user.role,
           },
-          posts: db
-            .prepare("SELECT * FROM posts ORDER BY updated DESC")
-            .all()
-            .map((p) => ({
-              ...JSON.parse(p.data),
-              id: p.id,
-              version: p.version,
-              updated: p.updated,
-            })),
+          posts: cms.configured
+            ? await cms.posts()
+            : db
+                .prepare("SELECT * FROM posts ORDER BY updated DESC")
+                .all()
+                .map((p) => ({
+                  ...JSON.parse(p.data),
+                  id: p.id,
+                  version: p.version,
+                  updated: p.updated,
+                })),
           campaigns: db
             .prepare("SELECT id FROM campaigns ORDER BY updated DESC")
             .all()
             .map((c) => loadCampaign(c.id)),
-          program: store.get("program", null),
+          program: cms.configured
+            ? await cms.program()
+            : store.get("program", null),
           ...marketingWorkspace(store, env.PUBLIC_SITE_URL || site),
           connections: {
             mailchimp: {
@@ -702,6 +751,17 @@ export async function createApplication(env = process.env, dependencies = {}) {
             .all(),
         });
       }
+      const cmsResponse = await siteRoute({
+        path,
+        url,
+        request,
+        body,
+        user,
+        cms,
+        store,
+        env,
+      });
+      if (cmsResponse) return cmsResponse;
       const channelResponse = await channelRoute({
         path,
         url,
@@ -802,13 +862,16 @@ export async function createApplication(env = process.env, dependencies = {}) {
       }
       if (path === "/api/admin/posts" && request.method === "POST") {
         const data = postSchema.parse(await body()),
-          id = saveVersioned("posts", data, [data.status, data.language]);
+          id = cms.configured
+            ? await cms.savePost(data, user)
+            : saveVersioned("posts", data, [data.status, data.language]);
         store.audit(user.id, "post.save", id);
         return json({ ok: true, id });
       }
       const postMatch = path.match(/^\/api\/admin\/posts\/([a-f0-9-]+)$/);
       if (postMatch && request.method === "DELETE") {
-        db.prepare("DELETE FROM posts WHERE id=?").run(postMatch[1]);
+        if (cms.configured) await cms.deletePost(postMatch[1]);
+        else db.prepare("DELETE FROM posts WHERE id=?").run(postMatch[1]);
         store.audit(user.id, "post.delete", postMatch[1]);
         return json({ ok: true });
       }
@@ -821,7 +884,8 @@ export async function createApplication(env = process.env, dependencies = {}) {
             minutes: z.number().int().min(15).max(240),
           })
           .parse(await body());
-        store.set("program", data);
+        if (cms.configured) await cms.saveProgram(data);
+        else store.set("program", data);
         store.audit(user.id, "program.update", "group");
         return json({ ok: true });
       }

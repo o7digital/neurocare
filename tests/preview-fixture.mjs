@@ -1,4 +1,5 @@
 // Isolated browser QA only. Never included in a Vercel deployment or backend image.
+import { fixtureCms } from "./cms-fixture.mjs";
 import { createApplication } from "../backend/server.mjs";
 if (process.env.NEURODIVERSA_QA !== "1")
   throw new Error("Explicit isolated QA mode required");
@@ -10,9 +11,12 @@ const app = await createApplication(
     AUTH_SECRET: "local-qa-auth-".repeat(3),
     VAULT_KEY: "local-qa-vault-".repeat(3),
     DB_PATH: ":memory:",
+    SITE_BUNDLE_DIR: new URL("../dist/_studio/pages", import.meta.url).pathname,
+    SITE_STATIC_DIR: new URL("../dist", import.meta.url).pathname,
   },
   {
     disableWorker: true,
+    cms: (await fixtureCms()).cms,
     providers: {
       health: async () => "3.6.0",
       assist: async (transcript, language, task) => ({

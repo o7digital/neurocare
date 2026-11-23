@@ -29,3 +29,8 @@ backend/.env*
 !backend/.env.example
 playwright-report/
 test-results/
+
+# Private Directus provisioning state
+backend/.cms-*.json
+backend/.bootstrap.json
+backend/.bootstrapped

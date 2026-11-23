@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && node cms/build.mjs",
     "preview": "astro preview",
     "test": "node --test backend/tests/*.test.mjs tests/*.test.mjs",
     "astro": "astro",
@@ -20,6 +20,7 @@
     "@tiptap/starter-kit": "^3.35.0",
     "astro": "^7.4.13",
     "lucide-react": "^1.78.0",
+    "parse5": "^8.1.1",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "sanitize-html": "^2.18.2",

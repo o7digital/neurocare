@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import {
   Inbox as InboxIcon,
+  House,
+  PanelsTopLeft,
   MessagesSquare,
   Mail,
   Layers,
@@ -21,11 +23,24 @@ import { api } from "./api";
 import type { Workspace } from "./types";
 import Inbox from "./Inbox";
 import ChannelManager from "./ChannelManager";
+import SiteStudio from "./SiteStudio";
 
 import NewsletterStudio from "./NewsletterStudio";
 import SocialStudio from "./SocialStudio";
 import { Catalog, Connections, WebsiteContent, Contacts } from "./Management";
 const navigation = [
+  {
+    id: "overview",
+    label: "Inicio del admin",
+    icon: House,
+    group: "NEURO DIVERSA",
+  },
+  {
+    id: "site",
+    label: "Editor visual del sitio",
+    icon: PanelsTopLeft,
+    group: "SITIO WEB",
+  },
   { id: "inbox", label: "Inbox pacientes", icon: InboxIcon, group: "ATENCIÓN" },
   { id: "channel", label: "Olivia · Channel manager", icon: MessagesSquare },
   {
@@ -59,7 +74,7 @@ export default function AdminConsole() {
         ? window.location.hash.slice(1)
         : window.location.pathname.startsWith("/inbox")
           ? "channel"
-          : "mailing",
+          : "overview",
     ),
     [notice, setNotice] = useState(""),
     [mobile, setMobile] = useState(false),
@@ -377,6 +392,81 @@ export default function AdminConsole() {
           </div>
         </header>
         <div className="workspace-content">
+          {panel === "overview" && (
+            <div className="admin-home">
+              <span className="eyebrow">NEURO DIVERSA · ADMINISTRACIÓN</span>
+              <h1>Tu sitio y tu equipo, en un mismo lugar.</h1>
+              <p>
+                Abre una herramienta para editar, dar seguimiento o preparar tu
+                comunicación.
+              </p>
+              <div className="admin-module-grid">
+                {[
+                  {
+                    id: "site",
+                    title: "Editar el sitio",
+                    text: "Textos, fotografías, enlaces y SEO sobre el diseño real. Directus.",
+                    icon: PanelsTopLeft,
+                  },
+                  {
+                    id: "channel",
+                    title: "Olivia · Channel manager",
+                    text: "Conversaciones, atención del equipo, notas y seguimiento.",
+                    icon: MessagesSquare,
+                  },
+                  {
+                    id: "inbox",
+                    title: "Pacientes interesados",
+                    text: "Solicitudes del grupo y de atención individual.",
+                    icon: InboxIcon,
+                  },
+                  {
+                    id: "mailing",
+                    title: "Mailing & newsletters",
+                    text: "Campañas, documentos, diseño y borradores Mailchimp.",
+                    icon: Mail,
+                  },
+                  {
+                    id: "social",
+                    title: "Buffer Studio",
+                    text: "Publicaciones, imágenes, canales y programación.",
+                    icon: Layers,
+                  },
+                  {
+                    id: "articles",
+                    title: "Artículos y lecturas",
+                    text: "Borradores y publicaciones del equipo en Directus.",
+                    icon: BookOpen,
+                  },
+                  {
+                    id: "program",
+                    title: "Programa grupal",
+                    text: "Información y condiciones del proyecto de habilidades sociales.",
+                    icon: CalendarDays,
+                  },
+                  {
+                    id: "catalog",
+                    title: "Actividades y recursos",
+                    text: "Biblioteca editorial para newsletters, agenda y redes.",
+                    icon: CalendarDays,
+                  },
+                  {
+                    id: "connections",
+                    title: "Conexiones y accesos",
+                    text: "Cuentas del equipo y conexiones de comunicación.",
+                    icon: Plug,
+                  },
+                ].map(({ id, title, text, icon: Icon }) => (
+                  <button key={id} onClick={() => navigate(id)}>
+                    <Icon size={25} />
+                    <strong>{title}</strong>
+                    <small>{text}</small>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+          {panel === "site" && <SiteStudio notify={notify} />}
           {panel === "inbox" && <Inbox notify={notify} />}
           {panel === "channel" && (
             <ChannelManager
