@@ -6,7 +6,7 @@ The existing `/admin/` is the unified entry point. **Editor visual del sitio** e
 
 Directus 12.6.1 is dedicated to Neuro Diversa, with its own PostgreSQL database and persistent upload volume. `site_pages` holds the field catalogue and versioned drafts, `site_releases` stores publication snapshots and `site_settings.active_release` selects the live version. `site_posts` holds the existing article module. A publication includes only the selected page, its language's shared elements and the shared program information. Other page drafts stay private. Concurrent draft versions are checked before saving/publishing.
 
-The public Vercel renderer applies published values to the real Astro document, so text, photos and SEO are present in the delivered HTML. The private backend keeps an encrypted last-published replica for temporary Directus failures. Public patient data is never put into Directus or the public page catalogue. The Olivia/CRM store remains in the existing private backend.
+The build removes public static HTML after creating the companion bundles, so Vercel cannot bypass the CMS renderer by serving an older static file. The public Vercel renderer applies published values to the real Astro document, so text, photos and SEO are present in the delivered HTML. The private backend keeps an encrypted last-published replica for temporary Directus failures. Public patient data is never put into Directus or the public page catalogue. The Olivia/CRM store remains in the existing private backend.
 
 ## Operations
 

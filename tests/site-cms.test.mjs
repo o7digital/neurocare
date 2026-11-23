@@ -52,7 +52,9 @@ test("private preview strips executable code and keeps only safe inline formatti
   assert.equal(documentId("/").length, 29);
 });
 test("Directus drafts use revisions and selective publication preserves other drafts", async () => {
-  const { cms } = await fixtureCms(),
+  const { cms } = await fixtureCms({
+      catalog: [makeBundle(sample, "/"), makeBundle(sample, "/en/")],
+    }),
     pages = await cms.pages(),
     home = pages.find((p) => p.path === "/"),
     en = pages.find((p) => p.path === "/en/"),
@@ -98,7 +100,9 @@ test("Directus drafts use revisions and selective publication preserves other dr
   );
 });
 test("unpublished photos remain private until a release references them", async () => {
-  const { cms } = await fixtureCms(),
+  const { cms } = await fixtureCms({
+      catalog: [makeBundle(sample, "/"), makeBundle(sample, "/en/")],
+    }),
     id = "11111111-1111-1111-1111-111111111111";
   await assert.rejects(cms.asset(id), (e) => e.status === 404);
   await assert.rejects(

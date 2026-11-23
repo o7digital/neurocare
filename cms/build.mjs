@@ -1,4 +1,4 @@
-import { readdir, readFile, mkdir, writeFile } from "node:fs/promises";
+import { readdir, readFile, mkdir, writeFile, unlink } from "node:fs/promises";
 import { join } from "node:path";
 import { makeBundle } from "./site-engine.mjs";
 import { copyFile } from "node:fs/promises";
@@ -33,3 +33,8 @@ await writeFile(
 console.log(
   `Site Studio: ${bundles.length} actual pages mapped for visual editing.`,
 );
+
+// Vercel serves existing static files before rewrites. Public HTML lives in
+// the companion bundles so every public route uses its published CMS values.
+for (const bundle of bundles)
+  await unlink(join(root, bundle.path, "index.html"));

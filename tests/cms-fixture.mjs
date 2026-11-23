@@ -2,13 +2,15 @@
 import { readFile } from "node:fs/promises";
 import { randomUUID } from "node:crypto";
 import { createCms } from "../backend/cms-client.mjs";
-export async function fixtureCms() {
-  const catalog = JSON.parse(
-      await readFile(
-        new URL("../dist/_studio/catalog.json", import.meta.url),
-        "utf8",
+export async function fixtureCms(options = {}) {
+  const catalog =
+      options.catalog ||
+      JSON.parse(
+        await readFile(
+          new URL("../dist/_studio/catalog.json", import.meta.url),
+          "utf8",
+        ),
       ),
-    ),
     tables = {
       site_pages: [],
       site_settings: [
