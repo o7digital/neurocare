@@ -364,7 +364,7 @@ export function cleanPreview(html, path) {
             !a.value.startsWith("/api/"))
         ) {
           a.value =
-            "/api/admin/site/preview-asset?path=" + encodeURIComponent(a.value);
+            "/api/admin/site/preview-asset?file=" + encodeURIComponent(a.value);
         }
         if (a.name === "srcset") a.value = "";
       }

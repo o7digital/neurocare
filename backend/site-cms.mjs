@@ -91,7 +91,7 @@ export async function siteRoute({
   const asset = path.match(/^\/api\/admin\/site\/asset\/([a-f0-9-]+)$/);
   if (asset && request.method === "GET") return cms.asset(asset[1], true);
   if (path === "/api/admin/site/preview-asset" && request.method === "GET") {
-    const file = url.searchParams.get("path") || "";
+    const file = url.searchParams.get("file") || "";
     if (
       file.includes("..") ||
       !/^\/(?:_astro\/[a-zA-Z0-9._-]+\.css|fonts\/[a-zA-Z0-9._-]+\.(?:woff2?|ttf)|[a-zA-Z0-9._-]+\.(?:webp|png|jpe?g|avif|svg))$/.test(
@@ -126,7 +126,7 @@ export async function siteRoute({
           .toString()
           .replace(/url\(\s*["']?([^"')]+)["']?\s*\)/g, (match, path) =>
             path.startsWith("/") && !path.includes("..")
-              ? 'url("/api/admin/site/preview-asset?path=' +
+              ? 'url("/api/admin/site/preview-asset?file=' +
                 encodeURIComponent(path) +
                 '")'
               : match,

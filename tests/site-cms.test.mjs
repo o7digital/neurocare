@@ -46,7 +46,7 @@ test("private preview strips executable code and keeps only safe inline formatti
   const preview = cleanPreview(applyValues(b, {}, { preview: true }), "/");
   assert.doesNotMatch(preview, /<script|<iframe|onclick=/);
   assert.match(preview, /neurodiversa-preview/);
-  assert.match(preview, /preview-asset\?path=/);
+  assert.match(preview, /preview-asset\?file=/);
   assert.match(preview, /data-studio-text/);
   assert.throws(() => canonicalPath("/../admin"));
   assert.equal(documentId("/").length, 29);
