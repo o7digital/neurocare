@@ -3,6 +3,8 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ServiceError } from "./providers.mjs";
 import { applyValues, cleanPreview, canonicalPath } from "./site-engine.mjs";
+import { siteBlocksSchema } from "./site-block-schema.mjs";
+import { siteVideoRoute } from "./site-video.mjs";
 export async function siteRoute({
   path,
   url,
@@ -21,6 +23,16 @@ export async function siteRoute({
       503,
       "El editor Directus todavía no está conectado.",
     );
+  const video = await siteVideoRoute({
+    path,
+    request,
+    body,
+    user,
+    store,
+    cms,
+    env,
+  });
+  if (video) return video;
   if (path === "/api/admin/site/pages" && request.method === "GET") {
     const pages = await cms.pages(),
       release = await cms.published();
@@ -46,6 +58,9 @@ export async function siteRoute({
               id: z.string().max(100),
               revision: z.number().int().positive(),
               values: z.record(z.string(), z.string()).default({}),
+              baseValues: z.record(z.string(), z.string()).optional(),
+              blocks: siteBlocksSchema.optional(),
+              baseBlocks: siteBlocksSchema.optional(),
               seo: z
                 .object({
                   title: z.string().max(180).optional(),
@@ -89,7 +104,8 @@ export async function siteRoute({
     return json(await cms.upload(input));
   }
   const asset = path.match(/^\/api\/admin\/site\/asset\/([a-f0-9-]+)$/);
-  if (asset && request.method === "GET") return cms.asset(asset[1], true);
+  if (asset && request.method === "GET")
+    return cms.asset(asset[1], true, request.headers.get("range"));
   if (path === "/api/admin/site/preview-asset" && request.method === "GET") {
     const file = url.searchParams.get("file") || "";
     if (
@@ -174,7 +190,7 @@ export async function siteRoute({
         "Content-Type": "text/html; charset=utf-8",
         "Cache-Control": "no-store",
         "Content-Security-Policy":
-          "default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; font-src 'self'; base-uri 'self'; form-action 'none'; frame-ancestors 'self'",
+          "default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; media-src 'self' https:; font-src 'self'; base-uri 'self'; form-action 'none'; frame-ancestors 'self'",
       },
     });
   }

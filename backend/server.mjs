@@ -1,4 +1,6 @@
 import http from "node:http";
+import { Readable } from "node:stream";
+import { pipeline } from "node:stream/promises";
 import { randomBytes, randomUUID, timingSafeEqual } from "node:crypto";
 import { pathToFileURL } from "node:url";
 import { betterAuth } from "better-auth";
@@ -418,7 +420,11 @@ export async function createApplication(env = process.env, dependencies = {}) {
       }
       const cmsImage = path.match(/^\/api\/public\/site-image\/([a-f0-9-]+)$/);
       if (cmsImage && request.method === "GET")
-        return await cms.asset(cmsImage[1]);
+        return await cms.asset(
+          cmsImage[1],
+          false,
+          request.headers.get("range"),
+        );
       if (request.method === "GET" && path.startsWith("/api/public/")) {
         const response = await publicMarketing(path, store);
         if (response) return response;
@@ -1172,7 +1178,12 @@ export async function createApplication(env = process.env, dependencies = {}) {
           [...response.headers].filter(([k]) => k !== "set-cookie"),
         ),
       );
-      res.end(Buffer.from(await response.arrayBuffer()));
+      if (
+        response.headers.get("content-type")?.startsWith("video/") &&
+        response.body
+      )
+        await pipeline(Readable.fromWeb(response.body), res);
+      else res.end(Buffer.from(await response.arrayBuffer()));
     } catch {
       if (!res.headersSent) res.writeHead(500);
       res.end();

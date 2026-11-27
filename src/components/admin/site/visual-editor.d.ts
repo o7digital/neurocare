@@ -1,4 +1,8 @@
 export function visualEditorMarkup(): string;
+export function editorValue(
+  element: HTMLElement | DocumentFragment,
+  options?: { blocks?: boolean },
+): string;
 export function mountVisualEditor(
   root: HTMLElement,
   options: {
@@ -17,5 +21,6 @@ export function mountVisualEditor(
     dirtyCount: () => number;
     busy: () => boolean;
     canEdit?: (target: unknown) => boolean;
+    onConvertText?: (target: { key: string }) => void;
   },
 ): { refresh: () => void; destroy: () => void };

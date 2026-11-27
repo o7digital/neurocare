@@ -13,10 +13,17 @@ import {
   RefreshCw,
   Eye,
 } from "lucide-react";
-import { api } from "./api";
+import { api, ApiError } from "./api";
 import { Empty } from "./ui";
 import { mountVisualEditor, visualEditorMarkup } from "./site/visual-editor.js";
-import type { SiteData, SiteDraft, SiteField, SitePage } from "./site/types";
+import PageBlocks, { flattenBlocks, updateBlock } from "./site/PageBlocks";
+import type {
+  SiteBlock,
+  SiteData,
+  SiteDraft,
+  SiteField,
+  SitePage,
+} from "./site/types";
 const sectionNames: Record<string, string> = {
   navigation: "Navegación",
   footer: "Pie de página",
@@ -81,6 +88,9 @@ export default function SiteStudio({
     [tab, setTab] = useState("visual"),
     [busy, setBusy] = useState(false),
     [dirty, setDirty] = useState(0),
+    [editVersion, setEditVersion] = useState(0),
+    [syncError, setSyncError] = useState(""),
+    [conflict, setConflict] = useState(false),
     [error, setError] = useState("");
   const root = useRef<HTMLDivElement>(null),
     pending = useRef<
@@ -90,14 +100,20 @@ export default function SiteStudio({
           id: string;
           revision: number;
           values: Record<string, string>;
+          baseValues?: Record<string, string>;
           seo?: SiteDraft["seo"];
+          blocks?: SiteDraft["blocks"];
+          baseBlocks?: SiteDraft["blocks"];
         }
       >
     >({}),
     dataRef = useRef(data),
     busyRef = useRef(busy),
+    savingRef = useRef<Promise<void> | null>(null),
+    visualRef = useRef<ReturnType<typeof mountVisualEditor> | null>(null),
+    loadSequence = useRef(0),
     prefs = useRef({
-      device: window.innerWidth < 720 ? "mobile" : "desktop",
+      device: "auto",
       locale: "es",
       path: "/",
     }),
@@ -106,9 +122,13 @@ export default function SiteStudio({
   busyRef.current = busy;
   selectedRef.current = selected;
   const load = useCallback(async () => {
+    const sequence = ++loadSequence.current;
     const value = await api<SiteData>("admin/site/pages");
+    if (sequence !== loadSequence.current && dataRef.current)
+      return dataRef.current;
     setData(value);
     dataRef.current = value;
+    visualRef.current?.refresh();
     setSelected(
       (current) =>
         current ||
@@ -121,6 +141,18 @@ export default function SiteStudio({
   }, []);
   useEffect(() => {
     void load().catch((e) => setError(e.message));
+  }, [load]);
+  useEffect(() => {
+    const refresh = () => {
+      if (document.visibilityState === "visible" && !savingRef.current)
+        void load().catch((e) => setSyncError(e.message));
+    };
+    const interval = window.setInterval(refresh, 4000);
+    window.addEventListener("focus", refresh);
+    return () => {
+      window.clearInterval(interval);
+      window.removeEventListener("focus", refresh);
+    };
   }, [load]);
   const page = data?.pages.find((p) => p.id === selected),
     pages = (data?.pages || [])
@@ -158,6 +190,18 @@ export default function SiteStudio({
   const fieldMap = useRef(new Map<string, SiteField>());
   fieldMap.current = new Map(fields.map((f) => [f.id, f]));
   const valueOf = (id: string) => {
+    if (id.startsWith("block:")) {
+      const current = dataRef.current?.pages.find(
+        (p) => p.id === selectedRef.current,
+      );
+      return (
+        flattenBlocks(
+          pending.current[current?.id || ""]?.blocks ||
+            current?.draft.blocks ||
+            [],
+        ).find((b) => b.id === id.slice(6))?.html || ""
+      );
+    }
     const f = fieldMap.current.get(id);
     if (!f) return "";
     const doc = dataRef.current?.pages.find((p) => p.id === f.document);
@@ -174,30 +218,178 @@ export default function SiteStudio({
       id: doc.id,
       revision: doc.revision,
       values: {},
+      baseValues: {},
     };
+    pending.current[field.document].baseValues ??= {};
+    pending.current[field.document].baseValues![field.id] ??=
+      doc.draft?.values?.[field.id] ?? field.source;
     pending.current[field.document].values[field.id] = value;
+    setEditVersion((version) => version + 1);
+    setSyncError("");
     setDirty(
       Object.values(pending.current).reduce(
-        (n, p) => n + Object.keys(p.values).length + (p.seo ? 1 : 0),
+        (n, p) =>
+          n +
+          Object.keys(p.values).length +
+          (p.seo ? 1 : 0) +
+          (p.blocks ? 1 : 0),
         0,
       ),
     );
   };
-  const save = async () => {
-    const documents = Object.values(pending.current);
+  const patchBlocks = (blocks: SiteBlock[]) => {
+    const current = dataRef.current?.pages.find(
+      (p) => p.id === selectedRef.current,
+    );
+    if (!current) return;
+    pending.current[current.id] ??= {
+      id: current.id,
+      revision: current.revision,
+      values: {},
+    };
+    const edit = pending.current[current.id];
+    edit.baseBlocks ??= structuredClone(current.draft.blocks || []);
+    edit.blocks = blocks;
+    setSyncError("");
+    setEditVersion((version) => version + 1);
+    setDirty(
+      Object.values(pending.current).reduce(
+        (n, p) =>
+          n +
+          Object.keys(p.values).length +
+          (p.seo ? 1 : 0) +
+          (p.blocks ? 1 : 0),
+        0,
+      ),
+    );
+  };
+  const uploadMedia = async (file: File): Promise<string> => {
+    if (!file.type.startsWith("video/")) {
+      const image = await api<{ id: string }>("admin/site/upload", {
+        name: file.name,
+        base64: await normalizedPhoto(file),
+      });
+      return `cms:${image.id}`;
+    }
+    if (
+      !["video/mp4", "video/webm"].includes(file.type) ||
+      file.size > 50 * 1024 * 1024
+    )
+      throw new Error("Usa un vídeo MP4 o WebM de hasta 50 MB.");
+    notify("Subiendo vídeo… Mantén abierto el editor.");
+    const upload = await api<{ id: string }>("admin/site/video-upload", {
+      name: file.name,
+      mime: file.type,
+      size: file.size,
+    });
+    for (let offset = 0; offset < file.size; offset += 1024 * 1024) {
+      const bytes = new Uint8Array(
+        await file.slice(offset, offset + 1024 * 1024).arrayBuffer(),
+      );
+      let binary = "";
+      for (let start = 0; start < bytes.length; start += 8192)
+        binary += String.fromCharCode(...bytes.subarray(start, start + 8192));
+      await api("admin/site/video-upload-chunk", {
+        id: upload.id,
+        offset,
+        base64: btoa(binary),
+      });
+    }
+    const result = await api<{ id: string }>("admin/site/video-upload-finish", {
+      id: upload.id,
+    });
+    notify("Vídeo importado. Guarda y publica cuando esté listo.");
+    return `cms:${result.id}`;
+  };
+  const save = async (automatic = false): Promise<void> => {
+    if (savingRef.current) {
+      await savingRef.current;
+      if (Object.keys(pending.current).length) await save(automatic);
+      return;
+    }
+    const documents = structuredClone(Object.values(pending.current));
     if (!documents.length) return;
-    if (busyRef.current) return;
+    busyRef.current = true;
     setBusy(true);
+    const task = (async () => {
+      try {
+        await api("admin/site/save", { documents });
+        for (const saved of documents) {
+          const current = pending.current[saved.id];
+          if (!current) continue;
+          for (const [id, value] of Object.entries(saved.values)) {
+            if (current.values[id] === value) {
+              delete current.values[id];
+              delete current.baseValues?.[id];
+            } else {
+              current.baseValues ??= {};
+              current.baseValues[id] = value;
+            }
+          }
+          if (
+            saved.seo &&
+            JSON.stringify(current.seo) === JSON.stringify(saved.seo)
+          )
+            delete current.seo;
+          if (
+            saved.blocks &&
+            JSON.stringify(current.blocks) === JSON.stringify(saved.blocks)
+          ) {
+            delete current.blocks;
+            delete current.baseBlocks;
+          } else if (saved.blocks) current.baseBlocks = saved.blocks;
+          if (
+            !Object.keys(current.values).length &&
+            !current.seo &&
+            !current.blocks
+          )
+            delete pending.current[saved.id];
+        }
+        const latest = await load();
+        for (const edit of Object.values(pending.current))
+          edit.revision =
+            latest.pages.find((p) => p.id === edit.id)?.revision ??
+            edit.revision;
+        setDirty(
+          Object.values(pending.current).reduce(
+            (n, p) =>
+              n +
+              Object.keys(p.values).length +
+              (p.seo ? 1 : 0) +
+              (p.blocks ? 1 : 0),
+            0,
+          ),
+        );
+        setSyncError("");
+        if (!automatic) notify("Cambios guardados en Directus.");
+      } catch (e) {
+        if (e instanceof ApiError && e.status === 409) {
+          setConflict(true);
+          await load().catch(() => {});
+        }
+        setSyncError((e as Error).message);
+        throw e;
+      } finally {
+        busyRef.current = false;
+        setBusy(false);
+      }
+    })();
+    savingRef.current = task;
     try {
-      await api("admin/site/save", { documents });
-      pending.current = {};
-      setDirty(0);
-      await load();
-      notify("Cambios guardados en Directus.");
+      await task;
     } finally {
-      setBusy(false);
+      savingRef.current = null;
     }
   };
+  const saveRef = useRef(save);
+  saveRef.current = save;
+  useEffect(() => {
+    if (!dirty || syncError || busy || conflict) return;
+    const timer = window.setTimeout(() => {
+      void saveRef.current(true).catch(() => {});
+    }, 1200);
+    return () => window.clearTimeout(timer);
+  }, [dirty, busy, syncError, editVersion, conflict]);
   const execute = async (task: () => Promise<void>) => {
     try {
       await task();
@@ -244,28 +436,89 @@ export default function SiteStudio({
             ? ""
             : section,
       },
-      rows: visibleFields
-        .filter((f) => f.kind !== "image")
-        .map((f) => ({
-          label: f.label,
-          target: { key: f.id },
-          rich: f.kind === "text",
-        })),
-      photos: visibleFields
-        .filter((f) => f.kind === "image")
-        .map((f) => ({ collection: f.document, id: f.key, label: f.label })),
+      rows: [
+        ...visibleFields
+          .filter((f) => f.kind !== "image")
+          .map((f) => ({
+            label: f.label,
+            target: { key: f.id },
+            rich: f.kind === "text",
+          })),
+        ...flattenBlocks(page.draft.blocks || [])
+          .filter((b) => b.type === "text")
+          .map((b) => ({
+            label: "Bloque de texto",
+            target: { key: `block:${b.id}` },
+            rich: true,
+          })),
+      ],
+      photos: [
+        ...visibleFields
+          .filter((f) => f.kind === "image")
+          .map((f) => ({ collection: f.document, id: f.key, label: f.label })),
+        ...flattenBlocks(page.draft.blocks || [])
+          .filter((b) => b.type === "image")
+          .map((b) => ({
+            collection: "block",
+            id: b.id,
+            label: b.alt || "Fotografía del bloque",
+          })),
+      ],
       valueOf: (t) => valueOf(t.key),
       photoOf: (row) => {
-        const value = valueOf(`${row.collection}:${row.id}`);
+        const current = dataRef.current?.pages.find(
+          (p) => p.id === selectedRef.current,
+        );
+        const value =
+          row.collection === "block"
+            ? flattenBlocks(
+                pending.current[current?.id || ""]?.blocks ||
+                  current?.draft.blocks ||
+                  [],
+              ).find((b) => b.id === row.id)?.src || ""
+            : valueOf(`${row.collection}:${row.id}`);
         return value.startsWith("cms:")
           ? `/api/admin/site/asset/${value.slice(4)}`
           : value;
       },
       onText: (target, value) => {
+        if (target.key.startsWith("block:")) {
+          const current = dataRef.current?.pages.find(
+            (p) => p.id === selectedRef.current,
+          );
+          if (current)
+            patchBlocks(
+              updateBlock(
+                pending.current[current.id]?.blocks ||
+                  current.draft.blocks ||
+                  [],
+                target.key.slice(6),
+                { html: value },
+              ),
+            );
+          return;
+        }
         const field = fieldMap.current.get(target.key);
         if (field) mark(field, value);
       },
       onPhoto: async (row, file) => {
+        if (row.collection === "block") {
+          const src = await uploadMedia(file);
+          const current = dataRef.current?.pages.find(
+            (p) => p.id === selectedRef.current,
+          );
+          if (current)
+            patchBlocks(
+              updateBlock(
+                pending.current[current.id]?.blocks ||
+                  current.draft.blocks ||
+                  [],
+                row.id,
+                { src },
+              ),
+            );
+          return;
+        }
         const field = fieldMap.current.get(`${row.collection}:${row.id}`);
         if (!field) return;
         const base64 = await normalizedPhoto(file),
@@ -275,17 +528,61 @@ export default function SiteStudio({
           });
         mark(field, `cms:${image.id}`);
       },
-      onSave: save,
+      onSave: () => save(),
+      onConvertText: (target) => {
+        const field = fieldMap.current.get(target.key);
+        const current = dataRef.current?.pages.find(
+          (p) => p.id === selectedRef.current,
+        );
+        if (
+          !field ||
+          field.runtime ||
+          !current ||
+          field.document !== current.id
+        )
+          return;
+        const html = valueOf(field.id);
+        patchBlocks([
+          ...(pending.current[current.id]?.blocks ||
+            current.draft.blocks ||
+            []),
+          {
+            id: crypto.randomUUID(),
+            type: "text",
+            html,
+            size: 18,
+            font: "site",
+            anchor: `text:${field.id}`,
+            position: "after",
+          },
+        ]);
+        mark(field, "");
+        setTab("blocks");
+      },
       prefs: prefs.current,
       dirtyCount: () =>
         Object.values(pending.current).reduce(
-          (n, p) => n + Object.keys(p.values).length + (p.seo ? 1 : 0),
+          (n, p) =>
+            n +
+            Object.keys(p.values).length +
+            (p.seo ? 1 : 0) +
+            (p.blocks ? 1 : 0),
           0,
         ),
       busy: () => busyRef.current,
     });
-    return () => handle.destroy();
-  }, [selected, section, tab, data]);
+    visualRef.current = handle;
+    return () => {
+      handle.destroy();
+      visualRef.current = null;
+    };
+  }, [
+    selected,
+    section,
+    tab,
+    !!data,
+    JSON.stringify(page?.draft.blocks || []),
+  ]);
   const patchSeo = (values: Partial<NonNullable<SiteDraft["seo"]>>) => {
     if (!page) return;
     pending.current[page.id] ??= {
@@ -298,9 +595,14 @@ export default function SiteStudio({
       ...pending.current[page.id].seo,
       ...values,
     };
+    setEditVersion((version) => version + 1);
     setDirty(
       Object.values(pending.current).reduce(
-        (n, p) => n + Object.keys(p.values).length + (p.seo ? 1 : 0),
+        (n, p) =>
+          n +
+          Object.keys(p.values).length +
+          (p.seo ? 1 : 0) +
+          (p.blocks ? 1 : 0),
         0,
       ),
     );
@@ -342,7 +644,7 @@ export default function SiteStudio({
           <button
             className="nd-button"
             disabled={busy || !dirty}
-            onClick={() => void execute(save)}
+            onClick={() => void execute(() => save())}
           >
             <Save size={15} />
             {busy ? "Guardando…" : "Guardar cambios"}
@@ -357,6 +659,111 @@ export default function SiteStudio({
           </button>
         </div>
       </header>
+      <div className="site-sync-status" role="status">
+        {syncError
+          ? `No se pudo guardar: ${syncError} Tus cambios siguen aquí.`
+          : busy
+            ? "Guardando el borrador compartido…"
+            : dirty
+              ? "Cambios pendientes de guardar…"
+              : "Borrador compartido · guardado automático · sincronizado con el equipo"}
+      </div>
+      {conflict && (
+        <div className="site-conflict" role="alert">
+          <h2>Este contenido cambió en otra sesión</h2>
+          <p>
+            Tus cambios siguen aquí. Compara las dos versiones antes de elegir
+            cuál conservar.
+          </p>
+          {Object.values(pending.current).map((edit) => {
+            const shared = data?.pages.find((p) => p.id === edit.id);
+            return (
+              <div key={edit.id}>
+                <strong>{shared?.path || shared?.title}</strong>
+                <div className="site-conflict-versions">
+                  <div>
+                    <h3>Versión del equipo</h3>
+                    <pre>
+                      {Object.keys(edit.values)
+                        .map(
+                          (id) =>
+                            shared?.draft.values[id] ??
+                            shared?.catalog.find((f) => f.id === id)?.source ??
+                            "",
+                        )
+                        .join("\n\n")}
+                      {edit.blocks
+                        ? JSON.stringify(shared?.draft.blocks || [], null, 2)
+                        : ""}
+                    </pre>
+                  </div>
+                  <div>
+                    <h3>Tus cambios</h3>
+                    <pre>
+                      {Object.values(edit.values).join("\n\n")}
+                      {edit.blocks ? JSON.stringify(edit.blocks, null, 2) : ""}
+                    </pre>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+          <div className="button-row">
+            <button
+              className="nd-button"
+              onClick={() => {
+                pending.current = {};
+                setDirty(0);
+                setConflict(false);
+                setSyncError("");
+                visualRef.current?.refresh();
+              }}
+            >
+              Usar la versión del equipo
+            </button>
+            <button
+              className="nd-button primary"
+              onClick={() => {
+                for (const edit of Object.values(pending.current)) {
+                  const shared = dataRef.current?.pages.find(
+                    (p) => p.id === edit.id,
+                  );
+                  if (!shared) continue;
+                  edit.revision = shared.revision;
+                  edit.baseValues = Object.fromEntries(
+                    Object.keys(edit.values).map((id) => [
+                      id,
+                      shared.draft.values[id] ??
+                        shared.catalog.find((f) => f.id === id)?.source ??
+                        "",
+                    ]),
+                  );
+                  if (edit.blocks)
+                    edit.baseBlocks = structuredClone(
+                      shared.draft.blocks || [],
+                    );
+                }
+                setConflict(false);
+                setSyncError("");
+                void execute(() => save());
+              }}
+            >
+              Guardar mi versión sobre la compartida
+            </button>
+          </div>
+        </div>
+      )}
+      {syncError && !conflict && (
+        <button
+          className="nd-button"
+          onClick={() => {
+            setSyncError("");
+            void execute(() => save());
+          }}
+        >
+          Volver a guardar
+        </button>
+      )}
       {error ? (
         <div className="site-studio-error">
           <Empty title="No se pudo abrir Directus" icon={Globe}>
@@ -475,6 +882,7 @@ export default function SiteStudio({
                   <div role="tablist" aria-label="Editar página">
                     {[
                       ["visual", "Editor visual"],
+                      ["blocks", "Bloques y columnas"],
                       ["seo", "SEO y publicación"],
                     ].map(([id, label]) => (
                       <button
@@ -515,6 +923,18 @@ export default function SiteStudio({
                 </div>
                 {tab === "visual" ? (
                   <div ref={root} className="site-visual-root" />
+                ) : tab === "blocks" ? (
+                  <PageBlocks
+                    blocks={
+                      pending.current[page.id]?.blocks ||
+                      page.draft.blocks ||
+                      []
+                    }
+                    fields={fields}
+                    change={patchBlocks}
+                    upload={uploadMedia}
+                    notify={notify}
+                  />
                 ) : (
                   <div className="site-seo-panel">
                     <div className="site-seo-form">

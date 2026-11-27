@@ -11,6 +11,7 @@ const app = await createApplication(
     AUTH_SECRET: "local-qa-auth-".repeat(3),
     VAULT_KEY: "local-qa-vault-".repeat(3),
     DB_PATH: ":memory:",
+    SITE_UPLOAD_DIR: "/tmp/neurodiversa-qa-video-uploads",
     SITE_BUNDLE_DIR: new URL("../dist/_studio/pages", import.meta.url).pathname,
     SITE_STATIC_DIR: new URL("../dist", import.meta.url).pathname,
   },
@@ -60,6 +61,16 @@ const { user } = await app.auth.api.signUpEmail({
   },
 });
 app.store.db.prepare("INSERT INTO members VALUES (?,?)").run(user.id, "owner");
+const { user: editorUser } = await app.auth.api.signUpEmail({
+  body: {
+    name: "Editor QA",
+    email: "editor@example.test",
+    password: "Neurodiversa-QA-only-2026!",
+  },
+});
+app.store.db
+  .prepare("INSERT INTO members VALUES (?,?)")
+  .run(editorUser.id, "editor");
 app.server.listen(4399, "127.0.0.1", () =>
   console.log("Isolated Neuro Diversa QA backend: http://127.0.0.1:4399"),
 );

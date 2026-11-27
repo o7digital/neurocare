@@ -51,6 +51,69 @@
   font-size: 14px;
   border-bottom: 1px solid var(--line);
 }
+.visual-format-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  background: #fff;
+}
+.visual-format-bar button,
+.visual-format-bar select {
+  min-height: 36px;
+  padding: 6px 10px;
+  border: 1px solid #d6dce5;
+  border-radius: 5px;
+  background: #f5f7fa;
+  color: #24384f;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+.visual-format-bar button[aria-pressed="true"] {
+  background: #f1e8ec;
+  color: #87424d;
+  border-color: #87424d;
+}
+.visual-format-bar button:disabled,
+.visual-format-bar select:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.visual-format-bar > span {
+  font-size: 12px;
+  color: #596b83;
+}
+.visual-text-input p {
+  color: inherit;
+  font: inherit;
+  margin: 0 0 1em;
+}
+.visual-text-input ul,
+.visual-text-input ol {
+  padding-left: 1.5em;
+  margin: 0.75em 0;
+}
+.visual-text-input ul {
+  list-style: disc;
+}
+.visual-text-input ol {
+  list-style: decimal;
+}
+.visual-text-input a {
+  text-decoration: underline;
+}
+.visual-text-input h2 {
+  font-size: 1.4em;
+}
+.visual-text-input h3 {
+  font-size: 1.2em;
+}
+.visual-text-input li {
+  display: list-item;
+}
 .visual-workbench {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 280px;

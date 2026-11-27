@@ -12,7 +12,23 @@ export type SiteField = {
 };
 export type SiteDraft = {
   values: Record<string, string>;
+  blocks?: SiteBlock[];
   seo?: { title?: string; description?: string; noindex?: boolean };
+};
+export type SiteBlock = {
+  id: string;
+  type: "text" | "image" | "video" | "columns";
+  html?: string;
+  src?: string;
+  alt?: string;
+  caption?: string;
+  size?: number;
+  font?: "site" | "sans" | "serif" | "georgia";
+  align?: "left" | "center" | "right";
+  columns?: number;
+  children?: SiteBlock[][];
+  anchor?: string;
+  position?: "before" | "after";
 };
 export type SitePage = {
   id: string;

@@ -1,3 +1,5 @@
+import { Readable } from "node:stream";
+import { pipeline } from "node:stream/promises";
 // The browser never receives the private backend credential or provider keys.
 export default async function handler(req, res) {
   const site = "https://neurodiversa.mx";
@@ -47,6 +49,7 @@ export default async function handler(req, res) {
         "unknown",
     };
     if (req.headers.cookie) headers.cookie = req.headers.cookie;
+    if (req.headers.range) headers.range = req.headers.range;
     if (req.headers["content-type"])
       headers["content-type"] = req.headers["content-type"];
     const body = ["GET", "HEAD"].includes(req.method)
@@ -68,6 +71,8 @@ export default async function handler(req, res) {
       "content-type",
       "content-security-policy",
       "content-disposition",
+      "content-range",
+      "accept-ranges",
     ])
       if (response.headers.get(key))
         res.setHeader(key, response.headers.get(key));
@@ -75,7 +80,12 @@ export default async function handler(req, res) {
     res.setHeader("X-Content-Type-Options", "nosniff");
     const cookies = response.headers.getSetCookie();
     if (cookies.length) res.setHeader("Set-Cookie", cookies);
-    res.end(Buffer.from(await response.arrayBuffer()));
+    if (
+      response.headers.get("content-type")?.startsWith("video/") &&
+      response.body
+    )
+      await pipeline(Readable.fromWeb(response.body), res);
+    else res.end(Buffer.from(await response.arrayBuffer()));
   } catch {
     return json(503, "No se pudo conectar. Intenta de nuevo.");
   }

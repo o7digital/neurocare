@@ -1,3 +1,11 @@
+export class ApiError extends Error {
+  constructor(
+    message: string,
+    public status: number,
+  ) {
+    super(message);
+  }
+}
 export async function api<T = Record<string, unknown>>(
   path: string,
   body?: unknown,
@@ -15,8 +23,9 @@ export async function api<T = Record<string, unknown>>(
   if (!response.ok) {
     if (response.status === 401 && path.startsWith("admin/"))
       window.dispatchEvent(new Event("neurodiversa:session-expired"));
-    throw new Error(
+    throw new ApiError(
       value.error || value.message || "No se pudo completar la acción.",
+      response.status,
     );
   }
   return value as T;

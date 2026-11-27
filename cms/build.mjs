@@ -19,6 +19,8 @@ async function visit(dir) {
   }
 }
 await copyFile("cms/site-engine.mjs", "backend/site-engine.mjs");
+await copyFile("cms/site-rich-text.mjs", "backend/site-rich-text.mjs");
+await copyFile("cms/site-blocks.mjs", "backend/site-blocks.mjs");
 await visit(root);
 await mkdir("dist/_studio/pages", { recursive: true });
 for (const bundle of bundles)

@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { ServiceError, publicUrl } from "./providers.mjs";
 import sharp from "sharp";
+import { siteBlocksSchema } from "./site-block-schema.mjs";
 export function createCms(env, store, fetcher = fetch) {
   const base = (env.DIRECTUS_URL || "").replace(/\/$/, ""),
     token = env.DIRECTUS_TOKEN,
@@ -109,15 +110,33 @@ export function createCms(env, store, fetcher = fetch) {
         for (const edit of input.documents) {
           const current = all.find((p) => p.id === edit.id);
           if (!current) throw new ServiceError(404, "Página no encontrada.");
-          if (current.revision !== edit.revision)
+          const catalog = new Map(
+            (current.catalog || []).map((f) => [f.id, f]),
+          );
+          // Different fields can merge after another operator saves. The same
+          // field (or SEO) still requires review instead of overwriting theirs.
+          const blocksMatch =
+            !edit.blocks ||
+            (edit.baseBlocks &&
+              JSON.stringify(edit.baseBlocks) ===
+                JSON.stringify(current.draft?.blocks || []));
+          const canMerge =
+            !edit.seo &&
+            blocksMatch &&
+            (Object.keys(edit.values || {}).length > 0 || !!edit.blocks) &&
+            Object.keys(edit.values).every(
+              (id) =>
+                Object.hasOwn(edit.baseValues || {}, id) &&
+                catalog.has(id) &&
+                (current.draft?.values?.[id] ?? catalog.get(id).source) ===
+                  edit.baseValues[id],
+            );
+          if (current.revision !== edit.revision && !canMerge)
             throw new ServiceError(
               409,
               "Esta página cambió en otra sesión. Recarga antes de guardar.",
             );
-          const catalog = new Map(
-              (current.catalog || []).map((f) => [f.id, f]),
-            ),
-            values = { ...(current.draft?.values || {}) };
+          const values = { ...(current.draft?.values || {}) };
           for (const [id, value] of Object.entries(edit.values || {})) {
             const field = catalog.get(id);
             if (!field)
@@ -135,7 +154,14 @@ export function createCms(env, store, fetcher = fetch) {
             );
           updates.push({
             id: current.id,
-            draft: { ...current.draft, values, seo },
+            draft: {
+              ...current.draft,
+              values,
+              seo,
+              ...(edit.blocks
+                ? { blocks: siteBlocksSchema.parse(edit.blocks) }
+                : {}),
+            },
             revision: current.revision + 1,
           });
         }
@@ -160,6 +186,7 @@ export function createCms(env, store, fetcher = fetch) {
           snapshot[page.id] = {
             values: page.draft?.values || {},
             seo: page.draft?.seo || {},
+            blocks: page.draft?.blocks || [],
             revision: page.revision,
           };
         }
@@ -251,34 +278,55 @@ export function createCms(env, store, fetcher = fetch) {
       const result = await call("/files", "POST", form);
       return { id: result.id, name: result.title };
     },
-    async asset(id, privateAsset = false) {
+    async uploadVideo({ name, mime, bytes }) {
+      const form = new FormData();
+      form.set("title", name);
+      form.set("file", new Blob([bytes], { type: mime }), name);
+      const result = await call("/files", "POST", form);
+      return { id: result.id, name: result.title };
+    },
+    async asset(id, privateAsset = false, range = null) {
       if (!/^[a-f0-9-]{36}$/.test(id))
         throw new ServiceError(404, "Imagen no disponible.");
       if (!privateAsset) {
         const current = await published();
         if (
-          !Object.values(current.documents).some((doc) =>
-            Object.values(doc.values || {}).includes(`cms:${id}`),
+          !Object.values(current.documents).some(
+            (doc) =>
+              Object.values(doc.values || {}).includes(`cms:${id}`) ||
+              JSON.stringify(doc.blocks || []).includes(`"src":"cms:${id}"`),
           )
         )
           throw new ServiceError(404, "Imagen no publicada.");
       }
       const response = await fetcher(`${base}/assets/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          ...(range && /^bytes=\d*-\d*$/.test(range) ? { Range: range } : {}),
+        },
         signal: AbortSignal.timeout(15000),
       });
       if (
         !response.ok ||
-        !response.headers.get("Content-Type")?.startsWith("image/")
+        !/^(image\/(?:jpeg|png|webp|avif)|video\/(?:mp4|webm))(?:;|$)/.test(
+          response.headers.get("Content-Type") || "",
+        )
       )
         throw new ServiceError(404, "Imagen no disponible.");
-      return new Response(await response.arrayBuffer(), {
+      return new Response(response.body, {
+        status: response.status,
         headers: {
           "Content-Type": response.headers.get("Content-Type"),
           "Cache-Control": privateAsset
             ? "private, no-store"
             : "public,max-age=3600",
           "X-Content-Type-Options": "nosniff",
+          ...(response.headers.get("content-range")
+            ? { "Content-Range": response.headers.get("content-range") }
+            : {}),
+          ...(response.headers.get("accept-ranges")
+            ? { "Accept-Ranges": response.headers.get("accept-ranges") }
+            : {}),
         },
       });
     },

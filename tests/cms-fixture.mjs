@@ -21,6 +21,7 @@ export async function fixtureCms(options = {}) {
     },
     docs = new Map(),
     assets = new Map(),
+    assetTypes = new Map(),
     replica = new Map();
   for (const p of catalog)
     docs.set(p.id, {
@@ -65,12 +66,16 @@ export async function fixtureCms(options = {}) {
       const file = options.body.get("file"),
         id = randomUUID();
       assets.set(id, new Uint8Array(await file.arrayBuffer()));
+      assetTypes.set(id, file.type);
       return Response.json({ data: { id, title: options.body.get("title") } });
     }
     if (path.startsWith("/assets/")) {
-      const value = assets.get(path.split("/").at(-1));
+      const id = path.split("/").at(-1),
+        value = assets.get(id);
       return value
-        ? new Response(value, { headers: { "Content-Type": "image/webp" } })
+        ? new Response(value, {
+            headers: { "Content-Type": assetTypes.get(id) || "image/webp" },
+          })
         : new Response(null, { status: 404 });
     }
     const match = path.match(/^\/items\/([a-z_]+)(?:\/([^/]+))?$/);

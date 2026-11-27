@@ -232,7 +232,7 @@
   flex-wrap: wrap;
 }
 .site-visual-root .visual-toolbar button {
-  font-size: 9px;
+  font-size: 12px;
 }
 .site-visual-root .visual-toolbar .icon-button {
   font-size: 17px;
@@ -249,7 +249,7 @@
   font-size: 15px;
 }
 .site-visual-root .visual-inspector p {
-  font-size: 10px;
+  font-size: 13px;
 }
 .site-visual-root .visual-inspector .button {
   font-size: 10px;
@@ -452,8 +452,195 @@
   font-size: 9px;
 }
 .site-visual-root .visual-text-input {
-  font-size: 12px;
+  font-size: 16px;
   line-height: 1.9;
+}
+.site-sync-status {
+  padding: 10px 16px;
+  color: #52677c;
+  font-size: 13px;
+  background: #f2f6f4;
+  border: 1px solid #dce6df;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+.site-conflict {
+  padding: 20px;
+  margin-bottom: 20px;
+  background: #fff6eb;
+  border: 1px solid #e3bf87;
+  border-radius: 10px;
+}
+.site-conflict h2 {
+  font-size: 20px;
+}
+.site-conflict p {
+  font-size: 14px;
+  margin: 10px 0;
+}
+.site-conflict-versions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 14px 0;
+}
+.site-conflict pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-height: 240px;
+  overflow: auto;
+  background: white;
+  padding: 12px;
+  font-size: 13px;
+}
+@media (max-width: 700px) {
+  .site-conflict-versions {
+    grid-template-columns: 1fr;
+  }
+}
+.page-blocks-editor {
+  padding: 24px;
+  min-width: 0;
+}
+.page-blocks-editor > h2 {
+  font-size: 24px;
+}
+.page-blocks-editor > p {
+  color: #596b83;
+  font-size: 15px;
+  line-height: 1.7;
+  margin: 10px 0 22px;
+}
+.page-block-card {
+  background: #fff;
+  border: 1px solid #d6dce5;
+  border-radius: 10px;
+  padding: 18px;
+  margin-bottom: 18px;
+  min-width: 0;
+}
+.page-block-heading,
+.page-block-add,
+.block-rich-toolbar,
+.page-block-design,
+.page-block-placement {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.page-block-heading {
+  margin-bottom: 14px;
+}
+.page-block-heading > span {
+  flex: 1;
+}
+.page-block-card button,
+.block-rich-toolbar select {
+  min-height: 34px;
+  border: 1px solid #d6dce5;
+  border-radius: 5px;
+  padding: 6px 9px;
+  background: #f4f6f9;
+  font-size: 13px;
+  color: #29415b;
+}
+.page-block-card button[aria-pressed="true"] {
+  color: #87424d;
+  background: #f1e8ec;
+}
+.page-block-card button:disabled {
+  opacity: 0.4;
+}
+.page-block-card label {
+  display: grid;
+  gap: 7px;
+  font-size: 13px;
+  color: #52677c;
+  margin-bottom: 12px;
+  min-width: 0;
+}
+.page-block-card select,
+.page-block-card input {
+  max-width: 100%;
+  min-width: 0;
+  font-size: 14px;
+  padding: 9px;
+  border: 1px solid #d6dce5;
+  border-radius: 5px;
+  background: #fff;
+  color: #213449;
+}
+.page-block-placement label:first-child {
+  flex: 1;
+}
+.page-block-placement select {
+  width: 100%;
+}
+.page-block-design {
+  gap: 15px;
+}
+.page-block-columns {
+  display: grid;
+  gap: 18px;
+  margin-top: 16px;
+}
+.page-block-columns > div {
+  min-width: 0;
+  border: 1px dashed #d6c4d0;
+  padding: 12px;
+  border-radius: 8px;
+}
+.page-block-columns .page-block-card {
+  padding: 10px;
+  margin-top: 12px;
+}
+.block-rich-body {
+  padding: 18px;
+  margin-top: 10px;
+  border: 1px solid #d6dce5;
+  border-radius: 6px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+.block-rich-body .tiptap {
+  min-height: 120px;
+  outline: none;
+}
+.block-rich-body p {
+  margin: 0 0 0.8em;
+}
+.block-rich-body h2 {
+  font-size: 1.4em;
+}
+.block-rich-body h3 {
+  font-size: 1.2em;
+}
+.block-rich-body ul {
+  list-style: disc;
+  padding-left: 1.5em;
+}
+.block-rich-body ol {
+  list-style: decimal;
+  padding-left: 1.5em;
+}
+.block-rich-body a {
+  text-decoration: underline;
+}
+.page-block-media {
+  display: grid;
+  gap: 10px;
+}
+.page-block-media img,
+.page-block-media video {
+  max-width: 100%;
+  max-height: 320px;
+  border-radius: 8px;
+}
+@media (max-width: 900px) {
+  .page-block-columns {
+    grid-template-columns: 1fr !important;
+  }
 }
 .site-visual-root .visual-expanded .visual-viewport {
   min-height: 0;

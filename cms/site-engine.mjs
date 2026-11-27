@@ -1,6 +1,8 @@
 // Visual-page pipeline follows Nathalie Studio's parse5 companion-document approach.
 import { parse, parseFragment, serialize } from "parse5";
 import { createHash } from "node:crypto";
+import { richTextHtml, richTextStyles } from "./site-rich-text.mjs";
+import { renderSiteBlock, siteBlockStyles } from "./site-blocks.mjs";
 export const digest = (value) =>
   createHash("sha256").update(String(value)).digest("hex");
 export const documentId = (path) => `page-${digest(path).slice(0, 24)}`;
@@ -215,19 +217,31 @@ export function applyValues(
     if (state?.values && Object.hasOwn(state.values, field.id))
       values[field.id] = state.values[field.id];
   }
-  const fieldMap = new Map(bundle.fields.map((f) => [f.id, f]));
+  const fieldMap = new Map(bundle.fields.map((f) => [f.id, f])),
+    textAnchors = new Map(),
+    sectionAnchors = new Map();
   const walk = (node) => {
+    if (attr(node, "id")) sectionAnchors.set(attr(node, "id"), node);
     const marker = attr(node, "data-studio-text");
     if (marker) {
       let key;
       try {
         key = JSON.parse(marker).key;
       } catch {}
+      if (key) textAnchors.set(key, node.parentNode);
       if (Object.hasOwn(values, key)) {
         node.childNodes = parseFragment(
           inlineHtml(String(values[key])),
         ).childNodes;
         for (const child of node.childNodes) child.parentNode = node;
+        // A paragraph cannot contain other paragraphs, headings or lists. Keep
+        // its classes and catalogue IDs while making rich bodies valid HTML.
+        if (
+          /<(?:p|h[23]|ul|ol)>/i.test(String(values[key])) &&
+          node.parentNode?.tagName === "p"
+        ) {
+          node.parentNode.tagName = node.parentNode.nodeName = "div";
+        }
       }
     }
     const imageMarker = attr(node, "data-studio-image");
@@ -259,12 +273,42 @@ export function applyValues(
       );
   };
   walk(doc);
+  const main = (() => {
+    const find = (node) =>
+      node.tagName === "main"
+        ? node
+        : (node.childNodes || []).map(find).find(Boolean);
+    return find(doc);
+  })();
+  const cursors = new Map();
+  for (const block of documents[bundle.id]?.blocks || []) {
+    const anchor = block.anchor?.startsWith("text:")
+      ? textAnchors.get(block.anchor.slice(5))
+      : sectionAnchors.get((block.anchor || "").replace(/^section:/, ""));
+    const nodes = parseFragment(renderSiteBlock(block, { preview })).childNodes;
+    const cursorKey = `${block.anchor}:${block.position || "after"}`;
+    const target = cursors.get(cursorKey) || anchor;
+    const parent = target?.parentNode || main;
+    if (!parent) continue;
+    const index = target
+      ? parent.childNodes.indexOf(target) +
+        (block.position === "before" && !cursors.has(cursorKey) ? 0 : 1)
+      : parent.childNodes.length;
+    for (const node of nodes) node.parentNode = parent;
+    parent.childNodes.splice(index, 0, ...nodes);
+    if (nodes.length) cursors.set(cursorKey, nodes.at(-1));
+  }
   const page = documents[bundle.id],
     seo = page?.seo || {};
   const head = doc.childNodes
     .find((n) => n.tagName === "html")
     ?.childNodes.find((n) => n.tagName === "head");
   if (head) {
+    const richStyle = parseFragment(
+      `<style>${richTextStyles}${siteBlockStyles}</style>`,
+    ).childNodes[0];
+    richStyle.parentNode = head;
+    head.childNodes.push(richStyle);
     for (const node of head.childNodes || []) {
       if (node.tagName === "title" && seo.title)
         node.childNodes = [
@@ -301,11 +345,7 @@ export function applyValues(
   return serialize(doc);
 }
 export function inlineHtml(value) {
-  return String(value)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/&lt;(\/?(?:em|strong)|br\s*\/?)&gt;/gi, "<$1>");
+  return richTextHtml(value);
 }
 export function imageUrl(value, preview = false) {
   if (String(value).startsWith("cms:"))
